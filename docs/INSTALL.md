@@ -114,6 +114,95 @@ SSH instead of failing.
 The manual steps below do the same work, and are worth reading if the installer
 reports something it cannot fix for you.
 
+## The unattended way: the command line installer
+
+The wizard asks seven pages of questions, which is right for one machine and
+wrong for the twentieth, for a container that has to come up on its own, and for
+anything where the answers belong in a file somebody can review before it runs.
+
+`bin/install.php` reads the answers instead of asking. It does the same work in
+the same order using the same code — it includes `public/install.php` for its
+helpers rather than keeping a second copy of them to drift out of step.
+
+```
+php bin/install.php --example > install.ini
+chmod 600 install.ini
+$EDITOR install.ini
+php bin/install.php --answers install.ini --dry-run
+php bin/install.php --answers install.ini
+```
+
+The answer file is INI, in four sections. `--example` prints a commented one, and
+**the last page of the web installer writes one from the answers you just gave** —
+which is the easiest way to get a correct file for the second machine.
+
+INI rather than PHP, because the wizard accepts one by upload and `require` on an
+uploaded file is remote code execution wearing a hat. `parse_ini_string()`
+executes nothing.
+
+**No username or password is ever written into it.** Those come out as
+`change-database-user-here` and friends, and a file still carrying one is refused
+rather than installed with a database user by that name. Fill them in, or leave
+them and set `RETROVAULT_DB_PASS` and `RETROVAULT_ADMIN_PASS` in the environment.
+
+What it holds:
+
+| Section | What it decides |
+| --- | --- |
+| `[db]` | host, port, name, user, pass |
+| `[admin]` | username, password, email, display name |
+| `[instance]` | name, tagline, public address, currency, timezone, trusted proxies |
+| `[install]` | `deploy` (`install` on an empty database, `erase` to drop what is there first, `keep` to write the configuration only), `erase_uploads`, `templates` (`remote`, `shipped` or `none`), `examples` |
+
+### Handing one back to the wizard
+
+The first page of the web installer takes an answer file too, by upload or paste.
+Every page after it arrives filled in — except the usernames and passwords, which
+the file does not carry, so those are still asked for. The tedious part is preset
+and the secret part is not, which is the right way round.
+
+`--dry-run` checks the answers, the server and the database connection and writes
+nothing. Worth running first in provisioning, because the alternative is finding
+out about a bad timezone after the schema has loaded.
+
+Every complaint about the answer file is reported at once rather than one per
+run, and the exit status is 0 only if the install finished — which is what a
+provisioning script needs and what a web page cannot give it.
+
+A second run stops rather than overwriting `src/config.local.php`. `--force`
+overrides that, and is deliberately separate from `deploy: erase`: one destroys a
+configuration and the other destroys a collection, and conflating them is how the
+wrong one happens.
+
+### Silent, for provisioning
+
+`--quiet` prints nothing when it works. The reason goes to stderr and the status
+is non-zero when it does not, so a run is either invisible or explained:
+
+```
+RETROVAULT_DB_PASS=... RETROVAULT_ADMIN_PASS=... \
+  php bin/install.php --answers install.ini --quiet || exit 1
+```
+
+`RETROVAULT_DB_PASS` and `RETROVAULT_ADMIN_PASS` override `db.pass` and
+`admin.password`. The environment wins over the file because it is the more
+specific of the two — a file is written once, an environment is set per run — and
+because it lets the answer file be templated, committed and hold no secret.
+
+Or hand the whole thing over on standard input, so it never exists as a file:
+
+```
+vault read -field=answers secret/retrovault | php bin/install.php --answers - --quiet
+```
+
+Buffered through a private temporary file that is removed either way, because the
+answers are PHP and `eval()` on something arriving down a pipe is a worse idea
+than the temporary file is.
+
+The answer file holds a database password and an administrator password unless
+the environment supplies them. Delete it when the install is done, along with
+`public/install.php`.
+
 ## 1. Database
 
 ```sql

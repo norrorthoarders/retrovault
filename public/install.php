@@ -14,7 +14,16 @@ declare(strict_types=1);
  * better removed than left lying in a document root.
  */
 
-session_start();
+// Not on the command line. bin/install.php includes this file for the helpers
+// below - pdo_connect(), run_sql_file(), config_php(), the requirements check -
+// and wants none of the wizard. A session there would be a file in /tmp nobody
+// reads, and the early return further down stops before any of the wizard runs.
+// Every function in this file is still defined either way: PHP hoists
+// unconditional top-level declarations when the file is compiled, not when the
+// return is reached.
+if (PHP_SAPI !== 'cli') {
+    session_start();
+}
 error_reporting(E_ALL);
 ini_set('display_errors', '0');
 
@@ -1123,6 +1132,280 @@ function flash_ok(string $msg): void
     echo '<div class="flash flash--ok" style="margin-bottom:1rem">' . h($msg) . '</div>';
 }
 
+
+// ============================================================================
+// The answer file
+//
+// One definition, used by both installers: this file writes it at the end of a
+// wizard run, reads it at the start of one, and bin/install.php installs from it
+// without asking anything.
+//
+// INI rather than PHP. The command line installer alone could have read a PHP
+// file - it already runs whatever is in the checkout - but the wizard accepts
+// one by upload, and `require` on an uploaded file is remote code execution
+// wearing a hat. parse_ini_string() executes nothing, takes comments, and is
+// what a sysadmin expects a preseed file to look like anyway.
+//
+// Credentials are never written. They come out as the placeholders below, and
+// an answer file still carrying one is refused rather than installed with a
+// database user literally called change-database-user-here.
+// ============================================================================
+
+/** What an answer file may say, and what it means when it says nothing. */
+function answers_defaults(): array
+{
+    return [
+        'db'       => ['host' => '127.0.0.1', 'port' => 3306, 'name' => '',
+                       'user' => '', 'pass' => ''],
+        'admin'    => ['username' => '', 'password' => '', 'email' => '',
+                       'display_name' => ''],
+        'instance' => ['name' => 'RetroVault', 'tagline' => '', 'url' => '',
+                       'currency' => 'SEK', 'timezone' => 'Europe/Stockholm',
+                       'trusted_proxies' => ''],
+        'install'  => ['deploy' => 'install', 'erase_uploads' => false,
+                       'templates' => 'remote', 'examples' => false],
+    ];
+}
+
+/**
+ * The fields that are never written down, and what stands in for them.
+ *
+ * Both usernames as well as both passwords. A file that names the database
+ * account and the administrator is a file that has to be handled carefully; one
+ * where every credential is a blank is one that can be committed, templated and
+ * passed around, which is the point of having it.
+ */
+function answers_placeholders(): array
+{
+    return [
+        'db.user'        => 'change-database-user-here',
+        'db.pass'        => 'change-database-password-here',
+        'admin.username' => 'change-admin-username-here',
+        'admin.password' => 'change-admin-password-here',
+    ];
+}
+
+/**
+ * An answer file, from a set of answers.
+ *
+ * Written with the comments, because the person opening it is about to fill in
+ * four blanks and choose between three words for `deploy`, and a bare key with
+ * no explanation is how the wrong one gets chosen.
+ */
+function answers_export(array $v): string
+{
+    $ph = answers_placeholders();
+    $q  = function ($value): string {
+        $value = (string) $value;
+        // Quoted when it could be read as something other than a string: an
+        // address with a semicolon in it, anything with a comma, anything empty.
+        return preg_match('/^[A-Za-z0-9._\/:-]*$/', $value) === 1
+            ? $value
+            : '"' . str_replace('"', '\"', $value) . '"';
+    };
+    $bool = fn($b) => $b ? '1' : '0';
+    $at   = date('j M Y, H:i');
+
+    $lines = [];
+    $lines[] = '; RetroVault install answers, written ' . $at . '.';
+    $lines[] = ';';
+    $lines[] = '; Fill in the four blanks below and this installs without asking anything:';
+    $lines[] = ';';
+    $lines[] = ';     php bin/install.php --answers this-file.ini --dry-run';
+    $lines[] = ';     php bin/install.php --answers this-file.ini';
+    $lines[] = ';';
+    $lines[] = '; The web installer takes it too, on its first page.';
+    $lines[] = ';';
+    $lines[] = '; No password or username was saved. Replace every change-...-here below, or';
+    $lines[] = '; leave them and set RETROVAULT_DB_PASS and RETROVAULT_ADMIN_PASS in the';
+    $lines[] = '; environment instead, which keeps the secrets out of the file for good.';
+    $lines[] = '';
+    $lines[] = '[db]';
+    $lines[] = 'host = ' . $q($v['db']['host'] ?? '127.0.0.1');
+    $lines[] = 'port = ' . (int) ($v['db']['port'] ?? 3306);
+    $lines[] = 'name = ' . $q($v['db']['name'] ?? '');
+    $lines[] = 'user = ' . $ph['db.user'];
+    $lines[] = 'pass = ' . $ph['db.pass'];
+    $lines[] = '';
+    $lines[] = '[admin]';
+    $lines[] = 'username = ' . $ph['admin.username'];
+    $lines[] = 'password = ' . $ph['admin.password'];
+    $lines[] = '; Not a secret, and needed for password resets and mail.';
+    $lines[] = 'email = ' . $q($v['admin']['email'] ?? '');
+    $lines[] = 'display_name = ' . $q($v['admin']['display_name'] ?? '');
+    $lines[] = '';
+    $lines[] = '[instance]';
+    $lines[] = 'name = ' . $q($v['instance']['name'] ?? 'RetroVault');
+    $lines[] = 'tagline = ' . $q($v['instance']['tagline'] ?? '');
+    $lines[] = '; The address clients reach this by. Mail and notifications build';
+    $lines[] = '; links from it; without it they point nowhere.';
+    $lines[] = 'url = ' . $q($v['instance']['url'] ?? '');
+    $lines[] = 'currency = ' . $q($v['instance']['currency'] ?? 'SEK');
+    $lines[] = 'timezone = ' . $q($v['instance']['timezone'] ?? 'Europe/Stockholm');
+    $lines[] = '; Behind a reverse proxy, whose forwarded headers to believe.';
+    $lines[] = 'trusted_proxies = ' . $q($v['instance']['trusted_proxies'] ?? '');
+    $lines[] = '';
+    $lines[] = '[install]';
+    $lines[] = '; install  build the structure in an empty database';
+    $lines[] = '; erase    drop what is there first - destroys the collection';
+    $lines[] = '; keep     leave the database alone, write the configuration only';
+    $lines[] = 'deploy = ' . $q($v['install']['deploy'] ?? 'install');
+    $lines[] = '; With erase, whether the photographs on disk go too.';
+    $lines[] = 'erase_uploads = ' . $bool($v['install']['erase_uploads'] ?? false);
+    $lines[] = '; remote   fetch the published starter data';
+    $lines[] = '; shipped  use the copies in this checkout';
+    $lines[] = '; none     start with an empty filing tree';
+    $lines[] = 'templates = ' . $q($v['install']['templates'] ?? 'remote');
+    $lines[] = '; A handful of catalogue entries to look at.';
+    $lines[] = 'examples = ' . $bool($v['install']['examples'] ?? false);
+    $lines[] = '';
+
+    return implode("\n", $lines);
+}
+
+/**
+ * Reads one. Returns [answers, problems].
+ *
+ * Problems rather than exceptions, because both callers want the whole list: a
+ * provisioning run that fails, is corrected and fails again on the next line is
+ * three round trips where one would do.
+ */
+function answers_parse(string $ini): array
+{
+    $problems = [];
+    $parsed = @parse_ini_string($ini, true, INI_SCANNER_TYPED);
+    if (!is_array($parsed)) {
+        return [answers_defaults(), ['That is not an answer file - it could not be read as INI.']];
+    }
+
+    $out = answers_defaults();
+    foreach ($parsed as $section => $values) {
+        if (!is_array($values)) {
+            $problems[] = 'Line outside any section: ' . (string) $section;
+            continue;
+        }
+        if (!array_key_exists($section, $out)) {
+            $problems[] = 'Unknown section [' . (string) $section . '].';
+            continue;
+        }
+        foreach ($values as $key => $value) {
+            if (!array_key_exists($key, $out[$section])) {
+                $problems[] = 'Unknown setting ' . (string) $section . '.' . (string) $key . '.';
+                continue;
+            }
+            $out[$section][$key] = $value;
+        }
+    }
+
+    // The two passwords from the environment, if it has them, so the file can be
+    // templated and hold nothing secret. The environment wins because it is the
+    // more specific of the two: a file is written once, an environment is set
+    // per run.
+    foreach ([['RETROVAULT_DB_PASS', 'db', 'pass'],
+              ['RETROVAULT_ADMIN_PASS', 'admin', 'password']] as [$var, $group, $field]) {
+        $fromEnv = getenv($var);
+        if ($fromEnv !== false && $fromEnv !== '') {
+            $out[$group][$field] = $fromEnv;
+        }
+    }
+
+    return [$out, $problems];
+}
+
+/**
+ * Everything wrong with a set of answers, at once.
+ *
+ * `$needAdmin` is false when the database is being left alone, because there is
+ * presumably an administrator in it already.
+ */
+function answers_check(array $a, bool $needAdmin = true): array
+{
+    $bad = [];
+
+    // Placeholders first. Installing with a database user called
+    // change-database-user-here fails later and less clearly.
+    foreach (answers_placeholders() as $path => $placeholder) {
+        [$section, $key] = explode('.', $path);
+        if ((string) ($a[$section][$key] ?? '') === $placeholder) {
+            $bad[] = $path . ' still says ' . $placeholder . '.';
+        }
+    }
+
+    foreach (['name', 'user'] as $field) {
+        if (trim((string) $a['db'][$field]) === '') {
+            $bad[] = 'db.' . $field . ' is required.';
+        }
+    }
+    if (!in_array($a['install']['deploy'], ['install', 'erase', 'keep'], true)) {
+        $bad[] = 'install.deploy must be install, erase or keep.';
+    }
+    if (!in_array($a['install']['templates'], ['remote', 'shipped', 'none'], true)) {
+        $bad[] = 'install.templates must be remote, shipped or none.';
+    }
+
+    if ($needAdmin && $a['install']['deploy'] !== 'keep') {
+        if (!preg_match('/^[a-zA-Z0-9._-]{3,60}$/', (string) $a['admin']['username'])) {
+            $bad[] = 'admin.username must be 3-60 characters: letters, digits, dot, dash or underscore.';
+        }
+        // Checked here rather than left to the database, because a ten-character
+        // minimum discovered after the schema has loaded means starting again.
+        if (mb_strlen((string) $a['admin']['password']) < 10) {
+            $bad[] = 'admin.password must be at least 10 characters.';
+        }
+        if (!filter_var((string) $a['admin']['email'], FILTER_VALIDATE_EMAIL)) {
+            $bad[] = 'admin.email must be an address.';
+        }
+    }
+
+    $url = trim((string) $a['instance']['url']);
+    if ($url !== '' && !filter_var($url, FILTER_VALIDATE_URL)) {
+        $bad[] = 'instance.url does not look like an address.';
+    }
+    if (!in_array((string) $a['instance']['timezone'], timezone_identifiers_list(), true)) {
+        $bad[] = 'instance.timezone is not a timezone PHP knows.';
+    }
+    return $bad;
+}
+
+/** The answers this wizard run collected, in the answer file's shape. */
+function answers_from_session(): array
+{
+    return [
+        'db' => [
+            'host' => (string) recall('db_host', '127.0.0.1'),
+            'port' => (int) recall('db_port', 3306),
+            'name' => (string) recall('db_name', ''),
+            // Never read back into the file, but the shape wants them.
+            'user' => '', 'pass' => '',
+        ],
+        'admin' => [
+            'username' => '', 'password' => '',
+            'email'        => (string) recall('admin_email', ''),
+            'display_name' => (string) recall('admin_display_name', ''),
+        ],
+        'instance' => [
+            'name'            => (string) recall('app_name', 'RetroVault'),
+            'tagline'         => (string) recall('app_tagline', ''),
+            'url'             => (string) recall('base_url', ''),
+            'currency'        => (string) recall('currency', 'SEK'),
+            'timezone'        => (string) recall('timezone', 'Europe/Stockholm'),
+            'trusted_proxies' => (string) recall('trusted_proxies', ''),
+        ],
+        'install' => [
+            'deploy'        => (string) recall('deploy_action', 'install'),
+            'erase_uploads' => (bool) recall('erase_uploads', false),
+            'templates'     => (string) recall('templates', 'remote'),
+            'examples'      => (string) recall('examples', '0') === '1',
+        ],
+    ];
+}
+
+// Everything above is a function. Everything below is the wizard, and the
+// command line wants none of it.
+if (PHP_SAPI === 'cli') {
+    return;
+}
+
 // ============================================================================
 // Download the generated configuration
 //
@@ -1130,6 +1413,28 @@ function flash_ok(string $msg): void
 // be kept somewhere safe. Requires answers in the session, so a fresh browser
 // cannot pull someone else's database password out of it.
 // ============================================================================
+
+// The answers, so the next machine does not need the wizard at all.
+//
+// Offered at the end, where somebody has just answered all of it once and is in
+// the best position to know they will be answering it again. Credentials are
+// left as placeholders by answers_export(); nothing secret is in the session by
+// then anyway except the database password, and writing it into a file people
+// download is how it ends up in a ticket.
+if (($_GET['download'] ?? '') === 'answers') {
+    if (recall('db_name') === null) {
+        http_response_code(404);
+        exit('Nothing to write. Work through the installer first.');
+    }
+    $body = answers_export(answers_from_session());
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="retrovault-install.ini"');
+    header('Content-Length: ' . strlen($body));
+    header('Cache-Control: no-store');
+    header('X-Content-Type-Options: nosniff');
+    echo $body;
+    exit;
+}
 
 if (($_GET['download'] ?? '') === 'config') {
     if (recall('db_name') === null || recall('db_host') === null) {
@@ -1223,6 +1528,78 @@ if (($step !== 7)
     exit;
 }
 
+// An answer file, offered on the first page.
+//
+// Presets the whole wizard from a file a previous run wrote, so a second machine
+// is one page and a button rather than seven pages of the same answers. The
+// credentials are the one thing the file does not carry, so those steps are
+// still shown and still have to be filled in - which is the right shape: the
+// tedious part is preset, the secret part is asked for.
+//
+// Parsed, never executed. parse_ini_string() runs nothing, which is the whole
+// reason the format is INI and not PHP - `require` on an uploaded file would
+// hand anybody who can reach an uninstalled instance a shell.
+$presetProblems = [];
+$presetOk = false;
+if ($step === 1 && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preset'])) {
+    check_token();
+
+    $body = '';
+    if (isset($_FILES['answers']) && is_uploaded_file((string) ($_FILES['answers']['tmp_name'] ?? ''))) {
+        // Capped: this is a short text file, and an installer is reachable
+        // before anything is configured.
+        if ((int) $_FILES['answers']['size'] > 64 * 1024) {
+            $presetProblems[] = 'That file is far too large to be an answer file.';
+        } else {
+            $body = (string) file_get_contents((string) $_FILES['answers']['tmp_name']);
+        }
+    } elseif (trim((string) ($_POST['answers_text'] ?? '')) !== '') {
+        $body = (string) $_POST['answers_text'];
+    } else {
+        $presetProblems[] = 'Choose a file, or paste one in.';
+    }
+
+    if ($body !== '' && $presetProblems === []) {
+        [$answers, $presetProblems] = answers_parse($body);
+        if ($presetProblems === []) {
+            remember([
+                'db_host'         => (string) $answers['db']['host'],
+                'db_port'         => (string) (int) $answers['db']['port'],
+                'db_name'         => (string) $answers['db']['name'],
+                'app_name'        => (string) $answers['instance']['name'],
+                'app_tagline'     => (string) $answers['instance']['tagline'],
+                'base_url'        => (string) $answers['instance']['url'],
+                'currency'        => (string) $answers['instance']['currency'],
+                'timezone'        => (string) $answers['instance']['timezone'],
+                'trusted_proxies' => (string) $answers['instance']['trusted_proxies'],
+                'deploy_action'   => (string) $answers['install']['deploy'],
+                'erase_uploads'   => (bool) $answers['install']['erase_uploads'],
+                'templates'       => (string) $answers['install']['templates'],
+                'examples'        => $answers['install']['examples'] ? '1' : '0',
+                'admin_email'        => (string) $answers['admin']['email'],
+                'admin_display_name' => (string) $answers['admin']['display_name'],
+            ]);
+            // Credentials only if the file actually carried them - which it does
+            // when the environment filled the placeholders in, and does not when
+            // somebody downloaded it and has not edited it yet.
+            $creds = [];
+            $ph = answers_placeholders();
+            if ((string) $answers['db']['user'] !== '' && $answers['db']['user'] !== $ph['db.user']) {
+                $creds['db_user'] = (string) $answers['db']['user'];
+            }
+            if ((string) $answers['db']['pass'] !== '' && $answers['db']['pass'] !== $ph['db.pass']) {
+                $creds['db_pass'] = (string) $answers['db']['pass'];
+            }
+            if ((string) $answers['admin']['username'] !== ''
+                && $answers['admin']['username'] !== $ph['admin.username']) {
+                $creds['admin_username'] = (string) $answers['admin']['username'];
+            }
+            if ($creds !== []) { remember($creds); }
+            $presetOk = true;
+        }
+    }
+}
+
 // ---------------------------------------------------------------- 1. Checks
 if ($step === 1) {
     $checks = requirements();
@@ -1299,6 +1676,45 @@ if ($step === 1) {
         <input type="hidden" name="_csrf" value="<?= h(token()) ?>">
         <button class="btn btn--accent" type="submit">Continue to the database</button>
       </form>
+
+      <div class="panel" style="margin-top:1.5rem">
+        <h2 class="panel__title">Done this before?</h2>
+        <?php if ($presetOk): ?>
+          <div class="flash flash--ok">
+            Answers loaded. Every page below is filled in — the usernames and
+            passwords are not, because the file does not carry them.
+          </div>
+        <?php elseif ($presetProblems): ?>
+          <div class="flash flash--error">
+            <strong>That file was not usable:</strong>
+            <ul style="margin:.4rem 0 0;padding-left:1.1rem">
+              <?php foreach (array_slice($presetProblems, 0, 8) as $problem): ?>
+                <li><?= h($problem) ?></li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+        <?php endif; ?>
+        <p style="color:var(--dim);font-size:.9rem;line-height:1.6;margin-top:0">
+          The last page of this installer writes an answer file. Hand one back
+          here and the rest of the wizard arrives filled in — everything except
+          the usernames and passwords, which it deliberately does not carry.
+          The same file installs with no wizard at all:
+          <span class="mono">php bin/install.php --answers …</span>
+        </p>
+        <form method="post" action="?step=1" enctype="multipart/form-data">
+          <input type="hidden" name="_csrf" value="<?= h(token()) ?>">
+          <input type="hidden" name="preset" value="1">
+          <p><input type="file" name="answers" accept=".ini,text/plain"></p>
+          <details>
+            <summary style="cursor:pointer;color:var(--dim);font-size:.85rem">Or paste it</summary>
+            <textarea name="answers_text" rows="8" style="width:100%;margin-top:.5rem"
+                      class="mono" placeholder="[db]&#10;host = 127.0.0.1"></textarea>
+          </details>
+          <p style="margin-top:.6rem">
+            <button class="btn" type="submit">Use these answers</button>
+          </p>
+        </form>
+      </div>
     <?php endif; ?>
     <?php
     foot();
@@ -2326,6 +2742,28 @@ if (!$running) {
       <p style="font-size:.85rem;color:var(--dim);margin-bottom:.4rem">Or from a shell:</p>
       <pre class="cfg">rm <?= h(__FILE__) ?></pre>
     <?php endif; ?>
+  </div>
+
+  <div class="panel" style="margin-top:1rem">
+    <h2 class="panel__title">The next one</h2>
+    <p style="color:var(--dim);font-size:.9rem;line-height:1.6;margin-top:0">
+      Everything just answered, as a file the installer can read back — so the
+      second machine, and the twentieth, need none of these pages.
+      <strong>No username or password is written into it</strong>: those come out
+      as <span class="mono">change-…-here</span> for somebody to fill in, or as
+      <span class="mono">RETROVAULT_DB_PASS</span> and
+      <span class="mono">RETROVAULT_ADMIN_PASS</span> in the environment, which
+      keeps them out of the file for good.
+    </p>
+    <p style="margin-bottom:.4rem">
+      <a class="btn" href="?download=answers">Download install answers</a>
+    </p>
+    <pre class="cfg">php bin/install.php --answers retrovault-install.ini --dry-run
+php bin/install.php --answers retrovault-install.ini --quiet</pre>
+    <p style="color:var(--dim);font-size:.85rem;margin-bottom:0">
+      Or hand it to this page on a fresh machine, on the first step, and press
+      through in one click instead of seven.
+    </p>
   </div>
 
   <div class="panel" style="margin-top:1rem">

@@ -29,7 +29,28 @@ First public release.
 - Six access levels per library: **Library Viewer, Contributor, Editor, Curator, Admin,
   Owner** — from reading to owning, with membership by invitation.
 
+**Installing**
+
+- **`bin/install.php`** installs from an answer file instead of seven pages of questions:
+  `--example` prints one, `--dry-run` checks everything and writes nothing, and the exit status
+  is 0 only if the install finished. It includes the web installer for its helpers rather than
+  keeping a second copy of them to drift. Every complaint about the answers is reported at once.
+- The web installer **writes an answer file** on its last page and **reads one** on its first,
+  so the second machine is one page and a button rather than seven pages of the same answers.
+  No username or password is written into it: those come out as `change-…-here`, and a file
+  still carrying one is refused rather than installed with a database user by that name.
+- The answer file is INI, parsed by `parse_ini_string()` and executed never — the wizard takes
+  one by upload, and `require` on an uploaded file is remote code execution wearing a hat. One
+  definition, in `public/install.php`, used by both installers.
+- `--quiet` now says nothing at all when it works, with the reason on stderr and a non-zero
+  status when it does not. `RETROVAULT_DB_PASS` and `RETROVAULT_ADMIN_PASS` override the two
+  passwords so the answer file can be templated and hold no secret, and `--answers -` reads it
+  from standard input so it need not exist on disk.
+
 **API**
+
+- The API suite covers the settings endpoints: every field kind, the bounds, the all-or-nothing
+  rule on a batch, and that a secret never comes back. 27 assertions to 71.
 
 - `GET`/`PATCH` **`/profile`** and **`/profile/notifications`**: your details, your password, and
   what you want to be told about.

@@ -35,6 +35,28 @@ PHP 8.3 and MariaDB, with no build step and no JavaScript framework.
 3. Open the site in a browser. The installer checks the requirements, writes
    `src/config.local.php`, loads the schema, and offers the starter data for 63 machines.
 
+Or without a browser, which is the right way for the twentieth machine and the only way for
+one that has to come up unattended:
+
+```
+php bin/install.php --example > install.ini      # or download one from the wizard
+php bin/install.php --answers install.ini --dry-run
+php bin/install.php --answers install.ini --quiet
+```
+
+The last page of the web installer writes one of these files from the answers it was just
+given, and its first page reads one back — so the second machine needs neither the wizard nor a
+hand-written file. No username or password is saved into it.
+
+`bin/install.php` reads the answers rather than asking them, and does the same work in the same
+order using the same code. `--dry-run` checks the answers, the server and the database and
+writes nothing. `--quiet` says nothing at all unless something goes wrong, and the exit status
+is 0 only if the install finished — which is what a provisioning script needs and what a web
+page cannot give it. `RETROVAULT_DB_PASS` and `RETROVAULT_ADMIN_PASS` override the two
+passwords, so the answer file can be templated and hold no secret; `--answers -` reads it from
+standard input, so it need not exist on disk at all.
+[docs/INSTALL.md](docs/INSTALL.md) has the full list of what the answer file decides.
+
 Upgrading is `git pull` followed by `php bin/migrate.php up`.
 
 ## Documentation
