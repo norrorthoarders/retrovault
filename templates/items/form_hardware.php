@@ -105,7 +105,14 @@ $platformId = (int) $val('platform_id', 0);
       ?>
       <div class="field field--half">
         <label for="platform_id">Platform</label>
-        <select id="platform_id" name="platform_id" required data-platform-select>
+        <?php
+        // data-vendor so the company can narrow this, and only when a machine is
+        // being added: a machine's maker built the platform, while a card's maker
+        // usually did not - a Phase 5 accelerator goes in a Commodore machine, and
+        // narrowing on the maker would drop the Amiga off the list.
+        ?>
+        <select id="platform_id" name="platform_id" required data-platform-select
+                data-narrow-by-vendor="<?= ($adding ?? 'machine') === 'machine' ? '1' : '' ?>">
           <option value="">Choose…</option>
           <?php
           // This library's machines only. The form files into one library, so offering
@@ -116,6 +123,7 @@ $platformId = (int) $val('platform_id', 0);
               <?php foreach ($class['rows'] as $pl): ?>
                 <option value="<?= (int) $pl['id'] ?>"
                         data-slug="<?= e((string) $pl['slug']) ?>"
+                        data-vendor="<?= (int) ($pl['vendor_id'] ?? 0) ?>"
                         <?= (int) $val('platform_id', 0) === (int) $pl['id'] ? 'selected' : '' ?>>
                   <?= e($pl['name']) ?>
                 </option>

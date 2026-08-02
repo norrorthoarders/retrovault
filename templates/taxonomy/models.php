@@ -97,7 +97,17 @@ $isMachine = (bool) ($machines ?? false);
         //
         // Harmless on a machine, where the box is hidden anyway.
         ?>
-        <select id="m-platform" name="platform_id" data-model-platform>
+        <?php
+        // Narrowed by the company only for a machine.
+        //
+        // A machine's maker is the platform's maker: pick Commodore and the Amiga
+        // is what they made. A peripheral's maker usually is not - the Blizzard
+        // 1230 IV is a Phase 5 card for a Commodore machine - so narrowing there
+        // dropped the Amiga off the list the moment Phase 5 was chosen, and reset
+        // the platform to "not decided" on a model that had one.
+        ?>
+        <select id="m-platform" name="platform_id" data-model-platform
+                data-narrow-by-vendor="<?= !empty($machines) ? '1' : '' ?>">
           <option value="" data-vendor="">Any, or not decided</option>
           <?php foreach ($platforms as $p): ?>
             <option value="<?= (int) $p['id'] ?>"
@@ -108,7 +118,12 @@ $isMachine = (bool) ($machines ?? false);
           <?php endforeach; ?>
         </select>
         <span class="hint">
-          Choosing a manufacturer narrows this to the machines they made.
+          <?php if (!empty($machines)): ?>
+            Choosing a company narrows this to the machines they made.
+          <?php else: ?>
+            Which machine the part is for. Not narrowed by the company: a card is
+            usually made by somebody other than whoever built the machine.
+          <?php endif; ?>
         </span>
       </div>
 

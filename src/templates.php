@@ -746,7 +746,13 @@ function template_sync(bool $remote = true, bool $force = false): array
         }
         [$added, $skipped, , $updated, $failed] = template_apply($name, $rows, $force);
         $summary[$name] = ['label' => $label, 'added' => $added, 'skipped' => $skipped,
-                           'updated' => $updated, 'failed' => count($failed), 'error' => ''];
+                           'updated' => $updated, 'failed' => count($failed), 'error' => '',
+                           // How many rows the file held. Recorded because it is
+                           // the only number that can be compared with what is
+                           // here afterwards - "added 0" is what a sync says
+                           // whether the file matched or the fetch quietly served
+                           // something a year old.
+                           'in_file' => count($rows)];
 
         if ($failed !== []) {
             // Say how many and name the first, which is almost always enough to
@@ -767,6 +773,15 @@ function template_sync(bool $remote = true, bool $force = false): array
 
     set_setting('template_synced_at', date('Y-m-d H:i:s'));
     set_setting('template_synced_from', $remote ? template_source_url() : 'the copies that shipped');
+    // What this run saw, kept so the settings screen can show it beside what is
+    // in the instance now. Without it the only record of a sync is a timestamp,
+    // which says that one happened and nothing about what it did.
+    set_setting('template_sync_report', json_encode([
+        'at'     => date('Y-m-d H:i:s'),
+        'from'   => $remote ? template_source_url() : 'the copies that shipped',
+        'forced' => $force,
+        'files'  => $summary,
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
     if (function_exists('log_server')) {
         log_server('templates.synced', sprintf(

@@ -14,6 +14,7 @@ Base URL: `https://your-host/api/v1`
 - [Response shape](#response-shape)
 - [Errors](#errors)
 - [Endpoints](#endpoints)
+- [Settings](#settings)
 - [Offline sync](#offline-sync)
 - [Caching](#caching)
 - [Client examples](#client-examples)
@@ -462,6 +463,43 @@ refresh on sync.
 `GET /stats` returns the dashboard figures: totals, average rating, spend, year
 range, breakdowns by library, category and decade, and counts of entries missing
 photos, a year or a developer. Useful for a home screen or a widget.
+
+### Settings
+
+Three screens that used to be web only.
+
+`GET /profile` and `PATCH /profile` are your own details. The body names only what
+changes: `display_name`, `email`, or `password` — the last of which also wants
+`current_password`, because holding a valid token and being the account holder are
+not the same thing when a phone is face up on a table. The username is not
+editable here; it is what other people's memberships point at by sight.
+
+`GET /profile/notifications` returns every kind of notice with its label, its
+description, and whether this account wants it in the app and by mail. `explicit`
+is false when the account has never said and is taking the kind's default.
+`PATCH` takes `{"prefs": {"library.invited": {"in_app": true}}}` — naming one kind
+changes that kind, and leaves the rest alone.
+
+`GET /admin/settings` is the instance settings, **described rather than dumped**:
+sections, each holding fields with a `name`, a `kind` (`text`, `url`, `int`,
+`bool`, `select`, `secret`), a label, help, and the current `value`. A `select`
+carries its `options`; an `int` carries `min` and `max`. A `secret` never sends
+its value — only `is_set`, so a form can tell "change it" from "set it".
+
+That shape exists so a client can draw the form without knowing anything about
+RetroVault's settings in advance, and so a setting added to `settings_schema()`
+appears in an app nobody rebuilt.
+
+`PATCH /admin/settings` takes `{"settings": {"smtp_port": 587}}`. Everything is
+checked before anything is written, so a request setting a good host and a bad
+port changes neither, and the refusal names the field:
+
+```json
+{"error":{"code":"validation_failed","message":"Some settings were refused.",
+          "details":{"smtp_port":"smtp_port cannot be above 65535."}}}
+```
+
+Both `/admin/settings` calls need an administrator and a write scope.
 
 ---
 

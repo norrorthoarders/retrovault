@@ -29,6 +29,33 @@ First public release.
 - Six access levels per library: **Library Viewer, Contributor, Editor, Curator, Admin,
   Owner** — from reading to owning, with membership by invitation.
 
+**API**
+
+- `GET`/`PATCH` **`/profile`** and **`/profile/notifications`**: your details, your password, and
+  what you want to be told about.
+- `GET`/`PATCH` **`/admin/settings`**: the instance settings, described rather than dumped — each
+  field carries its kind, its choices and its limits, so a native client can draw the form
+  without knowing the settings in advance, and a setting added later appears in an app nobody
+  rebuilt. Secrets report only whether they are set.
+
+**Instance settings**
+
+- **Starter data** records what each fetch saw. A second table puts what the file held beside
+  what is in the instance now and marks a row where they disagree — the count that was already
+  there answered "what do I have" and never "am I behind".
+- **Force update**, beside Save, resyncs ignoring what is already present. An ordinary fetch
+  skips a slug it recognises, so a correction to a row that shipped wrong could never arrive.
+  Neither touches a library.
+- The log **Test** panel is gone; **Write test log** sits beside Save in Logging, so it saves
+  and then writes rather than testing what was stored last time somebody pressed Save.
+
+**Fixed**
+
+- Choosing a company on a **model or hardware entry** narrows the platform list only when the
+  thing is a machine. A machine's maker built the platform; a peripheral's usually did not — a
+  Phase 5 accelerator goes in a Commodore machine — and narrowing there removed the Amiga from
+  the list and reset the platform on a model that had one.
+
 **Metadata**
 
 - Lookup against **OpenRetro, TheGamesDB, IGDB, the Amiga Hardware Database, the Big Book of

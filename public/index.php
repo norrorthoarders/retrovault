@@ -42,6 +42,7 @@ require APP_ROOT . '/src/migrate.php';
 require APP_ROOT . '/src/images.php';
 require APP_ROOT . '/src/models.php';
 require APP_ROOT . '/src/maintenance.php';
+require APP_ROOT . '/src/settings_schema.php';
 require APP_ROOT . '/src/api.php';
 require APP_ROOT . '/src/controllers/dashboard.php';
 require APP_ROOT . '/src/controllers/items.php';
@@ -54,6 +55,7 @@ require APP_ROOT . '/src/controllers/import.php';
 require APP_ROOT . '/src/controllers/locations.php';
 require APP_ROOT . '/src/controllers/notifications.php';
 require APP_ROOT . '/src/controllers/api.php';
+require APP_ROOT . '/src/controllers/api_admin.php';
 
 date_default_timezone_set((string) config('timezone', 'UTC'));
 
@@ -232,6 +234,15 @@ if (str_starts_with($path, '/api/')) {
         ['POST',   '#^/api/v1/auth/login$#',              fn() => api_login()],
         ['POST',   '#^/api/v1/auth/logout$#',             fn() => api_logout()],
         ['GET',    '#^/api/v1/auth/me$#',                 fn() => api_me()],
+
+        // Your own account, and the instance's - the screens a native client
+        // used to have to send somebody to a browser for.
+        ['GET',    '#^/api/v1/profile$#',                 fn() => api_profile_show()],
+        ['PATCH',  '#^/api/v1/profile$#',                 fn() => api_profile_update()],
+        ['GET',    '#^/api/v1/profile/notifications$#',   fn() => api_notification_prefs_show()],
+        ['PATCH',  '#^/api/v1/profile/notifications$#',   fn() => api_notification_prefs_update()],
+        ['GET',    '#^/api/v1/admin/settings$#',          fn() => api_settings_show()],
+        ['PATCH',  '#^/api/v1/admin/settings$#',          fn() => api_settings_update()],
 
         ['GET',    '#^/api/v1/tokens$#',                  fn() => api_tokens_index()],
         ['POST',   '#^/api/v1/tokens$#',                  fn() => api_tokens_create()],

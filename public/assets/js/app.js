@@ -912,11 +912,12 @@
         // Validating nothing is not a meaningful state to leave ticked.
         if (!on) { certBox.checked = false; }
       }
+      // Nothing to say when encryption is on: the checkbox next to it already
+      // reads "Validate the server certificate", and a sentence telling somebody
+      // when they are allowed to untick it was advice rather than information.
       var hint = certField.querySelector('.hint');
       if (hint) {
-        hint.textContent = on
-          ? 'Untick only for a self-signed or expired certificate on a network you control.'
-          : 'Nothing to validate on an unencrypted connection.';
+        hint.textContent = on ? '' : 'Nothing to validate on an unencrypted connection.';
       }
     };
 
@@ -1510,6 +1511,15 @@
   var vendor   = document.querySelector('[data-model-vendor]');
   var platform = document.querySelector('[data-model-platform]');
   if (!vendor || !platform) { return; }
+
+  // Machines only, and the template decides which this is.
+  //
+  // This used to run for every model. A machine's maker is the platform's maker,
+  // so Commodore narrowing to the Amiga is right. A peripheral's maker is not:
+  // the Blizzard 1230 IV is a Phase 5 card whose platform is Commodore's Amiga,
+  // and choosing Phase 5 removed the Amiga from the list and reset the platform
+  // on a model that had one.
+  if (!platform.dataset.narrowByVendor) { return; }
 
   // Kept because filtering removes options from the DOM, and switching back to
   // "any" has to be able to put them there again.
@@ -2492,4 +2502,91 @@
 
   select.addEventListener('change', apply);
   apply();
+})();
+
+
+/* Company narrows the platform, on the entry form.
+ *
+ * The same rule as the model form and the same limit: only when a machine is
+ * being added. The template says which by setting data-narrow-by-vendor, so this
+ * script does not have to work out what is being filed.
+ *
+ * Rebuilt through optgroups, because this select is grouped by machine class and
+ * flattening it would lose the headings. A group left with no options is dropped
+ * rather than shown empty.
+ *
+ * Ids, not slugs: both selects list this library's own rows, so a platform's
+ * vendor_id is directly the id of a company in the list beside it.
+ *
+ * Without JavaScript every platform is listed, which is the old behaviour and
+ * still correct - this only removes choices that would be wrong. */
+(function () {
+  'use strict';
+
+  var vendor = document.querySelector('[data-vendor-select]');
+  var plat   = document.querySelector('[data-platform-select]');
+  if (!vendor || !plat || !plat.dataset.narrowByVendor) { return; }
+
+  // Kept because filtering removes options from the DOM, and going back to
+  // "choose" has to be able to put them there again.
+  var groups = Array.prototype.map.call(plat.querySelectorAll('optgroup'), function (g) {
+    return {
+      label: g.label,
+      options: Array.prototype.map.call(g.querySelectorAll('option'), function (o) {
+        return { value: o.value, text: o.textContent.trim(),
+                 slug: o.dataset.slug || '', vendor: o.dataset.vendor || '' };
+      })
+    };
+  });
+  var loose = Array.prototype.filter.call(plat.children, function (n) {
+    return n.tagName === 'OPTION';
+  }).map(function (o) {
+    return { value: o.value, text: o.textContent.trim(),
+             slug: o.dataset.slug || '', vendor: o.dataset.vendor || '' };
+  });
+
+  function build(opt) {
+    var el = document.createElement('option');
+    el.value = opt.value;
+    el.textContent = opt.text;
+    if (opt.slug) { el.dataset.slug = opt.slug; }
+    if (opt.vendor) { el.dataset.vendor = opt.vendor; }
+    return el;
+  }
+
+  function narrow() {
+    var want = vendor.value;
+    var keep = plat.value;
+
+    plat.innerHTML = '';
+    // The placeholder always stays: a form that opens with a machine already
+    // chosen for you is a form that guesses.
+    loose.forEach(function (o) { plat.appendChild(build(o)); });
+
+    groups.forEach(function (g) {
+      var wanted = g.options.filter(function (o) {
+        return want === '' || o.vendor === want;
+      });
+      if (wanted.length === 0) { return; }
+      var el = document.createElement('optgroup');
+      el.label = g.label;
+      wanted.forEach(function (o) { el.appendChild(build(o)); });
+      plat.appendChild(el);
+    });
+
+    // Hold the current choice if it survived; otherwise back to the placeholder
+    // rather than silently selecting somebody else's machine.
+    plat.value = Array.prototype.some.call(plat.options, function (o) {
+      return o.value === keep;
+    }) ? keep : '';
+
+    // Everything downstream reads the platform - the model list, the parts list -
+    // so they have to be told it may just have changed underneath them.
+    plat.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  vendor.addEventListener('change', narrow);
+
+  // Not on load. Opening a saved entry would fire the change above and could
+  // reset a platform somebody chose deliberately before this rule existed.
 })();

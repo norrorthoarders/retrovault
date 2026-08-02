@@ -49,7 +49,7 @@
     // an account the users list called unconfirmed and the sign-in page let
     // straight through.
     ?>
-    <div class="field">
+    <div class="field" style="margin-top:1.5rem">
       <label for="registration_approval">Once they have signed up</label>
       <?php $appr = registration_approval(); ?>
       <select id="registration_approval" name="registration_approval">
@@ -256,24 +256,18 @@
       </div>
     </div>
 
+    <?php
+    // The test is in this form rather than in a panel of its own below it.
+    //
+    // It used to be separate, which meant it tested what was stored and the
+    // panel had to carry a sentence telling you to press Save first - a caveat
+    // that exists because of where the button was. In here it saves and then
+    // writes, so what is tested is what is on screen.
+    ?>
     <div class="formactions">
+      <button class="btn" type="submit" name="action" value="test">Write test log</button>
       <button class="btn btn--accent" type="submit">Save</button>
     </div>
-  </form>
-</section>
-
-<section class="panel">
-  <h2 class="panel__title">Test</h2>
-  <p class="lede" style="font-size:.9rem;margin-top:0">
-    Writes one entry and reports what happened to it at each destination
-    separately — "sent" on its own is not a result when there are three places
-    it might have gone. Save first: this tests what is stored, not what is on
-    screen.
-  </p>
-  <form method="post" action="<?= e(url('/admin/settings')) ?>">
-    <?= csrf_field() ?>
-    <input type="hidden" name="section" value="log_test">
-    <button class="btn" type="submit">Write a test entry</button>
   </form>
 </section>
 
@@ -493,12 +487,92 @@
           <?php endforeach; ?>
         </tbody>
       </table>
-      <?php if ($templates['synced_at']): ?>
+      <?php
+      // The second table: what the last fetch saw, against what is here now.
+      //
+      // The table above counts rows in this instance. On its own that answers
+      // "what do I have" and not "am I behind", which is the question somebody
+      // opening this screen actually has. A file holding twenty-one peripherals
+      // while the instance holds four is the whole answer, and neither number
+      // says it alone.
+      ?>
+      <?php $last = $templates['last_sync'] ?? null; ?>
+      <?php if ($last !== null && !empty($last['files'])): ?>
+        <h3 class="subhead">Last synchronisation</h3>
+        <p class="hint" style="margin-top:0">
+          <?= e(date('j M Y, H:i', strtotime((string) $last['at']))) ?>
+          from <span class="mono" style="font-size:.8rem"><?= e((string) $last['from']) ?></span><?php
+            ?><?= !empty($last['forced']) ? ', forced' : '' ?>.
+        </p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>File</th>
+              <th style="text-align:right">In the file</th>
+              <th style="text-align:right">Here now</th>
+              <th style="text-align:right">Added</th>
+              <th style="text-align:right">Corrected</th>
+              <th style="text-align:right">Skipped</th>
+              <th style="text-align:right">Refused</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            // The counts from the table above, by file, so the two can be put
+            // side by side without counting anything twice.
+            $here = [];
+            foreach (($templates['rows'] ?? []) as $r) {
+                $here[$r['file']] = (int) $r['n'];
+            }
+            ?>
+            <?php foreach ($last['files'] as $file => $f): ?>
+              <?php
+              $inFile  = isset($f['in_file']) ? (int) $f['in_file'] : null;
+              $inHere  = $here[$file] ?? null;
+              // Only where both numbers exist and disagree. A file this
+              // instance does not count - the metadata agents are a map, not a
+              // list - has nothing to compare and should not be marked.
+              $differs = $inFile !== null && $inHere !== null && $inFile !== $inHere;
+              ?>
+              <tr>
+                <td>
+                  <span class="mono" style="font-size:.8rem"><?= e((string) $file) ?></span>
+                  <?php if (!empty($f['error'])): ?>
+                    <span class="hint" style="color:var(--bad)"><?= e((string) $f['error']) ?></span>
+                  <?php endif; ?>
+                </td>
+                <td style="text-align:right"><?= $inFile === null ? '—' : $inFile ?></td>
+                <td style="text-align:right<?= $differs ? ';color:var(--bad);font-weight:600' : '' ?>">
+                  <?= $inHere === null ? '—' : $inHere ?>
+                </td>
+                <td style="text-align:right"><?= (int) ($f['added'] ?? 0) ?></td>
+                <td style="text-align:right"><?= (int) ($f['updated'] ?? 0) ?></td>
+                <td style="text-align:right"><?= (int) ($f['skipped'] ?? 0) ?></td>
+                <td style="text-align:right<?= (int) ($f['failed'] ?? 0) > 0 ? ';color:var(--bad)' : '' ?>">
+                  <?= (int) ($f['failed'] ?? 0) ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+        <p class="hint">
+          A row marked in red holds a different number here than the file did.
+          Skipped rows are ones already present: an ordinary fetch leaves those
+          alone, and <strong>Force update</strong> rewrites them, which is how a
+          correction to something that shipped wrong arrives. Neither touches a
+          library — resync the library to copy changes into it.
+        </p>
+      <?php elseif ($templates['synced_at']): ?>
         <p class="hint">Last fetched
-          <?= e(date('j M Y, H:i', strtotime((string) $templates['synced_at']))) ?>.</p>
+          <?= e(date('j M Y, H:i', strtotime((string) $templates['synced_at']))) ?>,
+          before this instance kept a record of what a fetch did.</p>
+      <?php else: ?>
+        <p class="hint">Never fetched. Force update takes what is at the address above.</p>
       <?php endif; ?>
     <?php endif; ?>
-    <div class="formactions"><button class="btn btn--accent" type="submit">Save</button></div>
+    <div class="formactions">
+      <button class="btn" type="submit" name="action" value="force">Force update</button>
+      <button class="btn btn--accent" type="submit">Save</button>
+    </div>
   </form>
 </section>
 

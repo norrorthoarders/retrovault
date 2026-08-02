@@ -73,6 +73,11 @@ function admin_settings_index(): void
             // different things to do something about; a stack of curl detail is
             // neither, and this is a settings screen rather than a log.
             'error'      => setting('template_last_error', ''),
+            // What the last run actually did, per file, so the table can show
+            // the difference between what was fetched and what is here now.
+            // Decoded here rather than in the template: a view should not be
+            // parsing JSON to decide what to draw.
+            'last_sync'  => json_decode((string) setting('template_sync_report', ''), true) ?: null,
         ],
         // Checked when the page is opened, at most once a day.
         //
@@ -123,6 +128,73 @@ function admin_settings_index(): void
                               WHERE mail_state = 'failed' ORDER BY created_at DESC LIMIT 5"),
         ],
     ]);
+}
+
+/**
+ * Write one entry and say what happened to it at each destination.
+ *
+ * Separately, because "sent" on its own is not a result when there are three
+ * places it might have gone: the database, a file, and a syslog host that
+ * answers nothing at all.
+ *
+ * Lifted out of the request handler because two things ask for it now - the
+ * button on the logging form, which saves first so the test is of what is on
+ * screen, and the older `log_test` post, which is kept so a bookmarked form
+ * still works.
+ *
+ * @return array{0: bool, 1: string}  whether anything went wrong, and the sentence
+ */
+function admin_write_test_log(): array
+{
+    log_server('logging.test', 'Test entry, written by hand from the settings page', LOG_NOTICE);
+
+    // Say what happened to each destination separately. "Sent" on its own
+    // is not a result when there are three places it might have gone.
+    $parts = ['written to the server log'];
+
+    if (syslog_enabled()) {
+        $parts[] = sprintf('forwarded to %s:%s over %s — nothing answers a syslog line, so check there',
+                           setting('syslog_host', ''), setting('syslog_port', '514'),
+                           strtoupper((string) setting('syslog_protocol', 'udp')));
+    } else {
+        $parts[] = 'not forwarded, since that is off';
+    }
+
+    $bad = false;
+    if (logfile_enabled()) {
+        $path    = logfile_path();
+        $problem = logfile_problem();
+        $bad     = $problem !== null;
+
+        if ($problem !== null) {
+            $parts[] = 'NOT written to the file: ' . $problem;
+        } else {
+            // Report what is actually on disk afterwards, not that we
+            // tried. clearstatcache() because the write happened in this
+            // same request and PHP would otherwise answer from before it.
+            clearstatcache(true, $path);
+            $size    = is_file($path) ? (int) filesize($path) : null;
+            $parts[] = $size === null
+                ? 'the file ' . $path . ' does not exist afterwards, which should not happen'
+                : sprintf('appended to %s, now %d bytes', $path, $size);
+            $bad = $size === null;
+
+            // The trap that makes a successful write look like a failure:
+            // Apache and php-fpm normally run with systemd's PrivateTmp, so
+            // /tmp inside the web server is not the /tmp you see in a shell.
+            // The file is there; it is just somewhere else.
+            if (str_starts_with($path, '/tmp/')) {
+                $parts[] = 'note that Apache and php-fpm usually run with systemd PrivateTmp, '
+                         . 'so a file under /tmp is written into a private namespace and will not '
+                         . 'be visible from a shell — use a real path such as '
+                         . '/var/log/retrovault/retrovault.log';
+            }
+        }
+    } else {
+        $parts[] = 'not written to a file, since that is off';
+    }
+
+    return [$bad, ucfirst(implode('; ', $parts)) . '.'];
 }
 
 /** The instance defaults, filled in from what each kind ships with. */
@@ -343,62 +415,25 @@ function admin_settings_save(): void
         if ($fileProblem !== null) {
             $problems[] = 'the log file cannot be written: ' . $fileProblem;
         }
+        // The test button is in this form, so it saves and then writes - which
+        // is why the panel it replaced no longer needs its "save first" caveat.
+        if ((string) input('action', '') === 'test') {
+            [$bad, $said] = admin_write_test_log();
+            flash($bad || $problems !== [] ? 'error' : 'ok',
+                  ($problems === [] ? 'Saved. ' : 'Saved, but ' . implode('; and ', $problems) . '. ')
+                  . $said);
+            redirect('/admin/settings', ['tab' => 'security']);
+        }
+
         flash($problems === [] ? 'ok' : 'error',
               $problems === [] ? 'Saved.' : 'Saved, but ' . implode('; and ', $problems) . '.');
         redirect('/admin/settings', ['tab' => 'security']);
     }
 
     if ($section === 'log_test') {
-        log_server('logging.test', 'Test entry, written by hand from the settings page', LOG_NOTICE);
-
-        // Say what happened to each destination separately. "Sent" on its own
-        // is not a result when there are three places it might have gone.
-        $parts = ['written to the server log'];
-
-        if (syslog_enabled()) {
-            $parts[] = sprintf('forwarded to %s:%s over %s — nothing answers a syslog line, so check there',
-                               setting('syslog_host', ''), setting('syslog_port', '514'),
-                               strtoupper((string) setting('syslog_protocol', 'udp')));
-        } else {
-            $parts[] = 'not forwarded, since that is off';
-        }
-
-        $bad = false;
-        if (logfile_enabled()) {
-            $path    = logfile_path();
-            $problem = logfile_problem();
-            $bad     = $problem !== null;
-
-            if ($problem !== null) {
-                $parts[] = 'NOT written to the file: ' . $problem;
-            } else {
-                // Report what is actually on disk afterwards, not that we
-                // tried. clearstatcache() because the write happened in this
-                // same request and PHP would otherwise answer from before it.
-                clearstatcache(true, $path);
-                $size    = is_file($path) ? (int) filesize($path) : null;
-                $parts[] = $size === null
-                    ? 'the file ' . $path . ' does not exist afterwards, which should not happen'
-                    : sprintf('appended to %s, now %d bytes', $path, $size);
-                $bad = $size === null;
-
-                // The trap that makes a successful write look like a failure:
-                // Apache and php-fpm normally run with systemd's PrivateTmp, so
-                // /tmp inside the web server is not the /tmp you see in a shell.
-                // The file is there; it is just somewhere else.
-                if (str_starts_with($path, '/tmp/')) {
-                    $parts[] = 'note that Apache and php-fpm usually run with systemd PrivateTmp, '
-                             . 'so a file under /tmp is written into a private namespace and will not '
-                             . 'be visible from a shell — use a real path such as '
-                             . '/var/log/retrovault/retrovault.log';
-                }
-            }
-        } else {
-            $parts[] = 'not written to a file, since that is off';
-        }
-
-        flash($bad ? 'error' : 'ok', ucfirst(implode('; ', $parts)) . '.');
-        redirect('/admin/settings', ['tab' => 'security']);
+        [$bad, $said] = admin_write_test_log();
+        flash($bad ? 'error' : 'ok', $said);
+        redirect('/admin/settings', ['tab' => 'general']);
     }
 
     if ($section === 'templates') {
@@ -415,6 +450,28 @@ function admin_settings_save(): void
             redirect('/admin/settings', ['tab' => 'general']);
         }
         set_setting('template_source', $url === '' ? null : rtrim($url, '/'));
+
+        // Forced, which is the whole point of the button.
+        //
+        // An ordinary sync skips a slug that is already here, so a correction to
+        // a row that shipped wrong - a maker, a year - could never arrive. Forced
+        // rewrites the template rows it finds. It still touches nobody's library:
+        // template_apply() only ever writes rows with library_id IS NULL.
+        if ((string) input('action', '') === 'force') {
+            [$summary, $errors] = template_sync(true, true);
+            $added   = array_sum(array_column($summary, 'added'));
+            $updated = array_sum(array_column($summary, 'updated'));
+            $failed  = array_sum(array_column($summary, 'failed'));
+            foreach (array_slice($errors, 0, 3) as $problem) {
+                flash('error', $problem);
+            }
+            flash($failed > 0 ? 'error' : 'ok', sprintf(
+                'Fetched: %d added, %d corrected, %d refused. Libraries are untouched;'
+                . ' resync a library to copy the changes into it.',
+                $added, $updated, $failed));
+            redirect('/admin/settings', ['tab' => 'general']);
+        }
+
         flash('ok', $url === ''
             ? 'Cleared. The copies that shipped will be used.'
             : 'Saved. Libraries fetch from there when you resync them.');
