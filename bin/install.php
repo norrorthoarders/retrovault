@@ -270,6 +270,18 @@ function ask_everything(array $a): array
     $a['install']['examples'] = ask_yes('Add a few example entries',
                                         (bool) $a['install']['examples']);
 
+    // Only when it matters. As a non-root user the files come out owned by
+    // whoever is running this, which is usually already right, and a question
+    // about it would be a question with no wrong answer.
+    if (function_exists('posix_geteuid') && posix_geteuid() === 0) {
+        fwrite(STDOUT, "\nWeb server\n");
+        [$guessUser, $guessGroup] = web_server_account();
+        $a['server']['web_user'] = ask('Runs as user', (string) ($a['server']['web_user']
+            ?: ($guessUser ?? '')));
+        $a['server']['web_group'] = ask('and group', (string) ($a['server']['web_group']
+            ?: ($guessGroup ?? $a['server']['web_user'])));
+    }
+
     fwrite(STDOUT, "\nAfterwards\n");
     $a['install']['delete_installer'] = ask_yes('Delete public/install.php when done',
                                                 (bool) $a['install']['delete_installer']);
@@ -502,6 +514,46 @@ if (@file_put_contents(CONFIG_FILE, $config) === false) {
 }
 @chmod(CONFIG_FILE, 0640);
 say('Configuration written to ' . pretty_path(CONFIG_FILE));
+
+// Ownership, because root owns what root writes.
+//
+// The wizard never needs this: it runs as the web server, so the file it writes
+// is already the web server's. Run from a shell as root, the same file is
+// root:root at 0640 - which the web server cannot read, and the symptom is a 503
+// with nothing in any log, because the application never got far enough to write
+// one. That happened, and this is the fix.
+if (function_exists('posix_geteuid') && posix_geteuid() === 0) {
+    [$webUser, $webGroup] = web_server_account((string) $a['server']['web_user'],
+                                               (string) $a['server']['web_group']);
+    if ($webUser === null) {
+        say('WARNING running as root and no web server account was found. '
+          . pretty_path(CONFIG_FILE) . ' is owned by root and the server will not '
+          . 'read it - set web_user in the [server] section, or chown it by hand');
+    } else {
+        $group = $webGroup ?? $webUser;
+        if (@chown(CONFIG_FILE, $webUser) && @chgrp(CONFIG_FILE, $group)) {
+            say('Configuration owned by ' . $webUser . ':' . $group);
+        } else {
+            say('WARNING could not change the owner of ' . pretty_path(CONFIG_FILE)
+              . ' - the web server will not be able to read it');
+        }
+
+        // The one directory the application writes to. Everything else is fine
+        // owned by root and readable, which is what docs/INSTALL.md says.
+        $uploads = APP_DIR . '/public/uploads';
+        if (is_dir($uploads)) {
+            $ok = @chown($uploads, $webUser) && @chgrp($uploads, $group);
+            @chmod($uploads, 0775);
+            foreach ((array) @scandir($uploads) as $entry) {
+                if ($entry === '.' || $entry === '..') { continue; }
+                @chown($uploads . '/' . $entry, $webUser);
+                @chgrp($uploads . '/' . $entry, $group);
+            }
+            say($ok ? 'Uploads directory owned by ' . $webUser . ':' . $group
+                    : 'WARNING could not change the owner of ' . pretty_path($uploads));
+        }
+    }
+}
 
 // ---------------------------------------------------------------------------
 // 4. The application, which can boot now

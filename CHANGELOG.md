@@ -31,6 +31,12 @@ First public release.
 
 **Installing**
 
+- **Fixed: a command line install as root left files the web server could not read.** The
+  wizard runs as the web server and never had the problem; a shell does not, so
+  `src/config.local.php` came out `root:root` at 0640 and the site answered 503 with nothing in
+  any log. `bin/install.php` now sets the owner of the configuration and of `public/uploads`
+  when it is root, taking the account from the new `[server]` section or looking for `wwwrun`,
+  `www-data`, `apache`, `nginx` and `http`.
 - **`bin/install.php --interactive`** asks the questions instead of needing a file, checking
   each answer as it is given and not echoing passwords. `--save-answers` writes the result out
   afterwards, so a machine done by hand can install the next one unattended.

@@ -772,6 +772,10 @@ function answers_defaults(): array
         'instance' => ['name' => 'RetroVault', 'tagline' => '', 'url' => '',
                        'currency' => 'SEK', 'timezone' => 'Europe/Stockholm',
                        'trusted_proxies' => ''],
+        // Only the command line installer reads these, and only when it runs as
+        // root: the wizard already runs as the web server, so what it writes is
+        // owned by the right account without anybody having to say so.
+        'server'   => ['web_user' => '', 'web_group' => ''],
         'install'  => ['deploy' => 'install', 'erase_uploads' => false,
                        'force_erase' => false, 'delete_installer' => false,
                        'sign_in' => false,
@@ -856,6 +860,14 @@ function answers_export(array $v): string
     $lines[] = 'timezone = ' . $q($v['instance']['timezone'] ?? 'Europe/Stockholm');
     $lines[] = '; Behind a reverse proxy, whose forwarded headers to believe.';
     $lines[] = 'trusted_proxies = ' . $q($v['instance']['trusted_proxies'] ?? '');
+    $lines[] = '';
+    $lines[] = '[server]';
+    $lines[] = '; Who the web server runs as. Used by bin/install.php when it is run';
+    $lines[] = '; as root, because root owns what root writes - and a configuration';
+    $lines[] = '; file the web server cannot read is a 503 with nothing in the log.';
+    $lines[] = '; Left blank it looks for wwwrun, www-data, apache, nginx and http.';
+    $lines[] = 'web_user = ' . $q($v['server']['web_user'] ?? '');
+    $lines[] = 'web_group = ' . $q($v['server']['web_group'] ?? '');
     $lines[] = '';
     $lines[] = '[install]';
     $lines[] = '; install  build the structure in an empty database';
@@ -1007,4 +1019,49 @@ function answers_check(array $a, bool $needAdmin = true): array
         $bad[] = 'instance.timezone is not a timezone PHP knows.';
     }
     return $bad;
+}
+
+/**
+ * Who the web server runs as, if this is a machine where that matters.
+ *
+ * Only interesting to the command line installer, and only when it is root: it
+ * writes src/config.local.php at 0640, and 0640 owned by root is a file the web
+ * server cannot read - which surfaces as a 503 with nothing in any log, because
+ * the application never got far enough to write one.
+ *
+ * Returns [user, group], either of which may be null when nothing was found. The
+ * names are the conventional ones per distribution, in the order they are worth
+ * trying: SUSE, Debian, RHEL, then the two web servers that sometimes run as
+ * themselves.
+ *
+ * @return array{0: ?string, 1: ?string}
+ */
+function web_server_account(string $wantUser = '', string $wantGroup = ''): array
+{
+    $exists = function (string $name, bool $group): bool {
+        if ($name === '') { return false; }
+        if ($group && function_exists('posix_getgrnam')) { return posix_getgrnam($name) !== false; }
+        if (!$group && function_exists('posix_getpwnam')) { return posix_getpwnam($name) !== false; }
+        // Without the posix extension, read the files it would have read.
+        $file = $group ? '/etc/group' : '/etc/passwd';
+        $body = @file_get_contents($file);
+        return is_string($body)
+            && preg_match('/^' . preg_quote($name, '/') . ':/m', $body) === 1;
+    };
+
+    // Said outright in the answer file, which wins: a machine can have more than
+    // one of these accounts and only the operator knows which is serving.
+    if ($wantUser !== '') {
+        $group = $wantGroup !== '' ? $wantGroup : $wantUser;
+        return [$exists($wantUser, false) ? $wantUser : null,
+                $exists($group, true) ? $group : null];
+    }
+
+    foreach ([['wwwrun', 'www'], ['www-data', 'www-data'], ['apache', 'apache'],
+              ['nginx', 'nginx'], ['http', 'http']] as [$user, $group]) {
+        if ($exists($user, false)) {
+            return [$user, $exists($group, true) ? $group : null];
+        }
+    }
+    return [null, null];
 }

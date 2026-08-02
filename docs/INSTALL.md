@@ -176,7 +176,25 @@ What it holds:
 | `[db]` | host, port, name, user, pass |
 | `[admin]` | username, password, email, display name |
 | `[instance]` | name, tagline, public address, currency, timezone, trusted proxies |
+| `[server]` | `web_user`, `web_group` — who the web server runs as |
 | `[install]` | `deploy` (`install` on an empty database, `erase` to drop what is there first, `keep` to write the configuration only), `erase_uploads`, `force_erase`, `templates` (`remote`, `shipped` or `none`), `examples`, `delete_installer`, `sign_in` |
+
+### Running it as root
+
+The wizard runs *as* the web server, so everything it writes is already owned by
+the right account. A shell does not: run as root, `src/config.local.php` comes out
+`root:root` at 0640, the web server cannot read it, and the symptom is a **503
+with nothing in any log** — the application never got far enough to write one.
+
+So when `bin/install.php` is root it sets the owner itself. It uses `web_user`
+and `web_group` from the `[server]` section if they are given, and otherwise
+looks for `wwwrun`, `www-data`, `apache`, `nginx` and `http` in that order. Two
+things change hands: the configuration file, and `public/uploads`, which is the
+one directory the application writes to. Everything else stays owned by root and
+readable, which is what section 2 above asks for.
+
+If no account is found it says so rather than leaving you to discover it as a
+503.
 
 ### After the work
 
