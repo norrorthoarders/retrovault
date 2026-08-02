@@ -140,6 +140,12 @@ INI rather than PHP, because the wizard accepts one by upload and `require` on a
 uploaded file is remote code execution wearing a hat. `parse_ini_string()`
 executes nothing.
 
+The wizard offers it twice: on the **review** step, beside *Install now*, where
+you are looking at the whole plan and deciding it is right — and again on the
+last page. Either way it is streamed to the browser and never written to disk; an
+installer that left a file of answers in the document root would have undone the
+reason none of the credentials are in it.
+
 **No username or password is ever written into it.** Those come out as
 `change-database-user-here` and friends, and a file still carrying one is refused
 rather than installed with a database user by that name. Fill them in, or leave

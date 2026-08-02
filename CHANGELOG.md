@@ -35,7 +35,8 @@ First public release.
   `--example` prints one, `--dry-run` checks everything and writes nothing, and the exit status
   is 0 only if the install finished. It includes the web installer for its helpers rather than
   keeping a second copy of them to drift. Every complaint about the answers is reported at once.
-- The web installer **writes an answer file** on its last page and **reads one** on its first,
+- The web installer **writes an answer file** on its review step and again at the end, and
+  **reads one** on its first,
   so the second machine is one page and a drop rather than seven pages of the same answers. The
   file is checked as it lands. A complete one — credentials included, database answering —
   skips the remaining five pages and installs on the spot; one with the credentials still blank

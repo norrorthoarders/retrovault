@@ -2805,6 +2805,21 @@ if (!$running) {
       ?>
       <input type="hidden" name="apply" value="1">
       <button class="btn btn--accent" type="submit">Install now</button>
+      <?php
+      // Offered here as well as at the end, because here is where somebody is
+      // looking at the whole plan and deciding it is right - which is the moment
+      // they are best placed to keep it for the next machine, and the last
+      // moment before the answers stop being a plan and start being an instance.
+      //
+      // Streamed by ?download=answers straight from the session. Nothing is
+      // written to disk: an installer that leaves a file full of answers in the
+      // document root has undone the reason none of the credentials are in it.
+      ?>
+      <a class="btn" href="?download=answers" style="margin-left:.4rem">Download answers</a>
+      <span class="hint" style="display:block;margin-top:.5rem;color:var(--dim);font-size:.85rem">
+        Installs another machine with no questions asked. No username or password
+        is written into it.
+      </span>
     </form>
     <?php
     // Something to look at while it works.
