@@ -36,7 +36,12 @@ First public release.
   is 0 only if the install finished. It includes the web installer for its helpers rather than
   keeping a second copy of them to drift. Every complaint about the answers is reported at once.
 - The web installer **writes an answer file** on its last page and **reads one** on its first,
-  so the second machine is one page and a button rather than seven pages of the same answers.
+  so the second machine is one page and a drop rather than seven pages of the same answers. The
+  file is checked as it lands. A complete one — credentials included, database answering —
+  skips the remaining five pages and installs on the spot; one with the credentials still blank
+  fills the pages in instead; an unusable one is marked and the ordinary installation carries
+  on underneath. `deploy = erase` never runs by itself: a drag is not consent to drop every
+  table.
   No username or password is written into it: those come out as `change-…-here`, and a file
   still carrying one is refused rather than installed with a database user by that name.
 - The answer file is INI, parsed by `parse_ini_string()` and executed never — the wizard takes

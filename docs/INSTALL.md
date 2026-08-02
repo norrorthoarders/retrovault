@@ -156,10 +156,25 @@ What it holds:
 
 ### Handing one back to the wizard
 
-The first page of the web installer takes an answer file too, by upload or paste.
-Every page after it arrives filled in — except the usernames and passwords, which
-the file does not carry, so those are still asked for. The tedious part is preset
-and the secret part is not, which is the right way round.
+The first page of the web installer has a drop zone at the top. Drop a file on it
+and it is checked at once, and one of three things happens.
+
+**A complete file installs on the spot.** If it carries the database account and
+the administrator as well as everything else, and the database answers, the
+remaining five pages have nothing left to ask — so they are skipped and the
+install runs. One drag, no prompts.
+
+**A file with the credentials still blank fills the pages in** and the wizard
+carries on from there, asking only for what the file does not hold.
+
+**An unusable file is marked as such** and the ordinary installation continues
+below it. Dropping another checks that one instead; a file that was already
+accepted is not thrown away by a fumbled second drop.
+
+One exception, deliberately: `deploy = erase` never runs by itself. It destroys a
+collection, and a browser is not the command line — there somebody typed the
+command and meant it, here a file was dragged onto a page. The answers load, the
+review page is shown, and the button is yours to press.
 
 `--dry-run` checks the answers, the server and the database connection and writes
 nothing. Worth running first in provisioning, because the alternative is finding

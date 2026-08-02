@@ -1596,6 +1596,61 @@ if ($step === 1 && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preset
             }
             if ($creds !== []) { remember($creds); }
             $presetOk = true;
+
+            // Complete, so there is nothing left to ask.
+            //
+            // answers_check() passing means the file carried the database
+            // account and the administrator as well as everything else - so the
+            // remaining five pages would each be shown filled in for somebody to
+            // press past. Skip them.
+            $ready = answers_check($answers);
+            if ($ready === []) {
+                // Reachable, checked here rather than asserted. Setting
+                // db_reached on the strength of a file saying so would send
+                // somebody to the review page to be told at the last moment
+                // that the database was never there.
+                try {
+                    pdo_connect((string) $answers['db']['host'], (int) $answers['db']['port'],
+                                (string) $answers['db']['name'], (string) $answers['db']['user'],
+                                (string) $answers['db']['pass']);
+                    $reached = true;
+                } catch (Throwable $e) {
+                    $reached = false;
+                    $presetOk = false;
+                    $presetProblems[] = 'Could not connect to that database: ' . $e->getMessage();
+                }
+
+                if ($reached) {
+                    remember([
+                        'db_user'      => (string) $answers['db']['user'],
+                        'db_pass'      => (string) $answers['db']['pass'],
+                        'db_reached'   => true,
+                        'settings_set' => true,
+                        'admin_username' => (string) $answers['admin']['username'],
+                        // Hashed now, so the session never holds a password in
+                        // plain text - the same thing step 5 does with the one
+                        // it is typed into.
+                        'admin_hash'   => password_hash((string) $answers['admin']['password'],
+                                                        PASSWORD_DEFAULT),
+                        'admin_set'    => true,
+                    ]);
+
+                    // Anything but a plain install stops at the review page.
+                    //
+                    // "erase" destroys a collection, and a browser is not the
+                    // command line: there, somebody typed the command and meant
+                    // it. Here a file was dragged onto a page, and a drag is not
+                    // consent to drop every table. So the answers are loaded,
+                    // the summary is shown, and the button is theirs to press.
+                    if ((string) $answers['install']['deploy'] === 'install') {
+                        $step = 7;
+                        $_POST['apply'] = '1';
+                    } else {
+                        header('Location: ?step=7');
+                        exit;
+                    }
+                }
+            }
         }
     }
 }
@@ -1642,10 +1697,103 @@ if ($step === 1) {
         Installing <?= h(installer_version()) ?> — up to date.
       </div>
     <?php endif; ?>
-    <p class="lede">
-      Everything this server needs, and what to do about anything missing.
-      Warnings are safe to ignore for now; failures are not.
-    </p>
+      <?php
+      // A file, dropped. Nothing else.
+      //
+      // No AJAX: the form posts, the server validates with the same code the
+      // command line installer uses, and the page comes back in one of three
+      // states. A JSON endpoint would have been a second way to reach one
+      // answer, and the reload costs nothing on a page that is already a form.
+      //
+      // The button below is for a browser with no JavaScript, and is hidden by
+      // the script the moment there is any - so dropping or choosing a file
+      // submits on its own, which is what makes this a drop zone rather than a
+      // form with a fancy border.
+      ?>
+      <form method="post" action="?step=1" enctype="multipart/form-data"
+            id="rv-preset" style="margin:1.2rem 0">
+        <input type="hidden" name="_csrf" value="<?= h(token()) ?>">
+        <input type="hidden" name="preset" value="1">
+
+        <div id="rv-drop" style="
+             border:2px dashed <?= $presetOk ? 'var(--ok,#3ba55d)' : ($presetProblems ? 'var(--bad,#e05260)' : 'var(--line,#3a3a4a)') ?>;
+             border-radius:10px;padding:1.4rem;text-align:center;cursor:pointer;
+             transition:border-color .15s, background .15s">
+          <strong style="font-size:.95rem">No-prompt installation configuration</strong>
+
+          <?php if ($presetOk): ?>
+            <div style="margin-top:.5rem;color:var(--ok,#3ba55d);font-size:.9rem">
+              Accepted — the pages below are filled in.
+            </div>
+          <?php elseif ($presetProblems): ?>
+            <?php
+            // A fumbled second drop does not throw away a file that was already
+            // accepted, so the line has to say which of the two happened.
+            ?>
+            <div style="margin-top:.5rem;color:var(--bad,#e05260);font-size:.9rem">
+              <?= recall('db_name') !== null
+                  ? 'Not usable — the earlier one still stands.'
+                  : 'Not usable. Carry on below, or drop another.' ?>
+            </div>
+            <ul style="margin:.5rem 0 0;padding:0;list-style:none;
+                       color:var(--dim);font-size:.8rem;line-height:1.5">
+              <?php foreach (array_slice($presetProblems, 0, 4) as $problem): ?>
+                <li><?= h($problem) ?></li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endif; ?>
+
+          <input type="file" name="answers" id="rv-file" accept=".ini,text/plain"
+                 style="display:block;margin:.7rem auto 0">
+          <noscript><button class="btn" type="submit" style="margin-top:.6rem">Use it</button></noscript>
+        </div>
+      </form>
+
+      <script>
+      (function () {
+        var form = document.getElementById('rv-preset');
+        var zone = document.getElementById('rv-drop');
+        var file = document.getElementById('rv-file');
+        if (!form || !zone || !file) { return; }
+
+        // The input is only visible without JavaScript. With it, the whole box
+        // is the target.
+        file.style.display = 'none';
+
+        var idle = zone.style.borderColor;
+        function lit(on) { zone.style.borderColor = on ? '#7aa2f7' : idle; }
+
+        zone.addEventListener('click', function () { file.click(); });
+        file.addEventListener('change', function () {
+          if (file.files.length) { form.submit(); }
+        });
+
+        ['dragenter', 'dragover'].forEach(function (e) {
+          zone.addEventListener(e, function (ev) { ev.preventDefault(); lit(true); });
+        });
+        ['dragleave', 'dragend'].forEach(function (e) {
+          zone.addEventListener(e, function () { lit(false); });
+        });
+        zone.addEventListener('drop', function (ev) {
+          ev.preventDefault();
+          lit(false);
+          if (!ev.dataTransfer || !ev.dataTransfer.files.length) { return; }
+          // Assigned to the input rather than sent by fetch, so the request is
+          // the same multipart post the button makes and the server has one
+          // path to handle.
+          file.files = ev.dataTransfer.files;
+          form.submit();
+        });
+
+        // Dropping anywhere else should not make the browser navigate to the
+        // file, which is what it does by default and looks like a crash.
+        ['dragover', 'drop'].forEach(function (e) {
+          document.addEventListener(e, function (ev) {
+            if (!zone.contains(ev.target)) { ev.preventDefault(); }
+          });
+        });
+      })();
+      </script>
 
     <div class="panel">
       <table class="req">
@@ -1677,44 +1825,6 @@ if ($step === 1) {
         <button class="btn btn--accent" type="submit">Continue to the database</button>
       </form>
 
-      <div class="panel" style="margin-top:1.5rem">
-        <h2 class="panel__title">Done this before?</h2>
-        <?php if ($presetOk): ?>
-          <div class="flash flash--ok">
-            Answers loaded. Every page below is filled in — the usernames and
-            passwords are not, because the file does not carry them.
-          </div>
-        <?php elseif ($presetProblems): ?>
-          <div class="flash flash--error">
-            <strong>That file was not usable:</strong>
-            <ul style="margin:.4rem 0 0;padding-left:1.1rem">
-              <?php foreach (array_slice($presetProblems, 0, 8) as $problem): ?>
-                <li><?= h($problem) ?></li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
-        <?php endif; ?>
-        <p style="color:var(--dim);font-size:.9rem;line-height:1.6;margin-top:0">
-          The last page of this installer writes an answer file. Hand one back
-          here and the rest of the wizard arrives filled in — everything except
-          the usernames and passwords, which it deliberately does not carry.
-          The same file installs with no wizard at all:
-          <span class="mono">php bin/install.php --answers …</span>
-        </p>
-        <form method="post" action="?step=1" enctype="multipart/form-data">
-          <input type="hidden" name="_csrf" value="<?= h(token()) ?>">
-          <input type="hidden" name="preset" value="1">
-          <p><input type="file" name="answers" accept=".ini,text/plain"></p>
-          <details>
-            <summary style="cursor:pointer;color:var(--dim);font-size:.85rem">Or paste it</summary>
-            <textarea name="answers_text" rows="8" style="width:100%;margin-top:.5rem"
-                      class="mono" placeholder="[db]&#10;host = 127.0.0.1"></textarea>
-          </details>
-          <p style="margin-top:.6rem">
-            <button class="btn" type="submit">Use these answers</button>
-          </p>
-        </form>
-      </div>
     <?php endif; ?>
     <?php
     foot();
