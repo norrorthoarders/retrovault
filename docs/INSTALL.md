@@ -158,7 +158,21 @@ What it holds:
 | `[db]` | host, port, name, user, pass |
 | `[admin]` | username, password, email, display name |
 | `[instance]` | name, tagline, public address, currency, timezone, trusted proxies |
-| `[install]` | `deploy` (`install` on an empty database, `erase` to drop what is there first, `keep` to write the configuration only), `erase_uploads`, `force_erase`, `templates` (`remote`, `shipped` or `none`), `examples` |
+| `[install]` | `deploy` (`install` on an empty database, `erase` to drop what is there first, `keep` to write the configuration only), `erase_uploads`, `force_erase`, `templates` (`remote`, `shipped` or `none`), `examples`, `delete_installer`, `sign_in` |
+
+### After the work
+
+Two more, both off unless a file turns them on — somebody walking the wizard by
+hand has not agreed to either.
+
+`delete_installer = 1` removes `public/install.php` once the install has
+finished, in both installers. A file that refuses to run is still better removed
+than left in a document root. It will not delete itself if the configuration was
+not written, since that would leave no way back in except a shell.
+
+`sign_in = 1` signs the browser in as the administrator just created and goes
+straight to the instance rather than stopping on the installer's last page. The
+command line installer has no browser to sign in and ignores it.
 
 ### Handing one back to the wizard
 

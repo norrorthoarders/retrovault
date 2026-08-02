@@ -381,5 +381,20 @@ if ($a['install']['deploy'] !== 'keep') {
     }
 }
 
-note('Done. Delete ' . pretty_path(APP_DIR . '/public/install.php') . ' and the answer file.');
+// sign_in is ignored here on purpose: there is no browser at a shell prompt to
+// be signed in to anything, and pretending otherwise would mean writing a
+// session file nobody holds a cookie for.
+if ($a['install']['delete_installer']) {
+    $wizard = APP_DIR . '/public/install.php';
+    if (!is_file($wizard)) {
+        say('Installer already gone');
+    } elseif (@unlink($wizard)) {
+        say('Installer deleted');
+    } else {
+        say('WARNING could not delete ' . pretty_path($wizard) . ' - remove it by hand');
+    }
+    note('Done. Delete the answer file.');
+} else {
+    note('Done. Delete ' . pretty_path(APP_DIR . '/public/install.php') . ' and the answer file.');
+}
 exit(0);

@@ -44,6 +44,9 @@ First public release.
   on underneath. `deploy = erase` stops to be confirmed unless the file also says
   `force_erase = 1`, in both installers: an answer file gets copied between machines, and the
   collection it destroys is whichever database it happens to name that day.
+- `delete_installer` removes `public/install.php` when the install finishes, and `sign_in`
+  lands the browser on the instance already signed in as the administrator it just made. Both
+  off unless the answer file turns them on.
 - A section written twice in an answer file is refused. `parse_ini_string()` keeps the last and
   discards the first without a word, which for `deploy` is the difference between rebuilding a
   database and leaving it alone.

@@ -1163,7 +1163,8 @@ function answers_defaults(): array
                        'currency' => 'SEK', 'timezone' => 'Europe/Stockholm',
                        'trusted_proxies' => ''],
         'install'  => ['deploy' => 'install', 'erase_uploads' => false,
-                       'force_erase' => false,
+                       'force_erase' => false, 'delete_installer' => false,
+                       'sign_in' => false,
                        'templates' => 'remote', 'examples' => false],
     ];
 }
@@ -1263,6 +1264,13 @@ function answers_export(array $v): string
     $lines[] = 'templates = ' . $q($v['install']['templates'] ?? 'remote');
     $lines[] = '; A handful of catalogue entries to look at.';
     $lines[] = 'examples = ' . $bool($v['install']['examples'] ?? false);
+    $lines[] = '; Delete public/install.php once the install has finished. A file that';
+    $lines[] = '; refuses to run is still better removed than left in a document root.';
+    $lines[] = 'delete_installer = ' . $bool($v['install']['delete_installer'] ?? false);
+    $lines[] = '; Sign in as the administrator just created and go straight to the';
+    $lines[] = '; instance, instead of stopping on the installer\'s last page.';
+    $lines[] = '; The command line installer has no browser to sign in, and ignores it.';
+    $lines[] = 'sign_in = ' . $bool($v['install']['sign_in'] ?? false);
     $lines[] = '';
 
     return implode("\n", $lines);
@@ -1602,6 +1610,11 @@ if ($step === 1 && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preset
                 'examples'        => $answers['install']['examples'] ? '1' : '0',
                 'admin_email'        => (string) $answers['admin']['email'],
                 'admin_display_name' => (string) $answers['admin']['display_name'],
+                // What to do once the work is finished. Only ever set from a
+                // file: somebody walking the wizard by hand has not agreed to
+                // have the installer deleted underneath them.
+                'delete_installer'   => (bool) $answers['install']['delete_installer'],
+                'sign_in'            => (bool) $answers['install']['sign_in'],
             ]);
             // Credentials only if the file actually carried them - which it does
             // when the environment filled the placeholders in, and does not when
@@ -1673,6 +1686,24 @@ if ($step === 1 && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preset
                     // and the button is theirs to press.
                     $erasing = (string) $answers['install']['deploy'] === 'erase';
                     if (!$erasing || (bool) $answers['install']['force_erase']) {
+                        if ((bool) $answers['install']['sign_in']) {
+                            // Move to the session the application uses, now,
+                            // while a cookie can still be sent.
+                            //
+                            // The installer runs under PHP's default session
+                            // name and the application under "retrovault", so
+                            // writing user_id into this one would be writing it
+                            // somewhere the application never looks. Switching
+                            // sends a Set-Cookie, and the install below streams
+                            // its output for a minute or more - by the time it
+                            // finishes, headers are long gone. So it happens
+                            // here, before a byte is written.
+                            $carry = $_SESSION['install'] ?? [];
+                            session_write_close();
+                            session_name('retrovault');
+                            session_start();
+                            $_SESSION['install'] = $carry;
+                        }
                         $step = 7;
                         $_POST['apply'] = '1';
                     } else {
@@ -2739,11 +2770,48 @@ if ($running) {
             }
         }
 
-        remember(['applied' => true, 'apply_log' => $log]);
+        remember(['applied' => true, 'apply_log' => $log, 'installed_admin' => $adminId]);
         install_tick('done');
         $applied = true;
     } catch (Throwable $e) {
         $error = $e->getMessage();
+    }
+}
+
+// What the answer file asked for after the work, if it asked for anything.
+//
+// Both are off unless a file said otherwise: somebody who walked the wizard by
+// hand has not agreed to have the installer deleted underneath them, and has not
+// asked to be signed in either.
+$autoSignIn = false;
+if ($applied && $running) {
+    if ((bool) recall('delete_installer')) {
+        // Only with a configuration to run from, the same rule the button on
+        // this page follows: deleting the installer while the application cannot
+        // start leaves no way back in except a shell.
+        if (config_exists() && @unlink(__FILE__)) {
+            $log[] = 'Installer deleted';
+            unset($_SESSION['install']['wizard_active']);
+        } else {
+            $log[] = 'The installer could not delete itself - remove '
+                   . pretty_path(__FILE__) . ' by hand';
+        }
+    }
+
+    if ((bool) recall('sign_in')) {
+        $who = (int) recall('installed_admin', 0);
+        if ($who > 0) {
+            // Set directly rather than through attempt_login(): there is no
+            // password here to check, only the hash that was just written, and
+            // the account was created by this request a second ago.
+            //
+            // No session_regenerate_id() either. The page has been streaming
+            // since before the first table was made, so the cookie header it
+            // wants to send is long gone - and warning about that on the success
+            // page would be the only thing anybody read.
+            $_SESSION['user_id'] = $who;
+            $autoSignIn = true;
+        }
     }
 }
 
@@ -2890,28 +2958,6 @@ if (!$running) {
   </div>
 
   <div class="panel" style="margin-top:1rem">
-    <h2 class="panel__title">The next one</h2>
-    <p style="color:var(--dim);font-size:.9rem;line-height:1.6;margin-top:0">
-      Everything just answered, as a file the installer can read back — so the
-      second machine, and the twentieth, need none of these pages.
-      <strong>No username or password is written into it</strong>: those come out
-      as <span class="mono">change-…-here</span> for somebody to fill in, or as
-      <span class="mono">RETROVAULT_DB_PASS</span> and
-      <span class="mono">RETROVAULT_ADMIN_PASS</span> in the environment, which
-      keeps them out of the file for good.
-    </p>
-    <p style="margin-bottom:.4rem">
-      <a class="btn" href="?download=answers">Download install answers</a>
-    </p>
-    <pre class="cfg">php bin/install.php --answers retrovault-install.ini --dry-run
-php bin/install.php --answers retrovault-install.ini --quiet</pre>
-    <p style="color:var(--dim);font-size:.85rem;margin-bottom:0">
-      Or hand it to this page on a fresh machine, on the first step, and press
-      through in one click instead of seven.
-    </p>
-  </div>
-
-  <div class="panel" style="margin-top:1rem">
     <h2 class="panel__title">Worth doing next</h2>
     <ul style="margin:0;padding-left:1.1rem;color:var(--dim);font-size:.9rem;line-height:1.7">
       <li>Tighten the config file: <span class="mono">chmod 640 <?= h(pretty_path(CONFIG_FILE)) ?></span>, group-owned by the web server group.</li>
@@ -2935,6 +2981,17 @@ php bin/install.php --answers retrovault-install.ini --quiet</pre>
 // Close the result wrapper and let the progress panel finish before showing it.
 if ($running) {
     echo '</div><script>window.__rvDone&&__rvDone();</script>';
+}
+
+// Signed in already, so there is nothing on this page worth reading.
+//
+// In the markup rather than a Location header: this response began streaming
+// before the first table was created, so the headers went out minutes ago. The
+// delay lets the progress list finish drawing, because a page that vanishes
+// mid-animation reads as a crash rather than as success.
+if ($autoSignIn) {
+    echo '<script>setTimeout(function(){location.href="./";},1200);</script>'
+       . '<noscript><meta http-equiv="refresh" content="2;url=./"></noscript>';
 }
 
 foot();
