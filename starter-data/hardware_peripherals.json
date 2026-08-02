@@ -2,27 +2,38 @@
     {
         "slug": "blizzard-1230-iv",
         "name": "Blizzard 1230 IV",
-        "maker": "commodore",
+        "maker": "phase-5",
         "platform": "amiga",
         "type": "accelerator",
-        "year": 1994,
+        "year": 1995,
         "fits": "A1200 only",
         "interface": "trap",
-        "notes": "An example of an expansion card. Its type is what makes it a part rather than a machine.",
+        "notes": "The example this file was started with, and a real card: the trapdoor accelerator most A1200s ended up with. Its type is what makes it a part rather than a machine.",
         "sort_order": 50,
         "fields": [
             {
                 "label": "Processor",
-                "value": "68030 @ 50 MHz"
+                "value": "68030 @ 50 MHz PGA, optional 68882 @ 50 MHz"
             },
             {
                 "label": "Memory",
-                "value": "one 72-pin SIMM, up to 128 MB"
+                "value": "one 72-pin SIMM socket, up to 128 MB at 60-70 ns"
             },
             {
                 "label": "Provides",
-                "value": "optional SCSI-II module"
+                "value": "optional Fast SCSI 2 DMA controller, the Blizzard SCSI Kit IV"
+            },
+            {
+                "label": "Interface",
+                "value": "Trapdoor slot"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 17"
             }
+        ],
+        "fits_models": [
+            "amiga-1200"
         ]
     },
     {
@@ -155,5 +166,726 @@
                 "value": "https://mntre.com/media/ZZ9000_info_md/2019-08-09-ZZ9000-resources.html"
             }
         ]
+    },
+    {
+        "slug": "blizzard-turbo-memory",
+        "name": "Blizzard Turbo Memory",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "accelerator",
+        "year": 1992,
+        "fits": "A500 and A2000, into the 68000 socket",
+        "interface": "68k",
+        "notes": "A 68000 at twice the clock with room for up to 8 MB beside it, and optional static RAM to hold a copy of Kickstart. It replaces the processor rather than sitting on a bus, so it predates the question of which slot a card belongs in.",
+        "fits_models": [
+            "amiga-500",
+            "amiga-2000"
+        ],
+        "fields": [
+            {
+                "label": "Processor",
+                "value": "68000 @ 14 MHz"
+            },
+            {
+                "label": "Memory",
+                "value": "sixteen DIP sockets, 1 to 8 MB of 256k×4 or 1M×4 at 100 ns"
+            },
+            {
+                "label": "Shadow RAM",
+                "value": "optional 512 kB SRAM for Kickstart remapping"
+            },
+            {
+                "label": "Interface",
+                "value": "68000 socket"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 1,2"
+            },
+            {
+                "label": "Notes",
+                "value": "software switchable 7 MHz fallback mode"
+            }
+        ],
+        "sort_order": 100
+    },
+    {
+        "slug": "blizzard-1220-4",
+        "name": "Blizzard 1220/4",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "accelerator",
+        "year": 1994,
+        "fits": "A1200 only",
+        "interface": "trap",
+        "notes": "The cheap end of the Blizzard trapdoor range: memory soldered on rather than socketed, which is why it is 4 MB and stays 4 MB unless the Add-4 board turns up with it.",
+        "fits_models": [
+            "amiga-1200"
+        ],
+        "fields": [
+            {
+                "label": "Processor",
+                "value": "68EC020 @ 28 MHz QFP"
+            },
+            {
+                "label": "Coprocessor",
+                "value": "optional PLCC FPU, 68881 @ 14 MHz to 68882 @ 40 MHz"
+            },
+            {
+                "label": "Memory",
+                "value": "4 MB of 70 ns RAM on board, eight DIP chips"
+            },
+            {
+                "label": "Expansion",
+                "value": "8 MB with the Add-4 board"
+            },
+            {
+                "label": "Interface",
+                "value": "Trapdoor slot"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 6,12"
+            }
+        ],
+        "sort_order": 110
+    },
+    {
+        "slug": "blizzard-1260",
+        "name": "Blizzard 1240 ERC & 1260",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "accelerator",
+        "year": 1995,
+        "fits": "A1200 only",
+        "interface": "trap",
+        "notes": "One board, two names, by which processor was fitted. The 68040s were pulled from used Macs, which is what ERC means. Known not to get on with the Squirrel SCSI interface or with Mikronik towers.",
+        "fits_models": [
+            "amiga-1200"
+        ],
+        "fields": [
+            {
+                "label": "Processor",
+                "value": "68040 @ 40 MHz (ERC) or 68060 @ 50 MHz"
+            },
+            {
+                "label": "Memory",
+                "value": "one 72-pin SIMM socket, up to 64 MB at 70 ns or faster"
+            },
+            {
+                "label": "Memory note",
+                "value": "single-sided SIMMs only; size detected automatically"
+            },
+            {
+                "label": "Provides",
+                "value": "optional Fast SCSI 2 DMA controller, the Blizzard SCSI Kit IV"
+            },
+            {
+                "label": "Interface",
+                "value": "Trapdoor slot"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 17"
+            }
+        ],
+        "sort_order": 120
+    },
+    {
+        "slug": "blizzard-ppc",
+        "name": "Blizzard PPC / 603e & 603e Plus",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "accelerator",
+        "year": 1998,
+        "fits": "A1200 only",
+        "interface": "trap",
+        "notes": "Two processors on one trapdoor board, the 68k running the operating system and the PowerPC running whatever was written for it. The Plus is the one with SCSI. It can be ordered with an empty socket for a 680x0 already owned.",
+        "fits_models": [
+            "amiga-1200"
+        ],
+        "fields": [
+            {
+                "label": "Processor",
+                "value": "PowerPC 603e @ 160, 200 or 240 MHz"
+            },
+            {
+                "label": "Companion processor",
+                "value": "68LC040 or 68040 @ 25 MHz, or 68060 @ 50 MHz"
+            },
+            {
+                "label": "Memory",
+                "value": "two 72-pin SIMM sockets, up to 256 MB at 60 or 70 ns"
+            },
+            {
+                "label": "Provides",
+                "value": "Fast SCSI 2 on the 603e Plus, NCR 53C710"
+            },
+            {
+                "label": "Expansion",
+                "value": "slot for the BlizzardVision PPC"
+            },
+            {
+                "label": "Interface",
+                "value": "Trapdoor slot"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 110"
+            }
+        ],
+        "sort_order": 130
+    },
+    {
+        "slug": "blizzard-2060",
+        "name": "Blizzard 2040 ERC & 2060",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "accelerator",
+        "year": 1996,
+        "fits": "A2000, into the CPU slot",
+        "interface": "cpu",
+        "notes": "The A2000 counterpart to the 1240/1260, with SCSI fitted rather than optional and four SIMM sockets instead of one. The 68000 fallback works only on a rev. B A2000.",
+        "fits_models": [
+            "amiga-2000"
+        ],
+        "fields": [
+            {
+                "label": "Processor",
+                "value": "68040 @ 40 MHz (ERC) or 68060 @ 50 MHz"
+            },
+            {
+                "label": "Memory",
+                "value": "four 72-pin SIMM sockets, up to 128 MB at 70 ns or faster"
+            },
+            {
+                "label": "Provides",
+                "value": "Fast SCSI 2 DMA, 7 MB/s asynchronous and 10 MB/s synchronous"
+            },
+            {
+                "label": "Interface",
+                "value": "CPU slot"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 24"
+            }
+        ],
+        "sort_order": 140
+    },
+    {
+        "slug": "blizzard-4030",
+        "name": "Blizzard 4030",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "accelerator",
+        "year": 1994,
+        "fits": "A3000 and A4000, into the CPU slot",
+        "interface": "cpu",
+        "notes": "No memory of its own at all, which sounds like a shortcoming and is the point: it reaches motherboard RAM faster than the A3640 it replaces.",
+        "fits_models": [
+            "amiga-3000",
+            "amiga-4000"
+        ],
+        "fields": [
+            {
+                "label": "Processor",
+                "value": "68030 @ 40 or 50 MHz PGA"
+            },
+            {
+                "label": "Coprocessor",
+                "value": "optional PGA FPU up to 68882 @ 50 MHz"
+            },
+            {
+                "label": "Memory",
+                "value": "none - it uses the motherboard's"
+            },
+            {
+                "label": "Interface",
+                "value": "CPU slot"
+            }
+        ],
+        "sort_order": 150
+    },
+    {
+        "slug": "cyberstorm-mk2",
+        "name": "CyberStorm Mk2",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "accelerator",
+        "year": 1996,
+        "fits": "A3000 and A4000, into the CPU slot",
+        "interface": "cpu",
+        "notes": "Sorts any mixture of SIMM sizes into one contiguous block in hardware, so no jumpers decide where memory lands. The optional SCSI module will not fit mechanically in a desktop A3000, and needs an INT2 signal the A3000 CPU slot does not carry.",
+        "fits_models": [
+            "amiga-3000",
+            "amiga-4000"
+        ],
+        "fields": [
+            {
+                "label": "Processor",
+                "value": "68040 @ 40 MHz or 68060 @ 50 MHz"
+            },
+            {
+                "label": "Memory",
+                "value": "four 72-pin SIMM sockets, up to 128 MB at 70 ns"
+            },
+            {
+                "label": "Memory note",
+                "value": "burst access; 70 ns even with 60 ns SIMMs"
+            },
+            {
+                "label": "Provides",
+                "value": "optional CyberSCSI Mk2, Fast SCSI 2 on a FAS216"
+            },
+            {
+                "label": "Firmware",
+                "value": "Flash ROM, updatable"
+            },
+            {
+                "label": "Interface",
+                "value": "CPU slot"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 25"
+            }
+        ],
+        "sort_order": 160
+    },
+    {
+        "slug": "cyberstorm-ppc",
+        "name": "CyberStorm PPC",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "accelerator",
+        "year": 1997,
+        "fits": "A3000 and A4000, into the CPU slot",
+        "interface": "cpu",
+        "notes": "Particular about how its SIMMs are organised internally: eleven address lines mean 2048×2048 arrays work and 1024×4096 arrays give half the RAM they should. The datasheet settles it, not the size printed on the module.",
+        "fits_models": [
+            "amiga-3000",
+            "amiga-4000"
+        ],
+        "fields": [
+            {
+                "label": "Processor",
+                "value": "PowerPC 604e @ 150, 180, 200 or 233 MHz"
+            },
+            {
+                "label": "Companion processor",
+                "value": "68040 @ 25 MHz or 68060 @ 50 MHz"
+            },
+            {
+                "label": "Memory",
+                "value": "four 72-pin SIMM sockets, up to 128 MB at 60-70 ns, 64-bit interleaved"
+            },
+            {
+                "label": "Provides",
+                "value": "Ultra Wide SCSI, NCR 53C770"
+            },
+            {
+                "label": "Expansion",
+                "value": "slot for the CyberVision PPC"
+            },
+            {
+                "label": "Interface",
+                "value": "CPU slot"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 100"
+            }
+        ],
+        "sort_order": 170
+    },
+    {
+        "slug": "cyberstorm-mk3",
+        "name": "CyberStorm Mk3",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "accelerator",
+        "year": 1998,
+        "fits": "A3000 and A4000, into the CPU slot",
+        "interface": "cpu",
+        "notes": "The CyberStorm PPC board with the PowerPC parts left off, and no way to add them later. The SCSI controller wants an INT2 signal the A3000 CPU slot does not have.",
+        "fits_models": [
+            "amiga-3000",
+            "amiga-4000"
+        ],
+        "fields": [
+            {
+                "label": "Processor",
+                "value": "68060 @ 50 MHz, or an empty socket for one already owned"
+            },
+            {
+                "label": "Memory",
+                "value": "four 72-pin SIMM sockets, up to 128 MB at 60-70 ns"
+            },
+            {
+                "label": "Memory note",
+                "value": "64-bit interleaved access, up to 68 MB/s"
+            },
+            {
+                "label": "Provides",
+                "value": "Ultra Wide SCSI, NCR 53C770"
+            },
+            {
+                "label": "Expansion",
+                "value": "slot for the CyberVision PPC"
+            },
+            {
+                "label": "Interface",
+                "value": "CPU slot"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 100"
+            }
+        ],
+        "sort_order": 180
+    },
+    {
+        "slug": "cybervision-64",
+        "name": "CyberVision 64",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "graphics-card",
+        "year": 1995,
+        "fits": "A3000 and A4000",
+        "interface": "z3",
+        "notes": "A VL bus chip on a Zorro III card rather than a PCI one behind a bridge, which is how it reaches video memory as quickly as it does. The Roxxler converts planar to chunky.",
+        "fits_models": [
+            "amiga-3000",
+            "amiga-4000"
+        ],
+        "fields": [
+            {
+                "label": "Graphics chip",
+                "value": "S3 Trio64 86C764, VL bus"
+            },
+            {
+                "label": "Memory",
+                "value": "2 or 4 MB of 64-bit 70 ns DRAM"
+            },
+            {
+                "label": "Screen modes",
+                "value": "1600×1200×8 and 1024×768×24 non-interlaced"
+            },
+            {
+                "label": "Connector",
+                "value": "HD15 VGA, with video passthrough"
+            },
+            {
+                "label": "Drivers",
+                "value": "CyberGraphX 2, 3 and 4; Picasso96"
+            },
+            {
+                "label": "Interface",
+                "value": "Zorro III"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 34"
+            }
+        ],
+        "sort_order": 190
+    },
+    {
+        "slug": "cybervision-64-3d",
+        "name": "CyberVision 64/3D",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "graphics-card",
+        "year": 1996,
+        "fits": "Zorro II in an A2000, Zorro III in an A3000 or A4000",
+        "interface": "z2",
+        "notes": "Senses which Zorro it is in rather than being ordered for one, which is why it fits both. The scandoubler is a separate module in line with it on the video slot; an MPEG decoder was also offered.",
+        "fits_models": [
+            "amiga-2000",
+            "amiga-3000",
+            "amiga-4000"
+        ],
+        "fields": [
+            {
+                "label": "Graphics chip",
+                "value": "S3 ViRGE on a 25 MHz local PCI bus"
+            },
+            {
+                "label": "Memory",
+                "value": "4 MB of 64-bit page mode DRAM, eight chips"
+            },
+            {
+                "label": "Screen modes",
+                "value": "1600×1200×8 non-interlaced, 1280×1024×16, 1024×768×24"
+            },
+            {
+                "label": "Options",
+                "value": "monitor switch and scandoubler module; MPEG decoder module"
+            },
+            {
+                "label": "Connector",
+                "value": "HD15"
+            },
+            {
+                "label": "Interface",
+                "value": "Zorro II or Zorro III, sensed automatically"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 67 on Zorro II, 8512 / 50 on Zorro III"
+            }
+        ],
+        "sort_order": 200
+    },
+    {
+        "slug": "blizzardvision-ppc",
+        "name": "BlizzardVision PPC",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "graphics-card",
+        "year": 1998,
+        "fits": "the Blizzard PPC, in an A1200",
+        "interface": "misc",
+        "notes": "Not a slot card. It mounts on the Blizzard PPC and needs that board reflashed first. No passthrough and no monitor switch, so the native modes need a way of their own to reach the screen.",
+        "fits_models": [
+            "amiga-1200"
+        ],
+        "fields": [
+            {
+                "label": "Graphics chip",
+                "value": "3Dlabs / Texas Instruments Permedia 2, 230 MHz RAMDAC"
+            },
+            {
+                "label": "Memory",
+                "value": "8 MB of 64-bit SGRAM"
+            },
+            {
+                "label": "Screen modes",
+                "value": "1280×1024×24 and 1600×1200×16, non-interlaced only"
+            },
+            {
+                "label": "Connector",
+                "value": "15-pin DSUB, plus 4-pin for shutter glasses"
+            },
+            {
+                "label": "Drivers",
+                "value": "CyberGraphX 3 and 4.1"
+            },
+            {
+                "label": "Interface",
+                "value": "expansion slot on the Blizzard PPC"
+            }
+        ],
+        "sort_order": 210
+    },
+    {
+        "slug": "cybervision-ppc",
+        "name": "CyberVision PPC",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "graphics-card",
+        "year": 1998,
+        "fits": "the CyberStorm PPC or Mk3, in an A3000 or A4000",
+        "interface": "misc",
+        "notes": "The BlizzardVision PPC for the big machines, and the same rule applies: it mounts on the processor board, not in a slot. A rev 1.0 board mounts only vertically, which leaves no room for it in an A3000.",
+        "fits_models": [
+            "amiga-3000",
+            "amiga-4000"
+        ],
+        "fields": [
+            {
+                "label": "Graphics chip",
+                "value": "3Dlabs / Texas Instruments Permedia 2, 230 MHz RAMDAC"
+            },
+            {
+                "label": "Memory",
+                "value": "8 MB of 64-bit SGRAM"
+            },
+            {
+                "label": "Screen modes",
+                "value": "1280×1024×32 and 1600×1200×24, non-interlaced only"
+            },
+            {
+                "label": "Connector",
+                "value": "15-pin DSUB, plus 3-pin mini DIN on rev 1.1"
+            },
+            {
+                "label": "Interface",
+                "value": "expansion slot on the CyberStorm PPC or Mk3"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 68"
+            }
+        ],
+        "sort_order": 220
+    },
+    {
+        "slug": "fastlane-z3",
+        "name": "Fastlane Z3",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "disk-controller",
+        "year": 1993,
+        "fits": "A3000 and A4000",
+        "interface": "z3",
+        "notes": "SCSI and a large amount of memory on one Zorro III card. Sixteen 30-pin sockets, filled four at a time in matching sizes. Works even with a Buster rev. 09.",
+        "fits_models": [
+            "amiga-3000",
+            "amiga-4000"
+        ],
+        "fields": [
+            {
+                "label": "Controller",
+                "value": "Fast SCSI 2 on a FAS216, 32-bit FIFO, interrupt-driven DMA"
+            },
+            {
+                "label": "Transfer",
+                "value": "7 MB/s asynchronous, 10 MB/s synchronous"
+            },
+            {
+                "label": "Memory",
+                "value": "sixteen 30-pin SIMM sockets, 64 or 256 MB at 60-100 ns"
+            },
+            {
+                "label": "Connectors",
+                "value": "internal 50-pin, external 50-pin Centronics"
+            },
+            {
+                "label": "Firmware",
+                "value": "autoboot ROM, z3scsi.device"
+            },
+            {
+                "label": "Interface",
+                "value": "Zorro III"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "8512 / 10,11"
+            }
+        ],
+        "sort_order": 230
+    },
+    {
+        "slug": "blizzard-scsi-kit-iv",
+        "name": "Blizzard SCSI Kit IV",
+        "maker": "phase-5",
+        "platform": "amiga",
+        "type": "disk-controller",
+        "year": 1996,
+        "fits": "the Blizzard 1230 IV and 1240/1260",
+        "interface": "misc",
+        "notes": "The optional SCSI module those two boards are described as taking. It carries a second SIMM socket, so fitting it adds memory as well as disks.",
+        "fits_models": [
+            "amiga-1200"
+        ],
+        "fields": [
+            {
+                "label": "Controller",
+                "value": "Fast SCSI 2 DMA on a Qlogic FAS216"
+            },
+            {
+                "label": "Transfer",
+                "value": "7 MB/s asynchronous, 10 MB/s synchronous"
+            },
+            {
+                "label": "Memory",
+                "value": "one further 72-pin SIMM socket, up to 128 MB"
+            },
+            {
+                "label": "Connector",
+                "value": "external DB25 female"
+            },
+            {
+                "label": "Interface",
+                "value": "expansion connector on the host accelerator"
+            }
+        ],
+        "sort_order": 240
+    },
+    {
+        "slug": "a2091",
+        "name": "Commodore A2091",
+        "maker": "commodore",
+        "platform": "amiga",
+        "type": "disk-controller",
+        "year": 1991,
+        "fits": "A2000, A3000 and A4000",
+        "interface": "z2",
+        "notes": "The SCSI card an A2000HD shipped with, and later found in machines it suits badly: it cannot DMA into 32-bit fast RAM, so in an A4000 the driver falls back to programmed I/O and the card crawls. There is an XT IDE controller on it whose connectors were never fitted.",
+        "fits_models": [
+            "amiga-2000",
+            "amiga-3000",
+            "amiga-4000"
+        ],
+        "fields": [
+            {
+                "label": "Controller",
+                "value": "Western Digital 33C93, with the A3000's DMAC for transfers"
+            },
+            {
+                "label": "Memory",
+                "value": "sixteen DIP sockets, 0.5, 1 or 2 MB of 256k×4 at 120 ns"
+            },
+            {
+                "label": "Connectors",
+                "value": "internal 50-pin, external DB25; room for a 3.5\" disk on the card"
+            },
+            {
+                "label": "Firmware",
+                "value": "16 kB autoboot ROM; Kickstart 1.3 or later, rev 7.0 for 68040 machines"
+            },
+            {
+                "label": "Interface",
+                "value": "Zorro II"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "514 / 2,3,10"
+            }
+        ],
+        "sort_order": 250
+    },
+    {
+        "slug": "a590",
+        "name": "Commodore A590",
+        "maker": "commodore",
+        "platform": "amiga",
+        "type": "disk-controller",
+        "year": 1989,
+        "fits": "A500, on the side expansion port",
+        "interface": "side",
+        "notes": "The A2091 design in a box beside the A500, with its own power supply. Both SCSI and XT IDE work at once. No passthrough on the expansion port, so it is the last thing on that side of the machine.",
+        "fits_models": [
+            "amiga-500"
+        ],
+        "fields": [
+            {
+                "label": "Controller",
+                "value": "Western Digital 33C93 DMA SCSI, plus 8-bit XT IDE"
+            },
+            {
+                "label": "Memory",
+                "value": "sixteen DIP sockets, 0.5, 1 or 2 MB of 256k×4 at 120 ns"
+            },
+            {
+                "label": "Connectors",
+                "value": "internal 50-pin SCSI, internal 40-pin XT IDE, external DB25"
+            },
+            {
+                "label": "Power",
+                "value": "its own supply, switched on with the A500"
+            },
+            {
+                "label": "Interface",
+                "value": "Side expansion port"
+            },
+            {
+                "label": "Autoconfig ID",
+                "value": "514 / 2,3,10"
+            }
+        ],
+        "sort_order": 260
     }
 ]
