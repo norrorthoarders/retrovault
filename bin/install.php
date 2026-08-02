@@ -32,8 +32,13 @@ if (PHP_SAPI !== 'cli') {
 
 define('APP_ROOT', dirname(__DIR__));
 
-// The wizard, for its helpers. It returns before running anything on the CLI.
-require APP_ROOT . '/public/install.php';
+// The shared half, which is not the wizard.
+//
+// This used to require public/install.php, which worked until an answer file
+// said `delete_installer = 1` - and then the wizard deleted itself and took the
+// command line installer's helpers with it. src/installer.php is not something
+// anything deletes.
+require APP_ROOT . '/src/installer.php';
 
 // ---------------------------------------------------------------------------
 // Saying things
@@ -115,6 +120,163 @@ function refuse(array $problems, string $where): never
     exit(1);
 }
 
+
+// ---------------------------------------------------------------------------
+// Asking, when there is no file
+// ---------------------------------------------------------------------------
+
+/**
+ * One question, with what it will use if the answer is nothing.
+ *
+ * Validated here rather than at the end. A run that asks fifteen questions and
+ * then reports that the third was a bad address has wasted the other twelve.
+ */
+function ask(string $label, string $default = '', ?callable $ok = null): string
+{
+    while (true) {
+        fwrite(STDOUT, '  ' . $label . ($default !== '' ? " [$default]" : '') . ': ');
+        $line = fgets(STDIN);
+        if ($line === false) { stop('Standard input closed.'); }
+        $value = trim($line);
+        if ($value === '') { $value = $default; }
+        if ($ok === null) { return $value; }
+        $why = $ok($value);
+        if ($why === null) { return $value; }
+        fwrite(STDOUT, '    ' . $why . "\n");
+    }
+}
+
+/** One of a set, by name. */
+function ask_choice(string $label, array $choices, string $default): string
+{
+    return ask($label . ' (' . implode('/', $choices) . ')', $default,
+        fn($v) => in_array($v, $choices, true)
+            ? null : 'One of: ' . implode(', ', $choices) . '.');
+}
+
+function ask_yes(string $label, bool $default = false): bool
+{
+    return ask_choice($label, ['yes', 'no'], $default ? 'yes' : 'no') === 'yes';
+}
+
+/**
+ * A password, without echoing it and typed twice.
+ *
+ * `stty -echo` because PHP has no portable way to do this. Where stty is missing
+ * the question is still asked, and warns that it will be visible - which is
+ * better than refusing to install over it.
+ */
+function ask_secret(string $label): string
+{
+    $hidden = @shell_exec('command -v stty') !== null && @shell_exec('command -v stty') !== '';
+    if (!$hidden) {
+        fwrite(STDOUT, "  (stty is missing, so this will be visible as you type)\n");
+    }
+
+    while (true) {
+        fwrite(STDOUT, '  ' . $label . ': ');
+        if ($hidden) { @shell_exec('stty -echo'); }
+        $first = trim((string) fgets(STDIN));
+        if ($hidden) { @shell_exec('stty echo'); fwrite(STDOUT, "\n"); }
+
+        if (mb_strlen($first) < 10) {
+            fwrite(STDOUT, "    At least ten characters.\n");
+            continue;
+        }
+
+        fwrite(STDOUT, '  ' . $label . ' again: ');
+        if ($hidden) { @shell_exec('stty -echo'); }
+        $again = trim((string) fgets(STDIN));
+        if ($hidden) { @shell_exec('stty echo'); fwrite(STDOUT, "\n"); }
+
+        if ($first !== $again) {
+            fwrite(STDOUT, "    Those two do not match.\n");
+            continue;
+        }
+        return $first;
+    }
+}
+
+/**
+ * The whole questionnaire, seeded with whatever is already known.
+ *
+ * `$a` starts as the defaults, or as an answer file if one was given - so
+ * `--answers half-filled.ini --interactive` asks about the gaps and offers the
+ * rest for confirmation, which is the useful case rather than an edge one.
+ */
+function ask_everything(array $a): array
+{
+    if (!stream_isatty(STDIN)) {
+        stop('--interactive needs a terminal to ask questions at. '
+           . 'Use --answers with a file when there is not one.');
+    }
+
+    note('Nothing is written until the end, and it says what it will do first.');
+
+    fwrite(STDOUT, "Database\n");
+    $a['db']['host'] = ask('Host', (string) $a['db']['host']);
+    $a['db']['port'] = (int) ask('Port', (string) $a['db']['port'],
+        fn($v) => preg_match('/^\d+$/', $v) && (int) $v > 0 && (int) $v < 65536
+            ? null : 'A port number.');
+    $a['db']['name'] = ask('Database', (string) $a['db']['name'],
+        fn($v) => $v === '' ? 'Required.' : null);
+    $a['db']['user'] = ask('User', (string) $a['db']['user'],
+        fn($v) => $v === '' ? 'Required.' : null);
+    // Once, and not confirmed: this one already exists and is being repeated,
+    // not chosen, so a typo shows up immediately as a refused connection.
+    fwrite(STDOUT, '  Password: ');
+    @shell_exec('stty -echo');
+    $a['db']['pass'] = trim((string) fgets(STDIN));
+    @shell_exec('stty echo');
+    fwrite(STDOUT, "\n");
+
+    fwrite(STDOUT, "\nWhat to do with it\n");
+    $a['install']['deploy'] = ask_choice('Deploy', ['install', 'erase', 'keep'],
+                                         (string) $a['install']['deploy']);
+    if ($a['install']['deploy'] === 'erase') {
+        // Asked outright, because this is the answer that destroys something.
+        $a['install']['force_erase'] = ask_yes('Erase really destroys the collection - continue', false);
+        if (!$a['install']['force_erase']) {
+            stop('Nothing was changed.');
+        }
+        $a['install']['erase_uploads'] = ask_yes('Delete the uploaded photographs too', false);
+    }
+
+    if ($a['install']['deploy'] !== 'keep') {
+        fwrite(STDOUT, "\nAdministrator\n");
+        $a['admin']['username'] = ask('Username', (string) $a['admin']['username'],
+            fn($v) => preg_match('/^[a-zA-Z0-9._-]{3,60}$/', $v)
+                ? null : '3-60 characters: letters, digits, dot, dash, underscore.');
+        $a['admin']['password'] = ask_secret('Password');
+        $a['admin']['email'] = ask('Email', (string) $a['admin']['email'],
+            fn($v) => filter_var($v, FILTER_VALIDATE_EMAIL) ? null : 'An address.');
+        $a['admin']['display_name'] = ask('Display name', (string) ($a['admin']['display_name']
+            ?: $a['admin']['username']));
+    }
+
+    fwrite(STDOUT, "\nThis instance\n");
+    $a['instance']['name'] = ask('Name', (string) $a['instance']['name']);
+    $a['instance']['url'] = ask('Public address', (string) $a['instance']['url'],
+        fn($v) => $v === '' || filter_var($v, FILTER_VALIDATE_URL)
+            ? null : 'An address, or nothing.');
+    $a['instance']['timezone'] = ask('Timezone', (string) $a['instance']['timezone'],
+        fn($v) => in_array($v, timezone_identifiers_list(), true)
+            ? null : 'Not a timezone PHP knows.');
+    $a['instance']['currency'] = ask('Currency', (string) $a['instance']['currency']);
+
+    fwrite(STDOUT, "\nStarter data\n");
+    $a['install']['templates'] = ask_choice('Templates', ['remote', 'shipped', 'none'],
+                                            (string) $a['install']['templates']);
+    $a['install']['examples'] = ask_yes('Add a few example entries',
+                                        (bool) $a['install']['examples']);
+
+    fwrite(STDOUT, "\nAfterwards\n");
+    $a['install']['delete_installer'] = ask_yes('Delete public/install.php when done',
+                                                (bool) $a['install']['delete_installer']);
+
+    return $a;
+}
+
 // ---------------------------------------------------------------------------
 // Arguments
 // ---------------------------------------------------------------------------
@@ -122,6 +284,8 @@ function refuse(array $problems, string $where): never
 $answersPath = '';
 $dryRun = false;
 $force  = false;
+$interactive = false;
+$savePath = '';
 
 for ($i = 1; $i < $argc; $i++) {
     switch ($argv[$i]) {
@@ -148,20 +312,43 @@ for ($i = 1; $i < $argc; $i++) {
         case '-q':
             $QUIET = true;
             break;
+        // Asks instead of reading. Combined with --answers it asks about the
+        // gaps and offers the rest for confirmation, which is the useful case.
+        case '--interactive':
+        case '-i':
+            $interactive = true;
+            break;
+        // Writes the answers out, so a run done by hand can install the next
+        // machine without one. Credentials come out as placeholders, the same
+        // as the file the wizard hands you.
+        case '--save-answers':
+            $savePath = (string) ($argv[++$i] ?? '');
+            break;
         case '--help':
         case '-h':
             fwrite(STDOUT, <<<TXT
 
 RetroVault installer.
 
+  php bin/install.php --interactive
   php bin/install.php --example > install.ini
   php bin/install.php --answers install.ini [--dry-run] [--force]
 
-  --example    print an answer file to start from
-  --answers    the answer file to install from, or - for standard input
-  --dry-run    check everything and touch nothing
-  --force      overwrite an existing src/config.local.php
-  --quiet      say nothing unless something goes wrong
+  --interactive   ask the questions instead of reading a file
+  --example       print an answer file to start from
+  --answers       the answer file to install from, or - for standard input
+  --save-answers  write the answers out afterwards, credentials left blank
+  --dry-run       check everything and touch nothing
+  --force         overwrite an existing src/config.local.php
+  --quiet         say nothing unless something goes wrong
+
+Without a file at all:
+
+  php bin/install.php --interactive
+  php bin/install.php --interactive --save-answers install.ini
+
+--answers and --interactive combine: the file fills in what it knows and the
+questions cover the rest.
 
 Silent, for a provisioning run:
 
@@ -185,13 +372,18 @@ TXT);
     }
 }
 
-if ($answersPath === '') {
-    stop('Nothing to install from. Try --example, then --answers.');
+if ($answersPath === '' && !$interactive) {
+    stop('Nothing to install from. Use --interactive to be asked, '
+       . 'or --example then --answers to install from a file.');
 }
 
-$a = read_answers($answersPath);
+$a = $answersPath === '' ? answers_defaults() : read_answers($answersPath);
+if ($interactive) {
+    $QUIET = false;   // it is a conversation; it cannot be silent
+    $a = ask_everything($a);
+}
 if (($bad = answers_check($a)) !== []) {
-    refuse($bad, $answersPath === '-' ? 'standard input' : $answersPath);
+    refuse($bad, $interactive ? 'the answers given' : ($answersPath === '-' ? 'standard input' : $answersPath));
 }
 
 // ---------------------------------------------------------------------------
@@ -381,6 +573,17 @@ if ($a['install']['deploy'] !== 'keep') {
     }
 }
 
+if ($savePath !== '') {
+    // Through answers_export(), so what comes out is what the wizard hands you:
+    // every credential a placeholder, everything else as it was answered.
+    if (@file_put_contents($savePath, answers_export($a)) === false) {
+        say('WARNING could not write ' . $savePath);
+    } else {
+        @chmod($savePath, 0600);
+        say('Answers written to ' . $savePath);
+    }
+}
+
 // sign_in is ignored here on purpose: there is no browser at a shell prompt to
 // be signed in to anything, and pretending otherwise would mean writing a
 // session file nobody holds a cookie for.
@@ -394,7 +597,11 @@ if ($a['install']['delete_installer']) {
         say('WARNING could not delete ' . pretty_path($wizard) . ' - remove it by hand');
     }
     note('Done. Delete the answer file.');
-} else {
+} elseif (is_file(APP_DIR . '/public/install.php')) {
     note('Done. Delete ' . pretty_path(APP_DIR . '/public/install.php') . ' and the answer file.');
+} else {
+    // Already gone, either from a previous run or by hand. Telling somebody to
+    // delete a file that is not there is how they start looking for it.
+    note('Done. Delete the answer file.');
 }
 exit(0);

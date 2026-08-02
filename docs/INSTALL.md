@@ -124,6 +124,24 @@ anything where the answers belong in a file somebody can review before it runs.
 the same order using the same code — it includes `public/install.php` for its
 helpers rather than keeping a second copy of them to drift out of step.
 
+Without a file at all, it asks:
+
+```
+php bin/install.php --interactive
+```
+
+Every question carries what it will use if the answer is nothing, passwords are
+not echoed and are typed twice, and each answer is checked as it is given — a run
+that asks fifteen questions and then complains about the third has wasted the
+other twelve. Nothing is written until the end.
+
+Add `--save-answers install.ini` and it writes the answers out afterwards, in the
+same form the wizard hands you, so the machine after this one needs no questions
+either. `--answers` and `--interactive` combine: the file fills in what it knows
+and the questions cover the rest.
+
+From a file:
+
 ```
 php bin/install.php --example > install.ini
 chmod 600 install.ini
@@ -166,7 +184,8 @@ Two more, both off unless a file turns them on — somebody walking the wizard b
 hand has not agreed to either.
 
 `delete_installer = 1` removes `public/install.php` once the install has
-finished, in both installers. A file that refuses to run is still better removed
+finished, in both installers. `bin/install.php` keeps working afterwards: what
+the two share lives in `src/installer.php`, not in the wizard. A file that refuses to run is still better removed
 than left in a document root. It will not delete itself if the configuration was
 not written, since that would leave no way back in except a shell.
 

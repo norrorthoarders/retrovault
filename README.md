@@ -39,6 +39,7 @@ Or without a browser, which is the right way for the twentieth machine and the o
 one that has to come up unattended:
 
 ```
+php bin/install.php --interactive               # or, asked at the terminal
 php bin/install.php --example > install.ini      # or download one from the wizard
 php bin/install.php --answers install.ini --dry-run
 php bin/install.php --answers install.ini --quiet

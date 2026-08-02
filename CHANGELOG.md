@@ -31,6 +31,9 @@ First public release.
 
 **Installing**
 
+- **`bin/install.php --interactive`** asks the questions instead of needing a file, checking
+  each answer as it is given and not echoing passwords. `--save-answers` writes the result out
+  afterwards, so a machine done by hand can install the next one unattended.
 - **`bin/install.php`** installs from an answer file instead of seven pages of questions:
   `--example` prints one, `--dry-run` checks everything and writes nothing, and the exit status
   is 0 only if the install finished. It includes the web installer for its helpers rather than
@@ -44,6 +47,10 @@ First public release.
   on underneath. `deploy = erase` stops to be confirmed unless the file also says
   `force_erase = 1`, in both installers: an answer file gets copied between machines, and the
   collection it destroys is whichever database it happens to name that day.
+- **Fixed: `delete_installer` broke the command line installer.** Everything the two share —
+  the requirement checks, the database work, the answer file — was in `public/install.php`, so
+  deleting the wizard took half of `bin/install.php` with it and the next run died on a missing
+  require. That half now lives in `src/installer.php`, which nothing deletes.
 - `delete_installer` removes `public/install.php` when the install finishes, and `sign_in`
   lands the browser on the instance already signed in as the administrator it just made. Both
   off unless the answer file turns them on.
