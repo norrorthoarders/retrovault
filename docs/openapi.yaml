@@ -117,6 +117,95 @@ paths:
                       user: { $ref: "#/components/schemas/User" }
         "401": { $ref: "#/components/responses/Unauthorized" }
 
+  /profile:
+    get:
+      tags: [Auth]
+      summary: Your own account
+      responses:
+        "200": { description: OK }
+    patch:
+      tags: [Auth]
+      summary: Change your name, address or password
+      description: >
+        Only what is named changes. `password` also requires `current_password`:
+        holding a valid token and being the account holder are not the same thing.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                display_name: { type: string }
+                email: { type: string }
+                password: { type: string }
+                current_password: { type: string }
+      responses:
+        "200": { description: OK }
+        "422": { description: Refused, with the field named in details }
+
+  /profile/notifications:
+    get:
+      tags: [Auth]
+      summary: What you want to be told about
+      description: >
+        Every kind with its label, description, and whether this account wants it
+        in the app and by mail. `explicit` is false when the account has never
+        said and is taking the kind's default.
+      responses:
+        "200": { description: OK }
+    patch:
+      tags: [Auth]
+      summary: Change some of them
+      description: Naming one kind changes that kind and leaves the rest alone.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prefs:
+                  type: object
+                  additionalProperties:
+                    type: object
+                    properties:
+                      in_app:  { type: boolean }
+                      by_mail: { type: boolean }
+      responses:
+        "200": { description: OK }
+
+  /admin/settings:
+    get:
+      tags: [Admin]
+      summary: The instance settings, described
+      description: >
+        Sections of fields, each with a name, a kind (text, url, int, bool,
+        select, secret), a label, help and the current value. A select carries
+        its options; an int carries min and max; a secret never sends its value,
+        only `is_set`. Described so a client can draw the form without knowing
+        the settings in advance. Administrator only.
+      responses:
+        "200": { description: OK }
+        "403": { description: Administrator access is required }
+    patch:
+      tags: [Admin]
+      summary: Change some of them
+      description: >
+        Everything is checked before anything is written, so a request setting a
+        good host and a bad port changes neither.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                settings:
+                  type: object
+                  additionalProperties: true
+      responses:
+        "200": { description: OK }
+        "422": { description: Refused, with each field named in details }
+        "403": { description: Administrator access is required }
+
   /tokens:
     get:
       tags: [Auth]

@@ -464,107 +464,80 @@
     </div>
 
     <?php
-    // Under the address, because it is what came from it.
+    // One table. What this instance holds of each kind, against how many the
+    // files held when they were last fetched.
     //
-    // The old summary was one sentence counting "manufacturers" and "genres" -
-    // words this application stopped using when manufacturers and developers
-    // became companies and genres became branches of the category tree. A count
-    // nobody can match to a screen looks like a fact about something that no
-    // longer exists.
+    // There were two, and the second counted added, corrected, skipped and
+    // refused per file. Those describe one run and answer nothing afterwards -
+    // "added 0" is what a sync says whether the file matched what was here or
+    // the fetch quietly served something a year old. Two numbers and a mark
+    // where they disagree is the whole question: is what I have what is
+    // published.
+    //
+    // Keyed by what it holds rather than by file, because two files - the game
+    // and software developer lists - fill one thing and had no business being
+    // two rows saying half a number each.
     ?>
     <?php if (!empty($templates['error'])): ?>
       <p class="hint" style="color:var(--bad)"><?= e((string) $templates['error']) ?></p>
     <?php else: ?>
+      <?php $last = $templates['last_sync'] ?? null; ?>
       <table class="table">
-        <thead><tr><th>File</th><th>Holds</th><th style="text-align:right">Rows</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Holds</th>
+            <th style="text-align:right">Rows local</th>
+            <th style="text-align:right">Rows remote</th>
+          </tr>
+        </thead>
         <tbody>
           <?php foreach (($templates['rows'] ?? []) as $r): ?>
+            <?php
+            // A row may be filled by more than one file, so the remote side is
+            // the sum of those it names. Null when the last sync did not record
+            // that file - before this instance kept the numbers, or on a file
+            // that failed - and null is drawn as a dash rather than as zero,
+            // which would read as "the file is empty".
+            $remote = null;
+            foreach (array_map('trim', explode(',', (string) $r['file'])) as $f) {
+                if (isset($last['remote'][$f])) {
+                    $remote = (int) $remote + (int) $last['remote'][$f];
+                }
+            }
+            $differs = $remote !== null && $remote !== (int) $r['n'];
+            ?>
             <tr>
-              <td><span class="mono" style="font-size:.8rem"><?= e($r['file']) ?></span></td>
               <td><?= e($r['holds']) ?></td>
-              <td style="text-align:right"><?= (int) $r['n'] ?></td>
+              <td style="text-align:right<?= $differs ? ';color:var(--bad);font-weight:600' : '' ?>">
+                <?= (int) $r['n'] ?>
+              </td>
+              <td style="text-align:right<?= $differs ? ';color:var(--bad);font-weight:600' : '' ?>">
+                <?= $remote === null ? '&mdash;' : $remote ?>
+              </td>
             </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
-      <?php
-      // The second table: what the last fetch saw, against what is here now.
-      //
-      // The table above counts rows in this instance. On its own that answers
-      // "what do I have" and not "am I behind", which is the question somebody
-      // opening this screen actually has. A file holding twenty-one peripherals
-      // while the instance holds four is the whole answer, and neither number
-      // says it alone.
-      ?>
-      <?php $last = $templates['last_sync'] ?? null; ?>
-      <?php if ($last !== null && !empty($last['files'])): ?>
-        <h3 class="subhead">Last synchronisation</h3>
-        <p class="hint" style="margin-top:0">
+
+      <?php if ($last !== null): ?>
+        <p class="hint">
+          Remote counted
           <?= e(date('j M Y, H:i', strtotime((string) $last['at']))) ?>
           from <span class="mono" style="font-size:.8rem"><?= e((string) $last['from']) ?></span><?php
             ?><?= !empty($last['forced']) ? ', forced' : '' ?>.
-        </p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>File</th>
-              <th style="text-align:right">In the file</th>
-              <th style="text-align:right">Here now</th>
-              <th style="text-align:right">Added</th>
-              <th style="text-align:right">Corrected</th>
-              <th style="text-align:right">Skipped</th>
-              <th style="text-align:right">Refused</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            // The counts from the table above, by file, so the two can be put
-            // side by side without counting anything twice.
-            $here = [];
-            foreach (($templates['rows'] ?? []) as $r) {
-                $here[$r['file']] = (int) $r['n'];
-            }
-            ?>
-            <?php foreach ($last['files'] as $file => $f): ?>
-              <?php
-              $inFile  = isset($f['in_file']) ? (int) $f['in_file'] : null;
-              $inHere  = $here[$file] ?? null;
-              // Only where both numbers exist and disagree. A file this
-              // instance does not count - the metadata agents are a map, not a
-              // list - has nothing to compare and should not be marked.
-              $differs = $inFile !== null && $inHere !== null && $inFile !== $inHere;
-              ?>
-              <tr>
-                <td>
-                  <span class="mono" style="font-size:.8rem"><?= e((string) $file) ?></span>
-                  <?php if (!empty($f['error'])): ?>
-                    <span class="hint" style="color:var(--bad)"><?= e((string) $f['error']) ?></span>
-                  <?php endif; ?>
-                </td>
-                <td style="text-align:right"><?= $inFile === null ? '—' : $inFile ?></td>
-                <td style="text-align:right<?= $differs ? ';color:var(--bad);font-weight:600' : '' ?>">
-                  <?= $inHere === null ? '—' : $inHere ?>
-                </td>
-                <td style="text-align:right"><?= (int) ($f['added'] ?? 0) ?></td>
-                <td style="text-align:right"><?= (int) ($f['updated'] ?? 0) ?></td>
-                <td style="text-align:right"><?= (int) ($f['skipped'] ?? 0) ?></td>
-                <td style="text-align:right<?= (int) ($f['failed'] ?? 0) > 0 ? ';color:var(--bad)' : '' ?>">
-                  <?= (int) ($f['failed'] ?? 0) ?></td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-        <p class="hint">
-          A row marked in red holds a different number here than the file did.
-          Skipped rows are ones already present: an ordinary fetch leaves those
-          alone, and <strong>Force update</strong> rewrites them, which is how a
-          correction to something that shipped wrong arrives. Neither touches a
-          library — resync the library to copy changes into it.
+          A row marked in red holds a different number here than the files did.
+          <strong>Force update</strong> rewrites rows that are already present,
+          which is how a correction to something that shipped wrong arrives;
+          an ordinary fetch leaves them alone. Neither touches a library &mdash;
+          resync the library to copy changes into it.
         </p>
       <?php elseif ($templates['synced_at']): ?>
-        <p class="hint">Last fetched
+        <p class="hint">
+          Last fetched
           <?= e(date('j M Y, H:i', strtotime((string) $templates['synced_at']))) ?>,
-          before this instance kept a record of what a fetch did.</p>
+          before this instance kept a count of what was in the files.
+          Force update takes them again and records it.
+        </p>
       <?php else: ?>
         <p class="hint">Never fetched. Force update takes what is at the address above.</p>
       <?php endif; ?>

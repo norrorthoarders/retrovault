@@ -433,7 +433,9 @@ function admin_settings_save(): void
     if ($section === 'log_test') {
         [$bad, $said] = admin_write_test_log();
         flash($bad ? 'error' : 'ok', $said);
-        redirect('/admin/settings', ['tab' => 'general']);
+        // The security tab, which is where Logging is. The button that used to
+        // post this is gone, so this path exists only for a bookmarked form.
+        redirect('/admin/settings', ['tab' => 'security']);
     }
 
     if ($section === 'templates') {

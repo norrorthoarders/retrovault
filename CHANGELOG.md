@@ -40,9 +40,10 @@ First public release.
 
 **Instance settings**
 
-- **Starter data** records what each fetch saw. A second table puts what the file held beside
-  what is in the instance now and marks a row where they disagree — the count that was already
-  there answered "what do I have" and never "am I behind".
+- **Starter data** is one table: what this instance holds of each kind against how many the
+  files held when they were last fetched, marked where they disagree. Every sync records both
+  numbers and writes the local ones into the server log, so "when did the peripherals go from 4
+  to 21" has an answer. An install syncs, so the record exists from the first day.
 - **Force update**, beside Save, resyncs ignoring what is already present. An ordinary fetch
   skips a slug it recognises, so a correction to a row that shipped wrong could never arrive.
   Neither touches a library.
@@ -51,6 +52,10 @@ First public release.
 
 **Fixed**
 
+- The **peripheral model count** on the settings screen read 0 while twenty-one were filed. It
+  tested `role = 'peripheral'` on the model's own branch, and the tree declares that kind on the
+  branch that means it — Expansions — with everything under it inheriting. A model is either a
+  machine or a part, so it is counted as the counterpart of the machine line.
 - Choosing a company on a **model or hardware entry** narrows the platform list only when the
   thing is a machine. A machine's maker built the platform; a peripheral's usually did not — a
   Phase 5 accelerator goes in a Commodore machine — and narrowing there removed the Amiga from

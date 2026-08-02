@@ -776,18 +776,49 @@ function template_sync(bool $remote = true, bool $force = false): array
     // What this run saw, kept so the settings screen can show it beside what is
     // in the instance now. Without it the only record of a sync is a timestamp,
     // which says that one happened and nothing about what it did.
+    // Rows per file, and what is here afterwards.
+    //
+    // Only two numbers are kept. Added, corrected, skipped and refused describe
+    // one run and answer nothing later - "added 0" is what a sync says whether
+    // the file matched what was here or the fetch quietly served something a year
+    // old. How many the file held, against how many are here, is the difference
+    // worth seeing.
+    $remoteRows = [];
+    foreach ($summary as $file => $s) {
+        if (array_key_exists('in_file', $s)) {
+            $remoteRows[$file] = (int) $s['in_file'];
+        }
+    }
+    $localRows = [];
+    foreach (template_row_counts() as $row) {
+        $localRows[$row['file']] = (int) $row['n'];
+    }
+
     set_setting('template_sync_report', json_encode([
         'at'     => date('Y-m-d H:i:s'),
         'from'   => $remote ? template_source_url() : 'the copies that shipped',
         'forced' => $force,
-        'files'  => $summary,
+        'remote' => $remoteRows,
+        'local'  => $localRows,
     ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
     if (function_exists('log_server')) {
+        // What is here afterwards, per kind, in the entry itself.
+        //
+        // The setting above holds one snapshot and is overwritten by the next
+        // sync. The log keeps every one of them, which is what makes "when did
+        // the peripherals go from 4 to 21" a question with an answer.
+        $said = [];
+        foreach (template_row_counts() as $row) {
+            $said[] = $row['holds'] . ' ' . $row['n'];
+        }
         log_server('templates.synced', sprintf(
-            'Starter data synchronised from %s: %d added',
+            'Starter data synchronised from %s%s: %d added, %d corrected. Here now: %s',
             $remote ? 'GitHub' : 'the local copies',
-            array_sum(array_column($summary, 'added'))
+            $force ? ', forced' : '',
+            array_sum(array_column($summary, 'added')),
+            array_sum(array_column($summary, 'updated')),
+            implode('; ', $said)
         ), LOG_NOTICE);
     }
 
@@ -990,10 +1021,16 @@ function template_row_counts(): array
             (int) scalar("SELECT COUNT(*) FROM hardware_models m
                             JOIN categories c ON c.id = m.category_id
                            WHERE m.$tpl AND c.role = 'machine'")],
+        // Not `role = 'peripheral'`. A model is either a machine or a part, and
+        // the part half is the counterpart of the line above rather than a role
+        // of its own: the tree declares `peripheral` on the branch that means it
+        // - Expansions - and everything under it says `other` and inherits. So
+        // this counted only models filed directly under a declaring branch, which
+        // is none of them, and reported 0 next to a file holding 21.
         ['hardware_peripherals', 'Peripheral models',
             (int) scalar("SELECT COUNT(*) FROM hardware_models m
                             JOIN categories c ON c.id = m.category_id
-                           WHERE m.$tpl AND c.role = 'peripheral'")],
+                           WHERE m.$tpl AND c.role <> 'machine'")],
         ['software_models', 'Software models',
             (int) scalar("SELECT COUNT(*) FROM software_models WHERE $tpl")],
         ['hardware_specifications', 'Specification names',
