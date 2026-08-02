@@ -1163,6 +1163,7 @@ function answers_defaults(): array
                        'currency' => 'SEK', 'timezone' => 'Europe/Stockholm',
                        'trusted_proxies' => ''],
         'install'  => ['deploy' => 'install', 'erase_uploads' => false,
+                       'force_erase' => false,
                        'templates' => 'remote', 'examples' => false],
     ];
 }
@@ -1252,6 +1253,10 @@ function answers_export(array $v): string
     $lines[] = 'deploy = ' . $q($v['install']['deploy'] ?? 'install');
     $lines[] = '; With erase, whether the photographs on disk go too.';
     $lines[] = 'erase_uploads = ' . $bool($v['install']['erase_uploads'] ?? false);
+    $lines[] = '; Erase destroys a collection, so on its own it stops to be confirmed:';
+    $lines[] = '; the wizard shows the review page, and bin/install.php refuses. Set this';
+    $lines[] = '; to 1 to say you mean it, and neither asks.';
+    $lines[] = 'force_erase = ' . $bool($v['install']['force_erase'] ?? false);
     $lines[] = '; remote   fetch the published starter data';
     $lines[] = '; shipped  use the copies in this checkout';
     $lines[] = '; none     start with an empty filing tree';
@@ -1276,6 +1281,25 @@ function answers_parse(string $ini): array
     $parsed = @parse_ini_string($ini, true, INI_SCANNER_TYPED);
     if (!is_array($parsed)) {
         return [answers_defaults(), ['That is not an answer file - it could not be read as INI.']];
+    }
+
+    // A section written twice.
+    //
+    // parse_ini_string() keeps the last one and discards the first without a
+    // word, so a file with two [install] blocks quietly installs with the
+    // defaults for everything the first block said - which for `deploy` is the
+    // difference between rebuilding a database and leaving it alone. Caught here
+    // because the parser will not.
+    $seen = [];
+    foreach (preg_split('/\R/', $ini) as $line) {
+        if (preg_match('/^\s*\[([^\]]+)\]/', $line, $m) === 1) {
+            $name = trim($m[1]);
+            if (isset($seen[$name])) {
+                $problems[] = 'Section [' . $name . '] appears more than once; '
+                            . 'everything in the first one would be lost.';
+            }
+            $seen[$name] = true;
+        }
     }
 
     $out = answers_defaults();
@@ -1635,17 +1659,24 @@ if ($step === 1 && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preset
                         'admin_set'    => true,
                     ]);
 
-                    // Anything but a plain install stops at the review page.
+                    // Straight to it, unless it is an erase that has not said it
+                    // means it.
                     //
-                    // "erase" destroys a collection, and a browser is not the
-                    // command line: there, somebody typed the command and meant
-                    // it. Here a file was dragged onto a page, and a drag is not
-                    // consent to drop every table. So the answers are loaded,
-                    // the summary is shown, and the button is theirs to press.
-                    if ((string) $answers['install']['deploy'] === 'install') {
+                    // `deploy = erase` alone is not enough: a file gets copied
+                    // between machines, and the one it destroys is whichever it
+                    // was dropped on. `force_erase = 1` is the second sentence
+                    // that makes it deliberate, and with it there is no prompt
+                    // anywhere - which is the point of a no-prompt file.
+                    //
+                    // Without it the answers are still loaded, so nothing is
+                    // retyped: the review page appears with everything filled in
+                    // and the button is theirs to press.
+                    $erasing = (string) $answers['install']['deploy'] === 'erase';
+                    if (!$erasing || (bool) $answers['install']['force_erase']) {
                         $step = 7;
                         $_POST['apply'] = '1';
                     } else {
+                        remember(['erase_unconfirmed' => true]);
                         header('Location: ?step=7');
                         exit;
                     }

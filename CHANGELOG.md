@@ -41,8 +41,12 @@ First public release.
   file is checked as it lands. A complete one — credentials included, database answering —
   skips the remaining five pages and installs on the spot; one with the credentials still blank
   fills the pages in instead; an unusable one is marked and the ordinary installation carries
-  on underneath. `deploy = erase` never runs by itself: a drag is not consent to drop every
-  table.
+  on underneath. `deploy = erase` stops to be confirmed unless the file also says
+  `force_erase = 1`, in both installers: an answer file gets copied between machines, and the
+  collection it destroys is whichever database it happens to name that day.
+- A section written twice in an answer file is refused. `parse_ini_string()` keeps the last and
+  discards the first without a word, which for `deploy` is the difference between rebuilding a
+  database and leaving it alone.
   No username or password is written into it: those come out as `change-…-here`, and a file
   still carrying one is refused rather than installed with a database user by that name.
 - The answer file is INI, parsed by `parse_ini_string()` and executed never — the wizard takes

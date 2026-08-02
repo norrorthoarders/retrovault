@@ -237,6 +237,17 @@ if ($a['install']['deploy'] === 'install' && has_real_data($counts)) {
     stop('That database already holds a collection. Use deploy => "erase" to destroy it,'
        . ' or deploy => "keep" to leave it alone.');
 }
+// An erase that has not said it means it.
+//
+// The same rule the wizard applies, and for the same reason: an answer file gets
+// copied between machines, and the collection it destroys is whichever database
+// it happens to name that day. `deploy = erase` says what to do; `force_erase`
+// is the second sentence that says it was meant.
+if ($a['install']['deploy'] === 'erase' && !$a['install']['force_erase']) {
+    stop('deploy is "erase", which destroys the collection in ' . $a['db']['name']
+       . '. Set force_erase = 1 in the [install] section to confirm that.');
+}
+
 if ($a['install']['deploy'] === 'erase' && has_real_data($counts)) {
     say('Will erase: ' . implode(', ', array_map(
         fn($v) => counted((int) $v['n'], (string) $v['one'], (string) $v['many']),

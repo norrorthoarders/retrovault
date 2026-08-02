@@ -158,7 +158,7 @@ What it holds:
 | `[db]` | host, port, name, user, pass |
 | `[admin]` | username, password, email, display name |
 | `[instance]` | name, tagline, public address, currency, timezone, trusted proxies |
-| `[install]` | `deploy` (`install` on an empty database, `erase` to drop what is there first, `keep` to write the configuration only), `erase_uploads`, `templates` (`remote`, `shipped` or `none`), `examples` |
+| `[install]` | `deploy` (`install` on an empty database, `erase` to drop what is there first, `keep` to write the configuration only), `erase_uploads`, `force_erase`, `templates` (`remote`, `shipped` or `none`), `examples` |
 
 ### Handing one back to the wizard
 
@@ -177,10 +177,14 @@ carries on from there, asking only for what the file does not hold.
 below it. Dropping another checks that one instead; a file that was already
 accepted is not thrown away by a fumbled second drop.
 
-One exception, deliberately: `deploy = erase` never runs by itself. It destroys a
-collection, and a browser is not the command line — there somebody typed the
-command and meant it, here a file was dragged onto a page. The answers load, the
-review page is shown, and the button is yours to press.
+`deploy = erase` needs a second word before it will do that unasked. On its own
+it stops: the wizard loads the answers and shows the review page with the button
+yours to press, and `bin/install.php` refuses and says why. `force_erase = 1` in
+the `[install]` section is the confirmation, and with it neither asks.
+
+Two sentences rather than one because an answer file gets copied between
+machines, and the collection it destroys is whichever database it happens to name
+that day. `deploy` says what to do; `force_erase` says it was meant.
 
 `--dry-run` checks the answers, the server and the database connection and writes
 nothing. Worth running first in provisioning, because the alternative is finding
