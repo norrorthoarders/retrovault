@@ -2785,13 +2785,6 @@ if (!$running) {
       </tbody>
     </table>
 
-    <?php if ($plan['deploy'] === 'erase'): ?>
-      <p class="hint" style="color:var(--bad);margin-top:.8rem">
-        This is the point of no return for the existing collection. Back out now
-        if you meant to keep it.
-      </p>
-    <?php endif; ?>
-
     <form method="post" action="?step=7" style="margin-top:1rem"
           <?= $plan['deploy'] === 'erase' ? 'data-confirm="Erase the existing collection and install?"' : '' ?>>
       <input type="hidden" name="_csrf" value="<?= h(token()) ?>">
@@ -2816,10 +2809,6 @@ if (!$running) {
       // document root has undone the reason none of the credentials are in it.
       ?>
       <a class="btn" href="?download=answers" style="margin-left:.4rem">Download answers</a>
-      <span class="hint" style="display:block;margin-top:.5rem;color:var(--dim);font-size:.85rem">
-        Installs another machine with no questions asked. No username or password
-        is written into it.
-      </span>
     </form>
     <?php
     // Something to look at while it works.
