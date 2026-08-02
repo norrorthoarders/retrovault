@@ -1,0 +1,192 @@
+[
+  {
+    "slug": "computers",
+    "name": "Computers",
+    "role": "machine",
+    "sort_order": 10,
+    "classes": "computer"
+  },
+  {
+    "slug": "console",
+    "name": "Consoles",
+    "role": "machine",
+    "sort_order": 11,
+    "classes": "console"
+  },
+  {
+    "slug": "handheld",
+    "name": "Handhelds",
+    "role": "machine",
+    "sort_order": 12,
+    "classes": "handheld"
+  },
+  {
+    "slug": "peripherals",
+    "name": "Peripherals",
+    "role": "peripheral",
+    "sort_order": 20
+  },
+  {
+    "slug": "adapters",
+    "name": "Adapters",
+    "role": "other",
+    "parent": "peripherals",
+    "sort_order": 21,
+    "classes": "computer"
+  },
+  {
+    "slug": "network-adapters",
+    "name": "Network adapters",
+    "role": "other",
+    "parent": "adapters",
+    "sort_order": 22,
+    "classes": "computer"
+  },
+  {
+    "slug": "storage",
+    "name": "Storage",
+    "role": "other",
+    "parent": "peripherals",
+    "sort_order": 23,
+    "classes": "computer"
+  },
+  {
+    "slug": "controllers",
+    "name": "Controllers",
+    "role": "other",
+    "parent": "peripherals",
+    "sort_order": 24,
+    "classes": "computer,console,handheld"
+  },
+  {
+    "slug": "displays",
+    "name": "Displays",
+    "role": "other",
+    "parent": "peripherals",
+    "sort_order": 25,
+    "classes": "computer"
+  },
+  {
+    "slug": "audio",
+    "name": "Audio",
+    "role": "other",
+    "parent": "peripherals",
+    "sort_order": 26,
+    "classes": "computer"
+  },
+  {
+    "slug": "printers",
+    "name": "Printers",
+    "role": "other",
+    "parent": "peripherals",
+    "sort_order": 27,
+    "classes": "computer"
+  },
+  {
+    "slug": "expansions",
+    "name": "Expansions",
+    "role": "peripheral",
+    "sort_order": 30,
+    "classes": "computer"
+  },
+  {
+    "slug": "accelerator",
+    "name": "Accelerator",
+    "role": "other",
+    "parent": "expansions",
+    "sort_order": 31,
+    "classes": "computer"
+  },
+  {
+    "slug": "memory",
+    "name": "Memory",
+    "role": "other",
+    "parent": "expansions",
+    "sort_order": 32,
+    "classes": "computer"
+  },
+  {
+    "slug": "graphics-card",
+    "name": "Graphics card",
+    "role": "other",
+    "parent": "expansions",
+    "sort_order": 33,
+    "classes": "computer"
+  },
+  {
+    "slug": "disk-controller",
+    "name": "Disk controller",
+    "role": "other",
+    "parent": "expansions",
+    "sort_order": 34,
+    "classes": "computer"
+  },
+  {
+    "slug": "sound-card",
+    "name": "Sound card",
+    "role": "other",
+    "parent": "expansions",
+    "sort_order": 35,
+    "classes": "computer"
+  },
+  {
+    "slug": "parts",
+    "name": "Parts and spares",
+    "sort_order": 40
+  },
+  {
+    "slug": "power-supply",
+    "name": "Power supply",
+    "parent": "parts",
+    "sort_order": 41,
+    "classes": "computer,console"
+  },
+  {
+    "slug": "cables",
+    "name": "Cables",
+    "parent": "parts",
+    "sort_order": 42,
+    "classes": "computer,console"
+  },
+  {
+    "slug": "chips",
+    "name": "Chips",
+    "parent": "parts",
+    "sort_order": 43,
+    "classes": "computer"
+  },
+  {
+    "slug": "blank-media",
+    "name": "Blank media",
+    "sort_order": 50,
+    "classes": "computer"
+  },
+  {
+    "slug": "other-hardware",
+    "name": "Other hardware",
+    "sort_order": 90
+  },
+  {
+    "slug": "memory-cards",
+    "name": "Memory cards",
+    "role": "other",
+    "sort_order": 28,
+    "classes": "console",
+    "parent": "peripherals"
+  },
+  {
+    "slug": "flash-carts",
+    "name": "Flash carts",
+    "role": "other",
+    "sort_order": 29,
+    "classes": "console,handheld",
+    "parent": "peripherals"
+  },
+  {
+    "slug": "cartridges",
+    "name": "Cartridges",
+    "role": "peripheral",
+    "sort_order": 30,
+    "classes": "console,handheld"
+  }
+]

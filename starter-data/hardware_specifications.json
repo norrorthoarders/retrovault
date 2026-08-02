@@ -1,0 +1,3557 @@
+[
+  {
+    "slug": "aslot",
+    "name": "Apple II expansion slot",
+    "platform": "apple-ii",
+    "sort_order": 10
+  },
+  {
+    "slug": "aslot",
+    "name": "Apple II expansion slot",
+    "platform": "mac-68k",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge port",
+    "platform": "c64",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge port",
+    "platform": "pet",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge port",
+    "platform": "plus4",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge port",
+    "platform": "vic-20",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge port",
+    "platform": "atari-st",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "pc-engine",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "playstation",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "saturn",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "3do",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "sega-32x",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "atari-2600",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "sg-1000",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "atari-5200",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "atari-7800",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "vectrex",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "cd-i",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "virtual-boy",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "colecovision",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "dreamcast",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "game-boy",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "master-system",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "mega-drive",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "msx",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "nes",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "game-gear",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "snes",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "gba",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "intellivision",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "jaguar",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "lynx",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "mega-cd",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "atari-8bit",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "n64",
+    "sort_order": 10
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge slot",
+    "platform": "neo-geo",
+    "sort_order": 10
+  },
+  {
+    "slug": "edge",
+    "name": "Expansion edge connector",
+    "platform": "amstrad-cpc",
+    "sort_order": 10
+  },
+  {
+    "slug": "edge",
+    "name": "Expansion edge connector",
+    "platform": "amstrad-pcw",
+    "sort_order": 10
+  },
+  {
+    "slug": "isa8",
+    "name": "ISA, 8-bit",
+    "platform": "pc",
+    "sort_order": 10
+  },
+  {
+    "slug": "podule",
+    "name": "Podule slot",
+    "platform": "bbc-micro",
+    "sort_order": 10
+  },
+  {
+    "slug": "podule",
+    "name": "Podule slot",
+    "platform": "risc-pc",
+    "sort_order": 10
+  },
+  {
+    "slug": "podule",
+    "name": "Podule slot",
+    "platform": "acorn-electron",
+    "sort_order": 10
+  },
+  {
+    "slug": "podule",
+    "name": "Podule slot",
+    "platform": "archimedes",
+    "sort_order": 10
+  },
+  {
+    "slug": "edge",
+    "name": "Rear edge connector",
+    "platform": "sam-coupe",
+    "sort_order": 10
+  },
+  {
+    "slug": "edge",
+    "name": "Rear edge connector",
+    "platform": "zx-spectrum",
+    "sort_order": 10
+  },
+  {
+    "slug": "edge",
+    "name": "Rear edge connector",
+    "platform": "zx81",
+    "sort_order": 10
+  },
+  {
+    "slug": "z1",
+    "name": "Zorro I",
+    "platform": "amiga",
+    "sort_order": 10
+  },
+  {
+    "slug": "z1",
+    "name": "Zorro I",
+    "platform": "cd32",
+    "sort_order": 10
+  },
+  {
+    "slug": "z1",
+    "name": "Zorro I",
+    "platform": "cdtv",
+    "sort_order": 10
+  },
+  {
+    "slug": "edge",
+    "name": "Rear expansion connector",
+    "platform": "bbc-micro",
+    "sort_order": 15
+  },
+  {
+    "slug": "edge",
+    "name": "Rear expansion connector",
+    "platform": "risc-pc",
+    "sort_order": 15
+  },
+  {
+    "slug": "edge",
+    "name": "Rear expansion connector",
+    "platform": "acorn-electron",
+    "sort_order": 15
+  },
+  {
+    "slug": "edge",
+    "name": "Rear expansion connector",
+    "platform": "archimedes",
+    "sort_order": 15
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "pc-engine",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "playstation",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "saturn",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "3do",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "sega-32x",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "atari-2600",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "sg-1000",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "atari-5200",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "snes",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "atari-7800",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "vectrex",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "cd-i",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "virtual-boy",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "colecovision",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "dreamcast",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "game-boy",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "game-gear",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "gba",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "intellivision",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "jaguar",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "lynx",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "master-system",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "mega-cd",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "mega-drive",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "n64",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "neo-geo",
+    "sort_order": 20
+  },
+  {
+    "slug": "ctrl",
+    "name": "Controller port",
+    "platform": "nes",
+    "sort_order": 20
+  },
+  {
+    "slug": "acsi",
+    "name": "DMA / ACSI port",
+    "platform": "atari-st",
+    "sort_order": 20
+  },
+  {
+    "slug": "floppy",
+    "name": "Floppy port",
+    "platform": "amstrad-cpc",
+    "sort_order": 20
+  },
+  {
+    "slug": "floppy",
+    "name": "Floppy port",
+    "platform": "amstrad-pcw",
+    "sort_order": 20
+  },
+  {
+    "slug": "isa16",
+    "name": "ISA, 16-bit",
+    "platform": "pc",
+    "sort_order": 20
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "master-system",
+    "sort_order": 20
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "mega-drive",
+    "sort_order": 20
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "msx",
+    "sort_order": 20
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "nes",
+    "sort_order": 20
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "snes",
+    "sort_order": 20
+  },
+  {
+    "slug": "nubus",
+    "name": "NuBus slot",
+    "platform": "apple-ii",
+    "sort_order": 20
+  },
+  {
+    "slug": "nubus",
+    "name": "NuBus slot",
+    "platform": "mac-68k",
+    "sort_order": 20
+  },
+  {
+    "slug": "sio",
+    "name": "SIO bus",
+    "platform": "atari-8bit",
+    "sort_order": 20
+  },
+  {
+    "slug": "tape",
+    "name": "Tape port",
+    "platform": "sam-coupe",
+    "sort_order": 20
+  },
+  {
+    "slug": "tape",
+    "name": "Tape port",
+    "platform": "zx-spectrum",
+    "sort_order": 20
+  },
+  {
+    "slug": "tape",
+    "name": "Tape port",
+    "platform": "zx81",
+    "sort_order": 20
+  },
+  {
+    "slug": "tube",
+    "name": "Tube interface",
+    "platform": "bbc-micro",
+    "sort_order": 20
+  },
+  {
+    "slug": "tube",
+    "name": "Tube interface",
+    "platform": "risc-pc",
+    "sort_order": 20
+  },
+  {
+    "slug": "tube",
+    "name": "Tube interface",
+    "platform": "acorn-electron",
+    "sort_order": 20
+  },
+  {
+    "slug": "tube",
+    "name": "Tube interface",
+    "platform": "archimedes",
+    "sort_order": 20
+  },
+  {
+    "slug": "user",
+    "name": "User port",
+    "platform": "c64",
+    "sort_order": 20
+  },
+  {
+    "slug": "user",
+    "name": "User port",
+    "platform": "pet",
+    "sort_order": 20
+  },
+  {
+    "slug": "user",
+    "name": "User port",
+    "platform": "plus4",
+    "sort_order": 20
+  },
+  {
+    "slug": "user",
+    "name": "User port",
+    "platform": "vic-20",
+    "sort_order": 20
+  },
+  {
+    "slug": "z2",
+    "name": "Zorro II",
+    "platform": "amiga",
+    "sort_order": 20
+  },
+  {
+    "slug": "z2",
+    "name": "Zorro II",
+    "platform": "cd32",
+    "sort_order": 20
+  },
+  {
+    "slug": "z2",
+    "name": "Zorro II",
+    "platform": "cdtv",
+    "sort_order": 20
+  },
+  {
+    "slug": "onemhz",
+    "name": "1 MHz bus",
+    "platform": "archimedes",
+    "sort_order": 30
+  },
+  {
+    "slug": "onemhz",
+    "name": "1 MHz bus",
+    "platform": "bbc-micro",
+    "sort_order": 30
+  },
+  {
+    "slug": "onemhz",
+    "name": "1 MHz bus",
+    "platform": "risc-pc",
+    "sort_order": 30
+  },
+  {
+    "slug": "onemhz",
+    "name": "1 MHz bus",
+    "platform": "acorn-electron",
+    "sort_order": 30
+  },
+  {
+    "slug": "eisa",
+    "name": "EISA",
+    "platform": "pc",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "pc-engine",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "playstation",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "saturn",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "3do",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "sega-32x",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "atari-2600",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "sg-1000",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "atari-5200",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "snes",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "atari-7800",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "vectrex",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "cd-i",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "virtual-boy",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "colecovision",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "dreamcast",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "game-boy",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "game-gear",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "gba",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "intellivision",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "jaguar",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "lynx",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "master-system",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "mega-cd",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "mega-drive",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "n64",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "neo-geo",
+    "sort_order": 30
+  },
+  {
+    "slug": "exp",
+    "name": "Expansion port",
+    "platform": "nes",
+    "sort_order": 30
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "sam-coupe",
+    "sort_order": 30
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "zx-spectrum",
+    "sort_order": 30
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "zx81",
+    "sort_order": 30
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "amstrad-cpc",
+    "sort_order": 30
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "amstrad-pcw",
+    "sort_order": 30
+  },
+  {
+    "slug": "midi",
+    "name": "MIDI in and out",
+    "platform": "atari-st",
+    "sort_order": 30
+  },
+  {
+    "slug": "pbi",
+    "name": "Parallel Bus Interface",
+    "platform": "atari-8bit",
+    "sort_order": 30
+  },
+  {
+    "slug": "pds",
+    "name": "Processor direct slot",
+    "platform": "apple-ii",
+    "sort_order": 30
+  },
+  {
+    "slug": "pds",
+    "name": "Processor direct slot",
+    "platform": "mac-68k",
+    "sort_order": 30
+  },
+  {
+    "slug": "serial",
+    "name": "Serial (IEC) port",
+    "platform": "c64",
+    "sort_order": 30
+  },
+  {
+    "slug": "serial",
+    "name": "Serial (IEC) port",
+    "platform": "pet",
+    "sort_order": 30
+  },
+  {
+    "slug": "serial",
+    "name": "Serial (IEC) port",
+    "platform": "plus4",
+    "sort_order": 30
+  },
+  {
+    "slug": "serial",
+    "name": "Serial (IEC) port",
+    "platform": "vic-20",
+    "sort_order": 30
+  },
+  {
+    "slug": "z3",
+    "name": "Zorro III",
+    "platform": "amiga",
+    "sort_order": 30
+  },
+  {
+    "slug": "z3",
+    "name": "Zorro III",
+    "platform": "cd32",
+    "sort_order": 30
+  },
+  {
+    "slug": "z3",
+    "name": "Zorro III",
+    "platform": "cdtv",
+    "sort_order": 30
+  },
+  {
+    "slug": "tape",
+    "name": "Cassette port",
+    "platform": "c64",
+    "sort_order": 40
+  },
+  {
+    "slug": "tape",
+    "name": "Cassette port",
+    "platform": "pet",
+    "sort_order": 40
+  },
+  {
+    "slug": "tape",
+    "name": "Cassette port",
+    "platform": "plus4",
+    "sort_order": 40
+  },
+  {
+    "slug": "tape",
+    "name": "Cassette port",
+    "platform": "vic-20",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "pc-engine",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "playstation",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "saturn",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "3do",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "sega-32x",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "atari-2600",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "sg-1000",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "atari-5200",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "snes",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "atari-7800",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "vectrex",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "cd-i",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "virtual-boy",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "colecovision",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "dreamcast",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "game-boy",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "game-gear",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "gba",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "intellivision",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "jaguar",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "lynx",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "master-system",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "mega-cd",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "mega-drive",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "n64",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "neo-geo",
+    "sort_order": 40
+  },
+  {
+    "slug": "cdport",
+    "name": "CD unit connector",
+    "platform": "nes",
+    "sort_order": 40
+  },
+  {
+    "slug": "eci",
+    "name": "Enhanced Cartridge Interface",
+    "platform": "atari-8bit",
+    "sort_order": 40
+  },
+  {
+    "slug": "stbus",
+    "name": "Internal expansion bus",
+    "platform": "atari-st",
+    "sort_order": 40
+  },
+  {
+    "slug": "mca",
+    "name": "MCA (Micro Channel)",
+    "platform": "pc",
+    "sort_order": 40
+  },
+  {
+    "slug": "printer",
+    "name": "Printer port",
+    "platform": "amstrad-cpc",
+    "sort_order": 40
+  },
+  {
+    "slug": "printer",
+    "name": "Printer port",
+    "platform": "amstrad-pcw",
+    "sort_order": 40
+  },
+  {
+    "slug": "scsi",
+    "name": "SCSI",
+    "platform": "apple-ii",
+    "sort_order": 40
+  },
+  {
+    "slug": "scsi",
+    "name": "SCSI",
+    "platform": "mac-68k",
+    "sort_order": 40
+  },
+  {
+    "slug": "ay",
+    "name": "Sound and MIDI",
+    "platform": "sam-coupe",
+    "sort_order": 40
+  },
+  {
+    "slug": "ay",
+    "name": "Sound and MIDI",
+    "platform": "zx-spectrum",
+    "sort_order": 40
+  },
+  {
+    "slug": "ay",
+    "name": "Sound and MIDI",
+    "platform": "zx81",
+    "sort_order": 40
+  },
+  {
+    "slug": "userport",
+    "name": "User port",
+    "platform": "archimedes",
+    "sort_order": 40
+  },
+  {
+    "slug": "userport",
+    "name": "User port",
+    "platform": "bbc-micro",
+    "sort_order": 40
+  },
+  {
+    "slug": "userport",
+    "name": "User port",
+    "platform": "risc-pc",
+    "sort_order": 40
+  },
+  {
+    "slug": "userport",
+    "name": "User port",
+    "platform": "acorn-electron",
+    "sort_order": 40
+  },
+  {
+    "slug": "vid",
+    "name": "Video slot",
+    "platform": "amiga",
+    "sort_order": 40
+  },
+  {
+    "slug": "vid",
+    "name": "Video slot",
+    "platform": "cd32",
+    "sort_order": 40
+  },
+  {
+    "slug": "vid",
+    "name": "Video slot",
+    "platform": "cdtv",
+    "sort_order": 40
+  },
+  {
+    "slug": "adb",
+    "name": "Apple Desktop Bus",
+    "platform": "apple-ii",
+    "sort_order": 50
+  },
+  {
+    "slug": "adb",
+    "name": "Apple Desktop Bus",
+    "platform": "mac-68k",
+    "sort_order": 50
+  },
+  {
+    "slug": "joy",
+    "name": "Control port",
+    "platform": "c64",
+    "sort_order": 50
+  },
+  {
+    "slug": "joy",
+    "name": "Control port",
+    "platform": "pet",
+    "sort_order": 50
+  },
+  {
+    "slug": "joy",
+    "name": "Control port",
+    "platform": "plus4",
+    "sort_order": 50
+  },
+  {
+    "slug": "joy",
+    "name": "Control port",
+    "platform": "vic-20",
+    "sort_order": 50
+  },
+  {
+    "slug": "econet",
+    "name": "Econet",
+    "platform": "archimedes",
+    "sort_order": 50
+  },
+  {
+    "slug": "econet",
+    "name": "Econet",
+    "platform": "bbc-micro",
+    "sort_order": 50
+  },
+  {
+    "slug": "econet",
+    "name": "Econet",
+    "platform": "risc-pc",
+    "sort_order": 50
+  },
+  {
+    "slug": "econet",
+    "name": "Econet",
+    "platform": "acorn-electron",
+    "sort_order": 50
+  },
+  {
+    "slug": "isa",
+    "name": "ISA slot",
+    "platform": "amiga",
+    "sort_order": 50
+  },
+  {
+    "slug": "isa",
+    "name": "ISA slot",
+    "platform": "cd32",
+    "sort_order": 50
+  },
+  {
+    "slug": "isa",
+    "name": "ISA slot",
+    "platform": "cdtv",
+    "sort_order": 50
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "atari-8bit",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "pc-engine",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "playstation",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "saturn",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "3do",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "sega-32x",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "atari-2600",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "sg-1000",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "atari-5200",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "snes",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "atari-7800",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "vectrex",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "cd-i",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "virtual-boy",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "colecovision",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "dreamcast",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "game-boy",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "game-gear",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "gba",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "intellivision",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "jaguar",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "lynx",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "master-system",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "mega-cd",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "mega-drive",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "n64",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "neo-geo",
+    "sort_order": 50
+  },
+  {
+    "slug": "link",
+    "name": "Link cable port",
+    "platform": "nes",
+    "sort_order": 50
+  },
+  {
+    "slug": "vlb",
+    "name": "VESA Local Bus",
+    "platform": "pc",
+    "sort_order": 50
+  },
+  {
+    "slug": "vme",
+    "name": "VME slot",
+    "platform": "atari-st",
+    "sort_order": 50
+  },
+  {
+    "slug": "cpu",
+    "name": "CPU slot",
+    "platform": "amiga",
+    "sort_order": 60
+  },
+  {
+    "slug": "cpu",
+    "name": "CPU slot",
+    "platform": "cd32",
+    "sort_order": 60
+  },
+  {
+    "slug": "cpu",
+    "name": "CPU slot",
+    "platform": "cdtv",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "pc-engine",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "playstation",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "saturn",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "3do",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "sega-32x",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "atari-2600",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "sg-1000",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "atari-5200",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "snes",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "atari-7800",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "vectrex",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "cd-i",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "virtual-boy",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "colecovision",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "dreamcast",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "game-boy",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "game-gear",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "gba",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "intellivision",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "jaguar",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "lynx",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "master-system",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "mega-cd",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "mega-drive",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "n64",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "neo-geo",
+    "sort_order": 60
+  },
+  {
+    "slug": "memcard",
+    "name": "Memory card slot",
+    "platform": "nes",
+    "sort_order": 60
+  },
+  {
+    "slug": "pci",
+    "name": "PCI",
+    "platform": "pc",
+    "sort_order": 60
+  },
+  {
+    "slug": "pds",
+    "name": "Processor direct slot",
+    "platform": "atari-st",
+    "sort_order": 60
+  },
+  {
+    "slug": "simm",
+    "name": "SIMM socket",
+    "platform": "apple-ii",
+    "sort_order": 60
+  },
+  {
+    "slug": "simm",
+    "name": "SIMM socket",
+    "platform": "mac-68k",
+    "sort_order": 60
+  },
+  {
+    "slug": "68k",
+    "name": "68000 socket",
+    "platform": "amiga",
+    "sort_order": 70
+  },
+  {
+    "slug": "68k",
+    "name": "68000 socket",
+    "platform": "cd32",
+    "sort_order": 70
+  },
+  {
+    "slug": "68k",
+    "name": "68000 socket",
+    "platform": "cdtv",
+    "sort_order": 70
+  },
+  {
+    "slug": "agp",
+    "name": "AGP",
+    "platform": "pc",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "pc-engine",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "playstation",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "saturn",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "3do",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "sega-32x",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "atari-2600",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "sg-1000",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "atari-5200",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "snes",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "atari-7800",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "vectrex",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "cd-i",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "virtual-boy",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "colecovision",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "dreamcast",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "game-boy",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "game-gear",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "gba",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "intellivision",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "jaguar",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "lynx",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "master-system",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "mega-cd",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "mega-drive",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "n64",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "neo-geo",
+    "sort_order": 70
+  },
+  {
+    "slug": "av",
+    "name": "AV output",
+    "platform": "nes",
+    "sort_order": 70
+  },
+  {
+    "slug": "floppy",
+    "name": "Floppy port",
+    "platform": "atari-st",
+    "sort_order": 70
+  },
+  {
+    "slug": "joy",
+    "name": "Joystick port",
+    "platform": "atari-st",
+    "sort_order": 80
+  },
+  {
+    "slug": "pcie",
+    "name": "PCI Express",
+    "platform": "pc",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "nes",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "pc-engine",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "playstation",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "saturn",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "3do",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "sega-32x",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "atari-2600",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "sg-1000",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "atari-5200",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "snes",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "atari-7800",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "vectrex",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "cd-i",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "virtual-boy",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "colecovision",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "dreamcast",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "game-boy",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "game-gear",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "gba",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "intellivision",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "jaguar",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "lynx",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "master-system",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "mega-cd",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "mega-drive",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "n64",
+    "sort_order": 80
+  },
+  {
+    "slug": "rf",
+    "name": "RF output",
+    "platform": "neo-geo",
+    "sort_order": 80
+  },
+  {
+    "slug": "side",
+    "name": "Side slot",
+    "platform": "amiga",
+    "sort_order": 80
+  },
+  {
+    "slug": "side",
+    "name": "Side slot",
+    "platform": "cd32",
+    "sort_order": 80
+  },
+  {
+    "slug": "side",
+    "name": "Side slot",
+    "platform": "cdtv",
+    "sort_order": 80
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "nes",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "pc-engine",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "playstation",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "saturn",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "3do",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "sega-32x",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "atari-2600",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "sg-1000",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "atari-5200",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "snes",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "atari-7800",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "vectrex",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "cd-i",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "virtual-boy",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "colecovision",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "dreamcast",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "game-boy",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "game-gear",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "gba",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "intellivision",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "jaguar",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "lynx",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "master-system",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "mega-cd",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "mega-drive",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "n64",
+    "sort_order": 90
+  },
+  {
+    "slug": "passthru",
+    "name": "Cartridge pass-through",
+    "platform": "neo-geo",
+    "sort_order": 90
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "platform": "atari-st",
+    "sort_order": 90
+  },
+  {
+    "slug": "trap",
+    "name": "Trapdoor slot",
+    "platform": "amiga",
+    "sort_order": 90
+  },
+  {
+    "slug": "trap",
+    "name": "Trapdoor slot",
+    "platform": "cd32",
+    "sort_order": 90
+  },
+  {
+    "slug": "trap",
+    "name": "Trapdoor slot",
+    "platform": "cdtv",
+    "sort_order": 90
+  },
+  {
+    "slug": "clk",
+    "name": "Clock port",
+    "platform": "amiga",
+    "sort_order": 100
+  },
+  {
+    "slug": "clk",
+    "name": "Clock port",
+    "platform": "cd32",
+    "sort_order": 100
+  },
+  {
+    "slug": "clk",
+    "name": "Clock port",
+    "platform": "cdtv",
+    "sort_order": 100
+  },
+  {
+    "slug": "ide",
+    "name": "IDE / ATA header",
+    "platform": "pc",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "nes",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "pc-engine",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "playstation",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "saturn",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "3do",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "sega-32x",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "atari-2600",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "sg-1000",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "atari-5200",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "snes",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "atari-7800",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "vectrex",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "cd-i",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "virtual-boy",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "colecovision",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "dreamcast",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "game-boy",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "game-gear",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "gba",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "intellivision",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "jaguar",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "lynx",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "master-system",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "mega-cd",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "mega-drive",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "n64",
+    "sort_order": 100
+  },
+  {
+    "slug": "modem",
+    "name": "Modem or network port",
+    "platform": "neo-geo",
+    "sort_order": 100
+  },
+  {
+    "slug": "par",
+    "name": "Parallel port",
+    "platform": "atari-st",
+    "sort_order": 100
+  },
+  {
+    "slug": "floppy",
+    "name": "Floppy header",
+    "platform": "pc",
+    "sort_order": 110
+  },
+  {
+    "slug": "pcm",
+    "name": "PCMCIA slot",
+    "platform": "amiga",
+    "sort_order": 110
+  },
+  {
+    "slug": "pcm",
+    "name": "PCMCIA slot",
+    "platform": "cd32",
+    "sort_order": 110
+  },
+  {
+    "slug": "pcm",
+    "name": "PCMCIA slot",
+    "platform": "cdtv",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "nes",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "pc-engine",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "playstation",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "saturn",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "3do",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "sega-32x",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "atari-2600",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "sg-1000",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "atari-5200",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "snes",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "atari-7800",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "vectrex",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "cd-i",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "virtual-boy",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "colecovision",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "dreamcast",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "game-boy",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "game-gear",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "gba",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "intellivision",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "jaguar",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "lynx",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "master-system",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "mega-cd",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "mega-drive",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "n64",
+    "sort_order": 110
+  },
+  {
+    "slug": "psu",
+    "name": "Power input",
+    "platform": "neo-geo",
+    "sort_order": 110
+  },
+  {
+    "slug": "simm",
+    "name": "SIMM socket",
+    "platform": "atari-st",
+    "sort_order": 110
+  },
+  {
+    "slug": "agnus",
+    "name": "Agnus socket",
+    "platform": "amiga",
+    "sort_order": 120
+  },
+  {
+    "slug": "agnus",
+    "name": "Agnus socket",
+    "platform": "cd32",
+    "sort_order": 120
+  },
+  {
+    "slug": "agnus",
+    "name": "Agnus socket",
+    "platform": "cdtv",
+    "sort_order": 120
+  },
+  {
+    "slug": "scsi",
+    "name": "SCSI",
+    "platform": "pc",
+    "sort_order": 120
+  },
+  {
+    "slug": "denise",
+    "name": "Denise socket",
+    "platform": "amiga",
+    "sort_order": 130
+  },
+  {
+    "slug": "denise",
+    "name": "Denise socket",
+    "platform": "cd32",
+    "sort_order": 130
+  },
+  {
+    "slug": "denise",
+    "name": "Denise socket",
+    "platform": "cdtv",
+    "sort_order": 130
+  },
+  {
+    "slug": "ps2",
+    "name": "PS/2 port",
+    "platform": "pc",
+    "sort_order": 130
+  },
+  {
+    "slug": "lisa",
+    "name": "Lisa socket",
+    "platform": "amiga",
+    "sort_order": 140
+  },
+  {
+    "slug": "lisa",
+    "name": "Lisa socket",
+    "platform": "cd32",
+    "sort_order": 140
+  },
+  {
+    "slug": "lisa",
+    "name": "Lisa socket",
+    "platform": "cdtv",
+    "sort_order": 140
+  },
+  {
+    "slug": "serial",
+    "name": "Serial port",
+    "platform": "pc",
+    "sort_order": 140
+  },
+  {
+    "slug": "cia",
+    "name": "CIA socket",
+    "platform": "amiga",
+    "sort_order": 150
+  },
+  {
+    "slug": "cia",
+    "name": "CIA socket",
+    "platform": "cd32",
+    "sort_order": 150
+  },
+  {
+    "slug": "cia",
+    "name": "CIA socket",
+    "platform": "cdtv",
+    "sort_order": 150
+  },
+  {
+    "slug": "parallel",
+    "name": "Parallel port",
+    "platform": "pc",
+    "sort_order": 150
+  },
+  {
+    "slug": "gameport",
+    "name": "Game port",
+    "platform": "pc",
+    "sort_order": 160
+  },
+  {
+    "slug": "paula",
+    "name": "Paula socket",
+    "platform": "amiga",
+    "sort_order": 160
+  },
+  {
+    "slug": "paula",
+    "name": "Paula socket",
+    "platform": "cd32",
+    "sort_order": 160
+  },
+  {
+    "slug": "paula",
+    "name": "Paula socket",
+    "platform": "cdtv",
+    "sort_order": 160
+  },
+  {
+    "slug": "kick",
+    "name": "Kickstart socket",
+    "platform": "amiga",
+    "sort_order": 170
+  },
+  {
+    "slug": "kick",
+    "name": "Kickstart socket",
+    "platform": "cd32",
+    "sort_order": 170
+  },
+  {
+    "slug": "kick",
+    "name": "Kickstart socket",
+    "platform": "cdtv",
+    "sort_order": 170
+  },
+  {
+    "slug": "usb",
+    "name": "USB",
+    "platform": "pc",
+    "sort_order": 170
+  },
+  {
+    "slug": "rgb",
+    "name": "RGB port",
+    "platform": "amiga",
+    "sort_order": 180
+  },
+  {
+    "slug": "rgb",
+    "name": "RGB port",
+    "platform": "cd32",
+    "sort_order": 180
+  },
+  {
+    "slug": "rgb",
+    "name": "RGB port",
+    "platform": "cdtv",
+    "sort_order": 180
+  },
+  {
+    "slug": "par",
+    "name": "Parallel port",
+    "platform": "amiga",
+    "sort_order": 190
+  },
+  {
+    "slug": "par",
+    "name": "Parallel port",
+    "platform": "cd32",
+    "sort_order": 190
+  },
+  {
+    "slug": "par",
+    "name": "Parallel port",
+    "platform": "cdtv",
+    "sort_order": 190
+  },
+  {
+    "slug": "simm30",
+    "name": "30-pin SIMM socket",
+    "platform": "pc",
+    "sort_order": 200
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "platform": "amiga",
+    "sort_order": 200
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "platform": "cd32",
+    "sort_order": 200
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "platform": "cdtv",
+    "sort_order": 200
+  },
+  {
+    "slug": "simm72",
+    "name": "72-pin SIMM socket",
+    "platform": "pc",
+    "sort_order": 210
+  },
+  {
+    "slug": "dimm",
+    "name": "DIMM socket",
+    "platform": "pc",
+    "sort_order": 220
+  },
+  {
+    "slug": "cpusocket",
+    "name": "CPU socket",
+    "platform": "pc",
+    "sort_order": 230
+  },
+  {
+    "slug": "cpuslot",
+    "name": "CPU slot",
+    "platform": "pc",
+    "sort_order": 240
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "archimedes",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "nes",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "bbc-micro",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "pc-engine",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "risc-pc",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "amiga",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "apple-ii",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "playstation",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "mac-68k",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "saturn",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "cd32",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "3do",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "sega-32x",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "atari-2600",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "cdtv",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "sg-1000",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "atari-5200",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "snes",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "atari-7800",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "vectrex",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "cd-i",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "virtual-boy",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "colecovision",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "dreamcast",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "game-boy",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "game-gear",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "gba",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "pc",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "intellivision",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "jaguar",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "lynx",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "master-system",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "atari-st",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "atari-8bit",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "mega-cd",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "sam-coupe",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "zx-spectrum",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "mega-drive",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "zx81",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "amstrad-cpc",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "n64",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "amstrad-pcw",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "neo-geo",
+    "sort_order": 900
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "acorn-electron",
+    "sort_order": 900
+  },
+  {
+    "slug": "dip",
+    "name": "DIP (8086/286)",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 10
+  },
+  {
+    "slug": "plcc",
+    "name": "PLCC",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 20
+  },
+  {
+    "slug": "socket3",
+    "name": "Socket 3 (486)",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 30
+  },
+  {
+    "slug": "socket4",
+    "name": "Socket 4",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 40
+  },
+  {
+    "slug": "socket5",
+    "name": "Socket 5",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 50
+  },
+  {
+    "slug": "socket7",
+    "name": "Socket 7",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 60
+  },
+  {
+    "slug": "ssocket7",
+    "name": "Super Socket 7",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 70
+  },
+  {
+    "slug": "socket8",
+    "name": "Socket 8 (Pentium Pro)",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 80
+  },
+  {
+    "slug": "slot1",
+    "name": "Slot 1",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 90
+  },
+  {
+    "slug": "slota",
+    "name": "Slot A",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 100
+  },
+  {
+    "slug": "socket370",
+    "name": "Socket 370",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 110
+  },
+  {
+    "slug": "socketa",
+    "name": "Socket A (462)",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 120
+  },
+  {
+    "slug": "socket423",
+    "name": "Socket 423",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 130
+  },
+  {
+    "slug": "socket478",
+    "name": "Socket 478",
+    "kind": "socket",
+    "platform": "pc",
+    "sort_order": 140
+  },
+  {
+    "slug": "at",
+    "name": "AT",
+    "kind": "formfactor",
+    "platform": "pc",
+    "sort_order": 10
+  },
+  {
+    "slug": "babyat",
+    "name": "Baby AT",
+    "kind": "formfactor",
+    "platform": "pc",
+    "sort_order": 20
+  },
+  {
+    "slug": "atx",
+    "name": "ATX",
+    "kind": "formfactor",
+    "platform": "pc",
+    "sort_order": 30
+  },
+  {
+    "slug": "matx",
+    "name": "microATX",
+    "kind": "formfactor",
+    "platform": "pc",
+    "sort_order": 40
+  },
+  {
+    "slug": "flexatx",
+    "name": "FlexATX",
+    "kind": "formfactor",
+    "platform": "pc",
+    "sort_order": 50
+  },
+  {
+    "slug": "nlx",
+    "name": "NLX",
+    "kind": "formfactor",
+    "platform": "pc",
+    "sort_order": 60
+  },
+  {
+    "slug": "lpx",
+    "name": "LPX",
+    "kind": "formfactor",
+    "platform": "pc",
+    "sort_order": 70
+  },
+  {
+    "slug": "cpu",
+    "name": "Processor",
+    "sort_order": 10,
+    "kind": "feature"
+  },
+  {
+    "slug": "fpu",
+    "name": "FPU",
+    "sort_order": 20,
+    "kind": "feature"
+  },
+  {
+    "slug": "ram",
+    "name": "Memory",
+    "sort_order": 30,
+    "kind": "feature"
+  },
+  {
+    "slug": "scsi",
+    "name": "SCSI controller",
+    "sort_order": 40,
+    "kind": "feature"
+  },
+  {
+    "slug": "ide",
+    "name": "IDE controller",
+    "sort_order": 50,
+    "kind": "feature"
+  },
+  {
+    "slug": "mfm",
+    "name": "ST-506 / ST-412 controller",
+    "sort_order": 60,
+    "kind": "feature"
+  },
+  {
+    "slug": "sasi",
+    "name": "SASI controller",
+    "sort_order": 70,
+    "kind": "feature"
+  },
+  {
+    "slug": "cd",
+    "name": "CD-ROM controller",
+    "sort_order": 80,
+    "kind": "feature"
+  },
+  {
+    "slug": "floppy",
+    "name": "Floppy controller",
+    "sort_order": 90,
+    "kind": "feature"
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "sort_order": 100,
+    "kind": "feature"
+  },
+  {
+    "slug": "par",
+    "name": "Parallel port",
+    "sort_order": 110,
+    "kind": "feature"
+  },
+  {
+    "slug": "gpib",
+    "name": "GPIB port",
+    "sort_order": 120,
+    "kind": "feature"
+  },
+  {
+    "slug": "usb",
+    "name": "USB port",
+    "sort_order": 130,
+    "kind": "feature"
+  },
+  {
+    "slug": "modem",
+    "name": "Modem",
+    "sort_order": 140,
+    "kind": "feature"
+  },
+  {
+    "slug": "isdn",
+    "name": "ISDN",
+    "sort_order": 150,
+    "kind": "feature"
+  },
+  {
+    "slug": "eth",
+    "name": "Ethernet",
+    "sort_order": 160,
+    "kind": "feature"
+  },
+  {
+    "slug": "arcnet",
+    "name": "Arcnet",
+    "sort_order": 170,
+    "kind": "feature"
+  },
+  {
+    "slug": "gfx",
+    "name": "Graphics",
+    "sort_order": 180,
+    "kind": "feature"
+  },
+  {
+    "slug": "snd",
+    "name": "Sound",
+    "sort_order": 190,
+    "kind": "feature"
+  },
+  {
+    "slug": "rtc",
+    "name": "Real-time clock",
+    "sort_order": 200,
+    "kind": "feature"
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge port",
+    "platform": "wonderswan",
+    "sort_order": 10
+  },
+  {
+    "slug": "link",
+    "name": "Link port",
+    "platform": "wonderswan",
+    "sort_order": 20
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "x68000",
+    "sort_order": 30
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "pc-9801",
+    "sort_order": 40
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "trs-80",
+    "sort_order": 50
+  },
+  {
+    "slug": "tape",
+    "name": "Cassette port",
+    "platform": "trs-80",
+    "sort_order": 60
+  },
+  {
+    "slug": "cart",
+    "name": "Cartridge port",
+    "platform": "dragon-32",
+    "sort_order": 70
+  },
+  {
+    "slug": "joy",
+    "name": "Control port",
+    "platform": "dragon-32",
+    "sort_order": 80
+  },
+  {
+    "slug": "edge",
+    "name": "Expansion edge connector",
+    "platform": "oric",
+    "sort_order": 90
+  },
+  {
+    "slug": "tape",
+    "name": "Cassette port",
+    "platform": "oric",
+    "sort_order": 100
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "oric",
+    "sort_order": 110
+  },
+  {
+    "slug": "edge",
+    "name": "Expansion edge connector",
+    "platform": "sinclair-ql",
+    "sort_order": 120
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "sinclair-ql",
+    "sort_order": 130
+  },
+  {
+    "slug": "misc",
+    "name": "Miscellaneous",
+    "platform": "abc-80",
+    "sort_order": 140
+  },
+  {
+    "slug": "tape",
+    "name": "Cassette port",
+    "platform": "abc-80",
+    "sort_order": 150
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "platform": "playstation",
+    "sort_order": 10
+  },
+  {
+    "slug": "floppy",
+    "name": "Floppy port",
+    "platform": "archimedes",
+    "sort_order": 20
+  },
+  {
+    "slug": "floppy",
+    "name": "Floppy port",
+    "platform": "mac-68k",
+    "sort_order": 30
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "platform": "mac-68k",
+    "sort_order": 40
+  },
+  {
+    "slug": "floppy",
+    "name": "Floppy port",
+    "platform": "x68000",
+    "sort_order": 50
+  },
+  {
+    "slug": "scsi",
+    "name": "SCSI port",
+    "platform": "x68000",
+    "sort_order": 60
+  },
+  {
+    "slug": "floppy",
+    "name": "Floppy port",
+    "platform": "pc-9801",
+    "sort_order": 70
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "platform": "pc-9801",
+    "sort_order": 80
+  },
+  {
+    "slug": "par",
+    "name": "Parallel port",
+    "platform": "pc-9801",
+    "sort_order": 90
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "platform": "dragon-32",
+    "sort_order": 100
+  },
+  {
+    "slug": "floppy",
+    "name": "Floppy port",
+    "platform": "sam-coupe",
+    "sort_order": 110
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "platform": "sinclair-ql",
+    "sort_order": 120
+  },
+  {
+    "slug": "ser",
+    "name": "Serial port",
+    "platform": "abc-80",
+    "sort_order": 130
+  }
+]

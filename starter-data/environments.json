@@ -1,0 +1,40 @@
+[
+    {"slug": "wb1", "name": "Workbench 1.x", "platform": "amiga", "sort_order": 10},
+    {"slug": "wb2", "name": "Workbench 2.x", "platform": "amiga", "sort_order": 20},
+    {"slug": "wb3", "name": "Workbench 3.x", "platform": "amiga", "sort_order": 30},
+    {"slug": "os4", "name": "AmigaOS 4", "platform": "amiga", "sort_order": 40},
+
+    {"slug": "tos", "name": "TOS", "platform": "atari-st", "sort_order": 10},
+    {"slug": "gem", "name": "GEM", "platform": "atari-st", "sort_order": 20},
+    {"slug": "magic", "name": "MagiC", "platform": "atari-st", "sort_order": 30},
+
+    {"slug": "ms-dos", "name": "MS-DOS", "platform": "pc", "sort_order": 10},
+    {"slug": "pc-dos", "name": "PC DOS", "platform": "pc", "sort_order": 15},
+    {"slug": "win3x", "name": "Windows 3.x", "platform": "pc", "sort_order": 20},
+    {"slug": "win9x", "name": "Windows 9x", "platform": "pc", "sort_order": 30},
+    {"slug": "winnt", "name": "Windows NT/2000", "platform": "pc", "sort_order": 40},
+    {"slug": "winxp", "name": "Windows XP", "platform": "pc", "sort_order": 45},
+    {"slug": "os2", "name": "OS/2", "platform": "pc", "sort_order": 50},
+    {"slug": "linux-pc", "name": "Linux", "platform": "pc", "sort_order": 60},
+    {"slug": "cpm86", "name": "CP/M-86", "platform": "pc", "sort_order": 70},
+
+    {"slug": "cpm22", "name": "CP/M 2.2", "platform": "amstrad-cpc", "sort_order": 10},
+    {"slug": "amsdos", "name": "AMSDOS", "platform": "amstrad-cpc", "sort_order": 20},
+
+    {"slug": "c64-basic", "name": "Commodore BASIC", "platform": "c64", "sort_order": 10},
+    {"slug": "geos64", "name": "GEOS", "platform": "c64", "sort_order": 20},
+
+    {"slug": "cpm-msx", "name": "MSX-DOS", "platform": "msx", "sort_order": 10},
+    {"slug": "msx-basic", "name": "MSX BASIC", "platform": "msx", "sort_order": 20},
+
+    {"slug": "mac-system", "name": "System 6 and earlier", "platform": "mac-68k", "sort_order": 10},
+    {"slug": "mac-system7", "name": "System 7", "platform": "mac-68k", "sort_order": 20},
+    {"slug": "mac-os8", "name": "Mac OS 8 and 9", "platform": "mac-68k", "sort_order": 30},
+
+    {"slug": "spectrum-basic", "name": "Sinclair BASIC", "platform": "zx-spectrum", "sort_order": 10},
+
+    {"slug": "riscos", "name": "RISC OS", "platform": "archimedes", "sort_order": 10},
+
+    {"slug": "apple-dos33", "name": "Apple DOS 3.3", "platform": "apple-ii", "sort_order": 10},
+    {"slug": "prodos", "name": "ProDOS", "platform": "apple-ii", "sort_order": 20}
+]

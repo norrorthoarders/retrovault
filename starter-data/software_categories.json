@@ -1,0 +1,406 @@
+[
+  {
+    "slug": "games",
+    "name": "Games",
+    "role": "game",
+    "sort_order": 10
+  },
+  {
+    "slug": "applications",
+    "name": "Applications",
+    "role": "application",
+    "sort_order": 20,
+    "classes": "computer"
+  },
+  {
+    "slug": "music-audio",
+    "name": "Music and audio",
+    "parent": "applications",
+    "role": "other",
+    "sort_order": 40,
+    "classes": "computer"
+  },
+  {
+    "slug": "tracker",
+    "name": "Tracker",
+    "parent": "music-audio",
+    "role": "other",
+    "sort_order": 41,
+    "classes": "computer"
+  },
+  {
+    "slug": "sample-editor",
+    "name": "Sample editor",
+    "parent": "music-audio",
+    "role": "other",
+    "sort_order": 42,
+    "classes": "computer"
+  },
+  {
+    "slug": "music-disk",
+    "name": "Music disk",
+    "parent": "music-audio",
+    "role": "other",
+    "sort_order": 43,
+    "classes": "computer"
+  },
+  {
+    "slug": "development",
+    "name": "Development",
+    "parent": "applications",
+    "role": "other",
+    "sort_order": 50,
+    "classes": "computer"
+  },
+  {
+    "slug": "assembler",
+    "name": "Assembler",
+    "parent": "development",
+    "role": "other",
+    "sort_order": 51,
+    "classes": "computer"
+  },
+  {
+    "slug": "compiler",
+    "name": "Compiler",
+    "parent": "development",
+    "role": "other",
+    "sort_order": 52,
+    "classes": "computer"
+  },
+  {
+    "slug": "basic",
+    "name": "BASIC",
+    "parent": "development",
+    "role": "other",
+    "sort_order": 53,
+    "classes": "computer"
+  },
+  {
+    "slug": "game-creation",
+    "name": "Game creation",
+    "parent": "development",
+    "role": "other",
+    "sort_order": 54,
+    "classes": "computer"
+  },
+  {
+    "slug": "graphics-cad",
+    "name": "Graphics and CAD",
+    "parent": "applications",
+    "role": "other",
+    "sort_order": 21,
+    "classes": "computer"
+  },
+  {
+    "slug": "paint",
+    "name": "Paint",
+    "parent": "graphics-cad",
+    "role": "other",
+    "sort_order": 22,
+    "classes": "computer"
+  },
+  {
+    "slug": "rendering",
+    "name": "3D and rendering",
+    "parent": "graphics-cad",
+    "role": "other",
+    "sort_order": 23
+  },
+  {
+    "slug": "cad",
+    "name": "CAD",
+    "parent": "graphics-cad",
+    "role": "other",
+    "sort_order": 24
+  },
+  {
+    "slug": "animation",
+    "name": "Animation",
+    "parent": "graphics-cad",
+    "role": "other",
+    "sort_order": 25
+  },
+  {
+    "slug": "video-genlock",
+    "name": "Video and genlock",
+    "parent": "graphics-cad",
+    "role": "other",
+    "sort_order": 26
+  },
+  {
+    "slug": "productivity",
+    "name": "Productivity",
+    "parent": "applications",
+    "role": "other",
+    "sort_order": 30,
+    "classes": "computer"
+  },
+  {
+    "slug": "word-processor",
+    "name": "Word processor",
+    "parent": "productivity",
+    "role": "other",
+    "sort_order": 31,
+    "classes": "computer"
+  },
+  {
+    "slug": "spreadsheet",
+    "name": "Spreadsheet",
+    "parent": "productivity",
+    "role": "other",
+    "sort_order": 32,
+    "classes": "computer"
+  },
+  {
+    "slug": "database",
+    "name": "Database",
+    "parent": "productivity",
+    "role": "other",
+    "sort_order": 33,
+    "classes": "computer"
+  },
+  {
+    "slug": "dtp",
+    "name": "Desktop publishing",
+    "parent": "productivity",
+    "role": "other",
+    "sort_order": 34,
+    "classes": "computer"
+  },
+  {
+    "slug": "accounting",
+    "name": "Accounting",
+    "parent": "productivity",
+    "role": "other",
+    "sort_order": 35
+  },
+  {
+    "slug": "comms",
+    "name": "Comms and terminal",
+    "parent": "productivity",
+    "role": "other",
+    "sort_order": 36
+  },
+  {
+    "slug": "demoscene",
+    "name": "Demoscene",
+    "role": "application",
+    "sort_order": 60,
+    "classes": "computer"
+  },
+  {
+    "slug": "demo",
+    "name": "Demo",
+    "parent": "demoscene",
+    "role": "other",
+    "sort_order": 61,
+    "classes": "computer"
+  },
+  {
+    "slug": "intro",
+    "name": "Intro and cracktro",
+    "parent": "demoscene",
+    "role": "other",
+    "sort_order": 62
+  },
+  {
+    "slug": "diskmag",
+    "name": "Diskmag",
+    "parent": "demoscene",
+    "role": "other",
+    "sort_order": 63,
+    "classes": "computer"
+  },
+  {
+    "slug": "utilities",
+    "name": "Utilities",
+    "role": "application",
+    "sort_order": 70,
+    "classes": "computer"
+  },
+  {
+    "slug": "disk-tools",
+    "name": "Disk tools",
+    "parent": "utilities",
+    "role": "other",
+    "sort_order": 71,
+    "classes": "computer"
+  },
+  {
+    "slug": "backup",
+    "name": "Backup and copier",
+    "parent": "utilities",
+    "role": "other",
+    "sort_order": 72
+  },
+  {
+    "slug": "virus-tools",
+    "name": "Virus tools",
+    "parent": "utilities",
+    "role": "other",
+    "sort_order": 73,
+    "classes": "computer"
+  },
+  {
+    "slug": "operating-system",
+    "name": "Operating system",
+    "role": "application",
+    "sort_order": 80,
+    "classes": "computer"
+  },
+  {
+    "slug": "other-software",
+    "name": "Other software",
+    "role": "application",
+    "sort_order": 90,
+    "classes": "computer,console,handheld"
+  },
+  {
+    "slug": "action",
+    "name": "Action",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 10
+  },
+  {
+    "slug": "platformer",
+    "name": "Platformer",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 20
+  },
+  {
+    "slug": "shoot-em-up",
+    "name": "Shoot 'em up",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 30
+  },
+  {
+    "slug": "beat-em-up",
+    "name": "Beat 'em up",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 40
+  },
+  {
+    "slug": "fighting",
+    "name": "Fighting",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 50
+  },
+  {
+    "slug": "run-and-gun",
+    "name": "Run and gun",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 60
+  },
+  {
+    "slug": "role-playing",
+    "name": "Role-playing",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 70
+  },
+  {
+    "slug": "adventure",
+    "name": "Adventure",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 80
+  },
+  {
+    "slug": "point-and-click",
+    "name": "Point and click",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 90
+  },
+  {
+    "slug": "text-adventure",
+    "name": "Text adventure",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 100
+  },
+  {
+    "slug": "strategy",
+    "name": "Strategy",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 110
+  },
+  {
+    "slug": "management",
+    "name": "Management and tycoon",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 120
+  },
+  {
+    "slug": "simulation",
+    "name": "Simulation",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 130
+  },
+  {
+    "slug": "flight-sim",
+    "name": "Flight simulator",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 140
+  },
+  {
+    "slug": "racing",
+    "name": "Racing",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 150
+  },
+  {
+    "slug": "sports",
+    "name": "Sports",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 160
+  },
+  {
+    "slug": "puzzle",
+    "name": "Puzzle",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 170
+  },
+  {
+    "slug": "pinball",
+    "name": "Pinball",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 180
+  },
+  {
+    "slug": "board-card",
+    "name": "Board and card",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 190
+  },
+  {
+    "slug": "maze",
+    "name": "Maze",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 200
+  },
+  {
+    "slug": "compilation",
+    "name": "Compilation",
+    "parent": "games",
+    "role": "other",
+    "sort_order": 210
+  }
+]

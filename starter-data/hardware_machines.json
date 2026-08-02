@@ -1,0 +1,3929 @@
+[
+  {
+    "slug": "amiga-500",
+    "name": "Amiga 500",
+    "maker": "commodore",
+    "platform": "amiga",
+    "type": "computers",
+    "year": 1987,
+    "notes": "An example of a computer. Edit it, copy it, or remove it once you have your own.",
+    "sort_order": 10,
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 7.16 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "512 KB"
+      },
+      {
+        "label": "Video",
+        "value": "OCS"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy"
+      },
+      {
+        "label": "Kickstart",
+        "value": "1.3",
+        "choices": "1.2, 1.3, 2.0, 3.1"
+      }
+    ],
+    "slots": [
+      {
+        "code": "trap",
+        "quantity": 1,
+        "notes": "trapdoor, under the machine"
+      },
+      {
+        "code": "side",
+        "quantity": 1,
+        "notes": "left side expansion bus"
+      },
+      {
+        "code": "cpu",
+        "quantity": 1,
+        "notes": "CPU socket"
+      }
+    ]
+  },
+  {
+    "slug": "sms-console",
+    "name": "Sega Master System",
+    "maker": "sega",
+    "platform": "master-system",
+    "type": "console",
+    "year": 1985,
+    "notes": "An example of a console. It records no storage, so that box never appears.",
+    "sort_order": 20,
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80 @ 3.58 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "8 KB"
+      },
+      {
+        "label": "Video",
+        "value": "VDP"
+      },
+      {
+        "label": "Region",
+        "value": "PAL",
+        "choices": "PAL, NTSC, NTSC-J"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      }
+    ]
+  },
+  {
+    "slug": "game-boy-dmg",
+    "name": "Game Boy",
+    "maker": "nintendo",
+    "platform": "game-boy",
+    "type": "handheld",
+    "year": 1989,
+    "notes": "An example of a handheld.",
+    "sort_order": 30,
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Sharp LR35902 @ 4.19 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "8 KB"
+      },
+      {
+        "label": "Screen",
+        "value": "mono LCD, 160x144"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "link",
+        "quantity": 1,
+        "notes": "link cable port"
+      }
+    ]
+  },
+  {
+    "slug": "pc-486",
+    "name": "Generic 486 PC",
+    "maker": "various-vendor",
+    "platform": "pc",
+    "type": "computers",
+    "year": 1991,
+    "notes": "An example of a PC. Real board models are better recorded one at a time.",
+    "sort_order": 40,
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "80486, 25 to 100 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "4 to 32 MB"
+      },
+      {
+        "label": "Video",
+        "value": "VGA or SVGA"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy, IDE"
+      }
+    ],
+    "slots": [
+      {
+        "code": "isa16",
+        "quantity": 6,
+        "notes": "ISA"
+      },
+      {
+        "code": "vlb",
+        "quantity": 2,
+        "notes": "VESA local bus"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-2000",
+    "name": "Amiga 2000",
+    "maker": "commodore",
+    "platform": "amiga",
+    "type": "computers",
+    "year": 1987,
+    "sort_order": 20,
+    "notes": "The desktop Amiga with Zorro II slots. The first one an expansion card was designed for.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 7.16 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 MB chip"
+      },
+      {
+        "label": "Expansion",
+        "value": "Zorro II, plus ISA and a CPU slot"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "z2",
+        "quantity": 5,
+        "notes": "Zorro II bus"
+      },
+      {
+        "code": "isa",
+        "quantity": 4,
+        "notes": "ISA, bridgeboard only"
+      },
+      {
+        "code": "cpu",
+        "quantity": 1,
+        "notes": "CPU slot"
+      },
+      {
+        "code": "vid",
+        "quantity": 1,
+        "notes": "video slot"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-3000",
+    "name": "Amiga 3000",
+    "maker": "commodore",
+    "platform": "amiga",
+    "type": "computers",
+    "year": 1990,
+    "sort_order": 30,
+    "notes": "32-bit Zorro III, SCSI on the board.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68030 @ 16 or 25 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB"
+      },
+      {
+        "label": "Expansion",
+        "value": "Zorro III"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy, SCSI"
+      }
+    ],
+    "slots": [
+      {
+        "code": "z3",
+        "quantity": 4,
+        "notes": "Zorro III, backwards compatible with Zorro II"
+      },
+      {
+        "code": "z2",
+        "quantity": 4,
+        "notes": "Zorro II cards work in the same slots"
+      },
+      {
+        "code": "cpu",
+        "quantity": 1,
+        "notes": "CPU slot"
+      },
+      {
+        "code": "vid",
+        "quantity": 1,
+        "notes": "video slot"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-4000",
+    "name": "Amiga 4000",
+    "maker": "commodore",
+    "platform": "amiga",
+    "type": "computers",
+    "year": 1992,
+    "sort_order": 40,
+    "notes": "AGA and Zorro III. Shipped with a 68040 or a 68EC030 depending on the model.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68040 @ 25 MHz, or 68EC030"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB chip, 4 MB fast"
+      },
+      {
+        "label": "Expansion",
+        "value": "Zorro III"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy, IDE"
+      }
+    ],
+    "slots": [
+      {
+        "code": "z3",
+        "quantity": 4,
+        "notes": "Zorro III, backwards compatible with Zorro II"
+      },
+      {
+        "code": "z2",
+        "quantity": 4,
+        "notes": "Zorro II cards work in the same slots"
+      },
+      {
+        "code": "cpu",
+        "quantity": 1,
+        "notes": "CPU slot"
+      },
+      {
+        "code": "vid",
+        "quantity": 1,
+        "notes": "video slot"
+      }
+    ]
+  },
+  {
+    "slug": "pet-2001",
+    "name": "PET 2001",
+    "maker": "commodore",
+    "platform": "pet",
+    "type": "computers",
+    "year": 1977,
+    "sort_order": 300,
+    "notes": "The first one. Calculator keyboard and a built-in cassette deck.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6502 @ 1 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "4 or 8 KB"
+      },
+      {
+        "label": "Video",
+        "value": "40x25 monochrome, built-in 9\" display"
+      },
+      {
+        "label": "Storage",
+        "value": "built-in cassette"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "memory expansion connector"
+      },
+      {
+        "code": "joy",
+        "quantity": 1,
+        "notes": "user port games adapter"
+      },
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "IEEE-488 bus"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "second cassette port"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "pet-4032",
+    "name": "CBM 4032",
+    "maker": "commodore",
+    "platform": "pet",
+    "type": "computers",
+    "year": 1980,
+    "sort_order": 310,
+    "notes": "40-column PET with the full keyboard and BASIC 4.0.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6502 @ 1 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "32 KB"
+      },
+      {
+        "label": "Video",
+        "value": "40x25 monochrome"
+      },
+      {
+        "label": "Storage",
+        "value": "external, over IEEE-488"
+      }
+    ],
+    "slots": [
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "IEEE-488 bus"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "cbm-8032",
+    "name": "CBM 8032",
+    "maker": "commodore",
+    "platform": "pet",
+    "type": "computers",
+    "year": 1980,
+    "sort_order": 320,
+    "notes": "The 80-column business machine. What most European offices meant by a PET.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6502 @ 1 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "32 KB"
+      },
+      {
+        "label": "Video",
+        "value": "80x25 monochrome"
+      },
+      {
+        "label": "Storage",
+        "value": "external, over IEEE-488"
+      }
+    ],
+    "slots": [
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "IEEE-488 bus"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "vic-20",
+    "name": "VIC-20",
+    "maker": "commodore",
+    "platform": "vic-20",
+    "type": "computers",
+    "year": 1980,
+    "sort_order": 330,
+    "notes": "The first computer of any kind to sell a million. 5 KB, and most of it spoken for.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6502 @ 1.02 MHz PAL"
+      },
+      {
+        "label": "Memory",
+        "value": "5 KB, 3.5 KB free to BASIC"
+      },
+      {
+        "label": "Video",
+        "value": "VIC, 22x23 text"
+      },
+      {
+        "label": "Sound",
+        "value": "VIC, three tones and noise"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette or 1540 floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 1,
+        "notes": "control port"
+      },
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "serial (IEC) bus"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "c64-breadbin",
+    "name": "Commodore 64",
+    "maker": "commodore",
+    "platform": "c64",
+    "type": "computers",
+    "year": 1982,
+    "sort_order": 340,
+    "notes": "The breadbin. The best-selling computer model of all time, and the reason half this catalogue exists.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6510 @ 0.985 MHz PAL"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB"
+      },
+      {
+        "label": "Video",
+        "value": "VIC-II 6569 PAL"
+      },
+      {
+        "label": "Sound",
+        "value": "SID 6581"
+      },
+      {
+        "label": "Kernal",
+        "value": "901227-03"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette or 1541 floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "control ports"
+      },
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "serial (IEC) bus"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "c64c",
+    "name": "Commodore 64C",
+    "maker": "commodore",
+    "platform": "c64",
+    "type": "computers",
+    "year": 1986,
+    "sort_order": 350,
+    "notes": "The restyled C64 in the flatter case, usually with the 8580 SID - which is why a C64C and a breadbin do not sound quite alike.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 8500 @ 0.985 MHz PAL"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB"
+      },
+      {
+        "label": "Video",
+        "value": "VIC-II 8565 PAL"
+      },
+      {
+        "label": "Sound",
+        "value": "SID 8580"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette or 1541-II floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "control ports"
+      },
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "serial (IEC) bus"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "c64-sx64",
+    "name": "SX-64",
+    "maker": "commodore",
+    "platform": "c64",
+    "type": "computers",
+    "year": 1984,
+    "sort_order": 360,
+    "notes": "The portable C64, with a 5\" colour screen and a 1541 built in. Portable in the sense that it has a handle.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6510 @ 0.985 MHz PAL"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB"
+      },
+      {
+        "label": "Video",
+        "value": "VIC-II, built-in 5\" colour CRT"
+      },
+      {
+        "label": "Sound",
+        "value": "SID 6581"
+      },
+      {
+        "label": "Storage",
+        "value": "built-in 1541 drive, no cassette port"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "control ports"
+      },
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "serial (IEC) bus"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "c128",
+    "name": "Commodore 128",
+    "maker": "commodore",
+    "platform": "c64",
+    "type": "computers",
+    "year": 1985,
+    "sort_order": 370,
+    "notes": "Three machines in one case: native 128 mode, a genuine C64 mode, and CP/M on a second processor.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 8502 @ 2 MHz, plus Z80"
+      },
+      {
+        "label": "Memory",
+        "value": "128 KB"
+      },
+      {
+        "label": "Video",
+        "value": "VIC-II and VDC 8563 for 80 columns"
+      },
+      {
+        "label": "Sound",
+        "value": "SID 8580"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette or 1571 floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "control ports"
+      },
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "serial (IEC) bus"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "c128d",
+    "name": "Commodore 128D",
+    "maker": "commodore",
+    "platform": "c64",
+    "type": "computers",
+    "year": 1986,
+    "sort_order": 380,
+    "notes": "The 128 in a desktop case with the 1571 built in and a detachable keyboard.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 8502 @ 2 MHz, plus Z80"
+      },
+      {
+        "label": "Memory",
+        "value": "128 KB"
+      },
+      {
+        "label": "Video",
+        "value": "VIC-II and VDC 8563 for 80 columns"
+      },
+      {
+        "label": "Sound",
+        "value": "SID 8580"
+      },
+      {
+        "label": "Storage",
+        "value": "built-in 1571 drive"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "control ports"
+      },
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "serial (IEC) bus"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "c16",
+    "name": "Commodore 16",
+    "maker": "commodore",
+    "platform": "plus4",
+    "type": "computers",
+    "year": 1984,
+    "sort_order": 390,
+    "notes": "The 264 series in a breadbin case. Not C64 compatible, which is most of what anybody remembers about it.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 7501 @ 0.886 MHz PAL"
+      },
+      {
+        "label": "Memory",
+        "value": "16 KB"
+      },
+      {
+        "label": "Video",
+        "value": "TED, 121 colours"
+      },
+      {
+        "label": "Sound",
+        "value": "TED, two tones"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette or 1551 floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "control ports"
+      },
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "serial (IEC) bus"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "plus4",
+    "name": "Plus/4",
+    "maker": "commodore",
+    "platform": "plus4",
+    "type": "computers",
+    "year": 1984,
+    "sort_order": 400,
+    "notes": "64 KB and four applications in ROM. The productivity machine nobody had asked for.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 7501 @ 0.886 MHz PAL"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB"
+      },
+      {
+        "label": "Video",
+        "value": "TED, 121 colours"
+      },
+      {
+        "label": "Sound",
+        "value": "TED, two tones"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette or 1551 floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "control ports"
+      },
+      {
+        "code": "serial",
+        "quantity": 1,
+        "notes": "serial (IEC) bus"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      },
+      {
+        "code": "user",
+        "quantity": 1,
+        "notes": "user port"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-1000",
+    "name": "Amiga 1000",
+    "maker": "commodore",
+    "platform": "amiga",
+    "type": "computers",
+    "year": 1985,
+    "sort_order": 410,
+    "notes": "The first one, with Kickstart loaded from floppy at every boot and the developers' signatures moulded into the case.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 7.16 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "256 KB, 512 KB with the front expansion"
+      },
+      {
+        "label": "Video",
+        "value": "OCS"
+      },
+      {
+        "label": "Kickstart",
+        "value": "loaded from disk"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "side",
+        "quantity": 1,
+        "notes": "86-pin expansion bus"
+      },
+      {
+        "code": "cpu",
+        "quantity": 1,
+        "notes": "CPU socket"
+      },
+      {
+        "code": "ser",
+        "quantity": 1,
+        "notes": "serial port"
+      },
+      {
+        "code": "par",
+        "quantity": 1,
+        "notes": "parallel port"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-500-plus",
+    "name": "Amiga 500+",
+    "maker": "commodore",
+    "platform": "amiga",
+    "type": "computers",
+    "year": 1991,
+    "sort_order": 420,
+    "notes": "An A500 with ECS, Kickstart 2.04 and a battery on the board - which is worth checking before you plug one in.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 7.16 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 MB chip"
+      },
+      {
+        "label": "Video",
+        "value": "ECS"
+      },
+      {
+        "label": "Kickstart",
+        "value": "2.04"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "trap",
+        "quantity": 1,
+        "notes": "trapdoor, under the machine"
+      },
+      {
+        "code": "side",
+        "quantity": 1,
+        "notes": "left side expansion bus"
+      },
+      {
+        "code": "cpu",
+        "quantity": 1,
+        "notes": "CPU socket"
+      },
+      {
+        "code": "clk",
+        "quantity": 1,
+        "notes": "clock port"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-600",
+    "name": "Amiga 600",
+    "maker": "commodore",
+    "platform": "amiga",
+    "type": "computers",
+    "year": 1992,
+    "sort_order": 430,
+    "notes": "The small one, with PCMCIA and room for a 2.5\" drive, and no numeric keypad.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 7.16 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 MB chip"
+      },
+      {
+        "label": "Video",
+        "value": "ECS"
+      },
+      {
+        "label": "Kickstart",
+        "value": "2.05"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy, IDE 2.5\""
+      }
+    ],
+    "slots": [
+      {
+        "code": "trap",
+        "quantity": 1,
+        "notes": "trapdoor, under the machine"
+      },
+      {
+        "code": "pcm",
+        "quantity": 1,
+        "notes": "PCMCIA type II"
+      },
+      {
+        "code": "clk",
+        "quantity": 1,
+        "notes": "clock port"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-1200",
+    "name": "Amiga 1200",
+    "maker": "commodore",
+    "platform": "amiga",
+    "type": "computers",
+    "year": 1992,
+    "sort_order": 440,
+    "notes": "AGA in a wedge. The one most people mean when they say they still have an Amiga.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68EC020 @ 14.19 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB chip"
+      },
+      {
+        "label": "Video",
+        "value": "AGA"
+      },
+      {
+        "label": "Kickstart",
+        "value": "3.0"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy, IDE 2.5\""
+      }
+    ],
+    "slots": [
+      {
+        "code": "trap",
+        "quantity": 1,
+        "notes": "trapdoor accelerator slot"
+      },
+      {
+        "code": "pcm",
+        "quantity": 1,
+        "notes": "PCMCIA type II"
+      },
+      {
+        "code": "clk",
+        "quantity": 1,
+        "notes": "clock port"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-3000t",
+    "name": "Amiga 3000T",
+    "maker": "commodore",
+    "platform": "amiga",
+    "type": "computers",
+    "year": 1991,
+    "sort_order": 450,
+    "notes": "The tower 3000, with more Zorro slots than anybody filled.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68030 @ 25 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB chip, 16 MB fast"
+      },
+      {
+        "label": "Video",
+        "value": "ECS"
+      },
+      {
+        "label": "Kickstart",
+        "value": "2.04"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy, SCSI"
+      }
+    ],
+    "slots": [
+      {
+        "code": "z3",
+        "quantity": 5,
+        "notes": "Zorro III"
+      },
+      {
+        "code": "z2",
+        "quantity": 5,
+        "notes": "Zorro II cards work in the same slots"
+      },
+      {
+        "code": "isa",
+        "quantity": 4,
+        "notes": "ISA, bridgeboard only"
+      },
+      {
+        "code": "cpu",
+        "quantity": 1,
+        "notes": "CPU slot"
+      },
+      {
+        "code": "vid",
+        "quantity": 1,
+        "notes": "video slot"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-4000t",
+    "name": "Amiga 4000T",
+    "maker": "commodore",
+    "platform": "amiga",
+    "type": "computers",
+    "year": 1994,
+    "sort_order": 460,
+    "notes": "The tower 4000. The last Amiga Commodore shipped before it stopped shipping anything.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68040 @ 25 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB chip, 16 MB fast"
+      },
+      {
+        "label": "Video",
+        "value": "AGA"
+      },
+      {
+        "label": "Kickstart",
+        "value": "3.1"
+      },
+      {
+        "label": "Storage",
+        "value": "floppy, SCSI and IDE"
+      }
+    ],
+    "slots": [
+      {
+        "code": "z3",
+        "quantity": 5,
+        "notes": "Zorro III"
+      },
+      {
+        "code": "z2",
+        "quantity": 5,
+        "notes": "Zorro II cards work in the same slots"
+      },
+      {
+        "code": "isa",
+        "quantity": 4,
+        "notes": "ISA, bridgeboard only"
+      },
+      {
+        "code": "cpu",
+        "quantity": 1,
+        "notes": "CPU slot"
+      },
+      {
+        "code": "vid",
+        "quantity": 1,
+        "notes": "video slot"
+      }
+    ]
+  },
+  {
+    "slug": "cdtv",
+    "name": "CDTV",
+    "maker": "commodore",
+    "platform": "cdtv",
+    "type": "console",
+    "year": 1991,
+    "sort_order": 470,
+    "notes": "An A500 in a black hi-fi case with a CD drive, sold to people who did not want a computer. They did not want this either.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 7.16 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 MB chip"
+      },
+      {
+        "label": "Video",
+        "value": "ECS"
+      },
+      {
+        "label": "Kickstart",
+        "value": "1.3 with CDTV extensions"
+      },
+      {
+        "label": "Storage",
+        "value": "CD-ROM, single speed"
+      }
+    ],
+    "slots": [
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "front expansion bay"
+      },
+      {
+        "code": "ser",
+        "quantity": 1,
+        "notes": "serial port"
+      },
+      {
+        "code": "par",
+        "quantity": 1,
+        "notes": "parallel port"
+      }
+    ]
+  },
+  {
+    "slug": "cd32",
+    "name": "Amiga CD32",
+    "maker": "commodore",
+    "platform": "cd32",
+    "type": "console",
+    "year": 1993,
+    "sort_order": 480,
+    "notes": "An A1200 without the keyboard, and the first 32-bit CD console anywhere. Commodore went under four months later.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68EC020 @ 14.19 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB chip"
+      },
+      {
+        "label": "Video",
+        "value": "AGA"
+      },
+      {
+        "label": "Kickstart",
+        "value": "3.1"
+      },
+      {
+        "label": "Storage",
+        "value": "CD-ROM, double speed"
+      }
+    ],
+    "slots": [
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "rear expansion connector, for the MPEG and SX-1 modules"
+      },
+      {
+        "code": "ser",
+        "quantity": 1,
+        "notes": "AUX serial port"
+      }
+    ]
+  },
+  {
+    "slug": "nes-toaster",
+    "name": "NES (front loader)",
+    "maker": "nintendo",
+    "platform": "nes",
+    "type": "console",
+    "year": 1985,
+    "sort_order": 490,
+    "notes": "The front-loading NES. The loading mechanism is the thing that fails, and the reason so many need the pins reseating.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Ricoh 2A03 @ 1.79 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 KB work, 2 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "PPU, 256x240"
+      },
+      {
+        "label": "Region",
+        "value": "NTSC or PAL"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "video out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion port, underneath"
+      }
+    ]
+  },
+  {
+    "slug": "nes-top-loader",
+    "name": "NES (top loader)",
+    "maker": "nintendo",
+    "platform": "nes",
+    "type": "console",
+    "year": 1993,
+    "sort_order": 500,
+    "notes": "The later top loader. No lockout chip and no rotting pin connector, but composite out was dropped for RF.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Ricoh 2A03 @ 1.79 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 KB work, 2 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "PPU, RF only"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "rf",
+        "quantity": 1,
+        "notes": "RF out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "snes-console",
+    "name": "Super Nintendo",
+    "maker": "nintendo",
+    "platform": "snes",
+    "type": "console",
+    "year": 1990,
+    "sort_order": 510,
+    "notes": "Mode 7 and the S-SMP sound chip. The PAL machine runs at 50 Hz and it shows.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Ricoh 5A22 @ 3.58 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "128 KB work, 64 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "PPU1/PPU2, 256x224"
+      },
+      {
+        "label": "Sound",
+        "value": "S-SMP with SPC700"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "video out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion port, underneath"
+      }
+    ]
+  },
+  {
+    "slug": "n64-console",
+    "name": "Nintendo 64",
+    "maker": "nintendo",
+    "platform": "n64",
+    "type": "console",
+    "year": 1996,
+    "sort_order": 520,
+    "notes": "Four controller ports as standard, which is most of what people remember about it.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "NEC VR4300 @ 93.75 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "4 MB RDRAM, 8 MB with the Expansion Pak"
+      },
+      {
+        "label": "Video",
+        "value": "Reality Coprocessor"
+      },
+      {
+        "label": "Storage",
+        "value": "cartridge"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 4,
+        "notes": "controller ports"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "memory expansion bay"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "multi out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "mega-drive-1",
+    "name": "Mega Drive (model 1)",
+    "maker": "sega",
+    "platform": "mega-drive",
+    "type": "console",
+    "year": 1988,
+    "sort_order": 530,
+    "notes": "The one with the headphone socket and the better sound. Genesis in North America.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 7.6 MHz, plus Z80"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB work, 64 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "VDP, 320x224"
+      },
+      {
+        "label": "Sound",
+        "value": "YM2612 and SN76489"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "video out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion port, for the Mega-CD"
+      }
+    ]
+  },
+  {
+    "slug": "mega-drive-2",
+    "name": "Mega Drive (model 2)",
+    "maker": "sega",
+    "platform": "mega-drive",
+    "type": "console",
+    "year": 1993,
+    "sort_order": 540,
+    "notes": "Smaller, cheaper, no headphone socket, and mono unless you take stereo from the AV port.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 7.6 MHz, plus Z80"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB work, 64 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "VDP, 320x224"
+      },
+      {
+        "label": "Sound",
+        "value": "YM3438 and SN76489"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "video out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion port, for the Mega-CD"
+      }
+    ]
+  },
+  {
+    "slug": "mega-cd-2",
+    "name": "Mega-CD (model 2)",
+    "maker": "sega",
+    "platform": "mega-cd",
+    "type": "console",
+    "year": 1993,
+    "sort_order": 550,
+    "notes": "A CD drive, a second 68000 and a scaling chip, sat under a Mega Drive.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 12.5 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "6 MB total across the two machines"
+      },
+      {
+        "label": "Storage",
+        "value": "CD-ROM, double speed"
+      },
+      {
+        "label": "Backup",
+        "value": "internal battery RAM"
+      }
+    ],
+    "slots": [
+      {
+        "code": "passthru",
+        "quantity": 1,
+        "notes": "the Mega Drive sits on top"
+      },
+      {
+        "code": "cdport",
+        "quantity": 1,
+        "notes": "CD drive"
+      },
+      {
+        "code": "memcard",
+        "quantity": 1,
+        "notes": "backup RAM cartridge slot"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "saturn-console",
+    "name": "Sega Saturn",
+    "maker": "sega",
+    "platform": "saturn",
+    "type": "console",
+    "year": 1994,
+    "sort_order": 560,
+    "notes": "Two SH-2s and a reputation for being hard to write for. The PAL machine came late and thin on titles.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "two Hitachi SH-2 @ 28.6 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB work, 1.5 MB video"
+      },
+      {
+        "label": "Storage",
+        "value": "CD-ROM, double speed"
+      },
+      {
+        "label": "Backup",
+        "value": "internal battery RAM"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cdport",
+        "quantity": 1,
+        "notes": "CD drive"
+      },
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot, RAM and backup"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "memcard",
+        "quantity": 1,
+        "notes": "internal backup RAM"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "AV out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "dreamcast-console",
+    "name": "Dreamcast",
+    "maker": "sega",
+    "platform": "dreamcast",
+    "type": "console",
+    "year": 1998,
+    "sort_order": 570,
+    "notes": "GD-ROM, a modem in the box, and the last console Sega made.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Hitachi SH-4 @ 200 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "16 MB work, 8 MB video"
+      },
+      {
+        "label": "Storage",
+        "value": "GD-ROM"
+      },
+      {
+        "label": "Network",
+        "value": "56k modem, broadband adapter later"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cdport",
+        "quantity": 1,
+        "notes": "GD-ROM drive"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 4,
+        "notes": "controller ports"
+      },
+      {
+        "code": "modem",
+        "quantity": 1,
+        "notes": "modem bay"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "AV out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "master-system-2",
+    "name": "Master System II",
+    "maker": "sega",
+    "platform": "master-system",
+    "type": "console",
+    "year": 1990,
+    "sort_order": 580,
+    "notes": "Cheaper, smaller, no card slot and no reset button. Alex Kidd is built in.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80 @ 3.58 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "8 KB work, 16 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "VDP, 256x192"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "rf",
+        "quantity": 1,
+        "notes": "RF out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "playstation-scph1002",
+    "name": "PlayStation (SCPH-1002)",
+    "maker": "sony",
+    "platform": "playstation",
+    "type": "console",
+    "year": 1995,
+    "sort_order": 590,
+    "notes": "The early PAL machine, with the parallel port on the back that later revisions dropped.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MIPS R3000A @ 33.9 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB work, 1 MB video"
+      },
+      {
+        "label": "Storage",
+        "value": "CD-ROM, double speed"
+      },
+      {
+        "label": "Sound",
+        "value": "SPU, 24 voices"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cdport",
+        "quantity": 1,
+        "notes": "CD drive"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "memcard",
+        "quantity": 2,
+        "notes": "memory card slots"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "parallel port"
+      },
+      {
+        "code": "ser",
+        "quantity": 1,
+        "notes": "serial link port"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "AV multi out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "atari-2600-vcs",
+    "name": "Atari 2600 VCS",
+    "maker": "atari",
+    "platform": "atari-2600",
+    "type": "console",
+    "year": 1977,
+    "sort_order": 600,
+    "notes": "Woodgrain and six switches. The machine that made a cartridge a thing you bought.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6507 @ 1.19 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "128 bytes"
+      },
+      {
+        "label": "Video",
+        "value": "TIA, 160x192"
+      },
+      {
+        "label": "Sound",
+        "value": "TIA, two channels"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "joystick ports"
+      },
+      {
+        "code": "rf",
+        "quantity": 1,
+        "notes": "RF out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "atari-7800",
+    "name": "Atari 7800",
+    "maker": "atari",
+    "platform": "atari-7800",
+    "type": "console",
+    "year": 1986,
+    "sort_order": 610,
+    "notes": "Plays 2600 cartridges as well, which almost nothing else of its generation could say.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Atari SALLY 6502 @ 1.79 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "4 KB"
+      },
+      {
+        "label": "Video",
+        "value": "MARIA"
+      },
+      {
+        "label": "Sound",
+        "value": "TIA, POKEY in some cartridges"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion connector"
+      },
+      {
+        "code": "rf",
+        "quantity": 1,
+        "notes": "RF out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "neo-geo-aes",
+    "name": "Neo Geo AES",
+    "maker": "snk",
+    "platform": "neo-geo",
+    "type": "console",
+    "year": 1990,
+    "sort_order": 620,
+    "notes": "The arcade board in a home case, and cartridges that cost as much as a console.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 12 MHz, plus Z80"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB work, 84 KB video"
+      },
+      {
+        "label": "Storage",
+        "value": "cartridge, up to 716 Mbit"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "memcard",
+        "quantity": 1,
+        "notes": "memory card slot"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "AV out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "pc-engine-core",
+    "name": "PC Engine (white)",
+    "maker": "nec",
+    "platform": "pc-engine",
+    "type": "console",
+    "year": 1987,
+    "sort_order": 630,
+    "notes": "HuCards the size of a credit card, and the smallest console anybody had made.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Hudson HuC6280 @ 7.16 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "8 KB work, 64 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "HuC6270"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "HuCard slot"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion bus, for the CD-ROM unit"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 1,
+        "notes": "controller port"
+      },
+      {
+        "code": "rf",
+        "quantity": 1,
+        "notes": "RF out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "intellivision-master",
+    "name": "Intellivision",
+    "maker": "mattel",
+    "platform": "intellivision",
+    "type": "console",
+    "year": 1979,
+    "sort_order": 640,
+    "notes": "Disc controllers with a keypad, and overlays that slid in over them.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "General Instrument CP1610 @ 894 kHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1352 bytes"
+      },
+      {
+        "label": "Video",
+        "value": "STIC, 159x96"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "hand controllers, hard-wired on early units"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion connector"
+      },
+      {
+        "code": "rf",
+        "quantity": 1,
+        "notes": "RF out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "colecovision-console",
+    "name": "ColecoVision",
+    "maker": "various-vendor",
+    "platform": "colecovision",
+    "type": "console",
+    "year": 1982,
+    "sort_order": 650,
+    "notes": "The expansion module let it play 2600 cartridges, which Atari went to court about.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80A @ 3.58 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 KB work, 16 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "TMS9928A"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion module connector"
+      },
+      {
+        "code": "rf",
+        "quantity": 1,
+        "notes": "RF out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "vectrex-console",
+    "name": "Vectrex",
+    "maker": "various-vendor",
+    "platform": "vectrex",
+    "type": "console",
+    "year": 1982,
+    "sort_order": 660,
+    "notes": "Its own vector monitor built in, so it never needed a television and never looked like anything else.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68A09 @ 1.5 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 KB"
+      },
+      {
+        "label": "Video",
+        "value": "vector CRT, built in, monochrome"
+      },
+      {
+        "label": "Sound",
+        "value": "AY-3-8912"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "3do-fz1",
+    "name": "3DO FZ-1",
+    "maker": "various-vendor",
+    "platform": "3do",
+    "type": "console",
+    "year": 1993,
+    "sort_order": 670,
+    "notes": "Panasonic's build of a standard other people were meant to licence. Almost nobody did.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "ARM60 @ 12.5 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB work, 1 MB video"
+      },
+      {
+        "label": "Storage",
+        "value": "CD-ROM, double speed"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cdport",
+        "quantity": 1,
+        "notes": "CD drive"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 1,
+        "notes": "controller port, daisy chained"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion bay"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "AV out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "jaguar-console",
+    "name": "Atari Jaguar",
+    "maker": "atari",
+    "platform": "jaguar",
+    "type": "console",
+    "year": 1993,
+    "sort_order": 680,
+    "notes": "Sold as 64-bit, which was true of two of the chips and an argument about the rest.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Motorola 68000 @ 13.3 MHz with Tom and Jerry"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB"
+      },
+      {
+        "label": "Storage",
+        "value": "cartridge, CD add-on later"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion port, for the CD unit"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "AV out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "cdi-910",
+    "name": "Philips CD-i 910",
+    "maker": "philips",
+    "platform": "cd-i",
+    "type": "console",
+    "year": 1991,
+    "sort_order": 690,
+    "notes": "Sold as an interactive appliance rather than a console, which is why it is shaped like a video recorder.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68070 @ 15.5 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 MB"
+      },
+      {
+        "label": "Storage",
+        "value": "CD-i disc"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cdport",
+        "quantity": 1,
+        "notes": "CD drive"
+      },
+      {
+        "code": "ctrl",
+        "quantity": 2,
+        "notes": "controller ports"
+      },
+      {
+        "code": "exp",
+        "quantity": 1,
+        "notes": "expansion bay, for the Digital Video cartridge"
+      },
+      {
+        "code": "av",
+        "quantity": 1,
+        "notes": "AV out"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "game-boy-pocket",
+    "name": "Game Boy Pocket",
+    "maker": "nintendo",
+    "platform": "game-boy",
+    "type": "handheld",
+    "year": 1996,
+    "sort_order": 700,
+    "notes": "Smaller, two AAAs instead of four AAs, and a screen you can actually read.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Sharp LR35902 @ 4.19 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "8 KB work, 8 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "160x144 monochrome"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "link",
+        "quantity": 1,
+        "notes": "link port"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "game-boy-color",
+    "name": "Game Boy Color",
+    "maker": "nintendo",
+    "platform": "game-boy",
+    "type": "handheld",
+    "year": 1998,
+    "sort_order": 710,
+    "notes": "Backwards compatible, and the colour palette it applies to old cartridges is chosen by a key combination at boot.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Sharp LR35902 @ 8.38 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "32 KB work, 16 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "160x144, 56 colours on screen"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "link",
+        "quantity": 1,
+        "notes": "link port"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "gba-original",
+    "name": "Game Boy Advance",
+    "maker": "nintendo",
+    "platform": "gba",
+    "type": "handheld",
+    "year": 2001,
+    "sort_order": 720,
+    "notes": "No backlight, which is the entire reason the SP exists.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "ARM7TDMI @ 16.8 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "32 KB internal, 256 KB external"
+      },
+      {
+        "label": "Video",
+        "value": "240x160, unlit"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "link",
+        "quantity": 1,
+        "notes": "link port"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "game-gear-handheld",
+    "name": "Game Gear",
+    "maker": "sega",
+    "platform": "game-gear",
+    "type": "handheld",
+    "year": 1990,
+    "sort_order": 730,
+    "notes": "A backlit Master System that ate six AA batteries in four hours. The capacitors have all failed by now.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80 @ 3.58 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "8 KB work, 16 KB video"
+      },
+      {
+        "label": "Video",
+        "value": "160x144 backlit colour"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "link",
+        "quantity": 1,
+        "notes": "gear-to-gear port"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "lynx-ii",
+    "name": "Atari Lynx II",
+    "maker": "atari",
+    "platform": "lynx",
+    "type": "handheld",
+    "year": 1991,
+    "sort_order": 740,
+    "notes": "Colour, backlit and left-handed if you wanted, three years before anybody else managed the first two.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "65SC02 @ 4 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB"
+      },
+      {
+        "label": "Video",
+        "value": "160x102 backlit colour"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "link",
+        "quantity": 1,
+        "notes": "ComLynx port"
+      },
+      {
+        "code": "psu",
+        "quantity": 1,
+        "notes": "power in"
+      }
+    ]
+  },
+  {
+    "slug": "wonderswan-color",
+    "name": "WonderSwan Color",
+    "maker": "bandai",
+    "platform": "wonderswan",
+    "type": "handheld",
+    "year": 2000,
+    "sort_order": 750,
+    "notes": "Held either way up, and it ran for thirty hours on one AA. Japan only.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "NEC V30 MZ @ 3.072 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB"
+      },
+      {
+        "label": "Video",
+        "value": "224x144 colour"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "link",
+        "quantity": 1,
+        "notes": "link port"
+      }
+    ]
+  },
+  {
+    "slug": "zx-spectrum-48k",
+    "name": "ZX Spectrum 48K",
+    "maker": "sinclair",
+    "platform": "zx-spectrum",
+    "type": "computers",
+    "year": 1982,
+    "sort_order": 760,
+    "notes": "Rubber keys and colour clash. The machine most British bedrooms learned to program on.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80A @ 3.5 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "48 KB"
+      },
+      {
+        "label": "Video",
+        "value": "256x192, attribute colour"
+      },
+      {
+        "label": "Sound",
+        "value": "beeper"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette"
+      }
+    ],
+    "slots": [
+      {
+        "code": "edge",
+        "quantity": 1,
+        "notes": "rear expansion edge connector"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "EAR and MIC"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "TV out"
+      }
+    ]
+  },
+  {
+    "slug": "zx-spectrum-128-plus2",
+    "name": "ZX Spectrum +2",
+    "maker": "sinclair",
+    "platform": "zx-spectrum",
+    "type": "computers",
+    "year": 1986,
+    "sort_order": 770,
+    "notes": "Amstrad's Spectrum, with the tape deck built in and an AY chip that made the music worth listening to.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80A @ 3.5 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "128 KB"
+      },
+      {
+        "label": "Video",
+        "value": "256x192, attribute colour"
+      },
+      {
+        "label": "Sound",
+        "value": "AY-3-8912"
+      },
+      {
+        "label": "Storage",
+        "value": "built-in cassette"
+      }
+    ],
+    "slots": [
+      {
+        "code": "edge",
+        "quantity": 1,
+        "notes": "rear expansion edge connector"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "Sinclair joystick ports"
+      },
+      {
+        "code": "ay",
+        "quantity": 1,
+        "notes": "AY sound chip"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "RGB and TV out"
+      }
+    ]
+  },
+  {
+    "slug": "atari-520st",
+    "name": "Atari 520ST",
+    "maker": "atari",
+    "platform": "atari-st",
+    "type": "computers",
+    "year": 1985,
+    "sort_order": 780,
+    "notes": "MIDI in and out as standard, which is why so many studios still have one.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 8 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "512 KB"
+      },
+      {
+        "label": "Video",
+        "value": "ST shifter, 640x400 mono or 320x200 colour"
+      },
+      {
+        "label": "Sound",
+        "value": "YM2149"
+      },
+      {
+        "label": "Storage",
+        "value": "external floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "floppy",
+        "quantity": 1,
+        "notes": "external floppy port"
+      },
+      {
+        "code": "midi",
+        "quantity": 2,
+        "notes": "MIDI in and out"
+      },
+      {
+        "code": "acsi",
+        "quantity": 1,
+        "notes": "ACSI/DMA port"
+      },
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "ROM cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "joystick ports"
+      },
+      {
+        "code": "par",
+        "quantity": 1,
+        "notes": "parallel port"
+      },
+      {
+        "code": "ser",
+        "quantity": 1,
+        "notes": "serial port"
+      }
+    ]
+  },
+  {
+    "slug": "atari-1040stf",
+    "name": "Atari 1040STF",
+    "maker": "atari",
+    "platform": "atari-st",
+    "type": "computers",
+    "year": 1986,
+    "sort_order": 790,
+    "notes": "A megabyte and the floppy drive inside the case. The one most people had.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 8 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 MB"
+      },
+      {
+        "label": "Video",
+        "value": "ST shifter, 640x400 mono or 320x200 colour"
+      },
+      {
+        "label": "Sound",
+        "value": "YM2149"
+      },
+      {
+        "label": "Storage",
+        "value": "internal 3.5-inch floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "floppy",
+        "quantity": 1,
+        "notes": "internal drive, external port"
+      },
+      {
+        "code": "midi",
+        "quantity": 2,
+        "notes": "MIDI in and out"
+      },
+      {
+        "code": "acsi",
+        "quantity": 1,
+        "notes": "ACSI/DMA port"
+      },
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "ROM cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "joystick ports"
+      },
+      {
+        "code": "par",
+        "quantity": 1,
+        "notes": "parallel port"
+      },
+      {
+        "code": "ser",
+        "quantity": 1,
+        "notes": "serial port"
+      }
+    ]
+  },
+  {
+    "slug": "atari-mega-st",
+    "name": "Atari Mega ST",
+    "maker": "atari",
+    "platform": "atari-st",
+    "type": "computers",
+    "year": 1987,
+    "sort_order": 800,
+    "notes": "Detached keyboard, a blitter and an internal bus, sold at people who did work on it.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 8 MHz with blitter"
+      },
+      {
+        "label": "Memory",
+        "value": "2 or 4 MB"
+      },
+      {
+        "label": "Video",
+        "value": "ST shifter"
+      },
+      {
+        "label": "Storage",
+        "value": "internal floppy, ACSI hard disk"
+      }
+    ],
+    "slots": [
+      {
+        "code": "stbus",
+        "quantity": 1,
+        "notes": "internal expansion bus"
+      },
+      {
+        "code": "floppy",
+        "quantity": 1,
+        "notes": "internal drive"
+      },
+      {
+        "code": "midi",
+        "quantity": 2,
+        "notes": "MIDI in and out"
+      },
+      {
+        "code": "acsi",
+        "quantity": 1,
+        "notes": "ACSI/DMA port"
+      },
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "ROM cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "joystick ports"
+      },
+      {
+        "code": "par",
+        "quantity": 1,
+        "notes": "parallel port"
+      },
+      {
+        "code": "ser",
+        "quantity": 1,
+        "notes": "serial port"
+      }
+    ]
+  },
+  {
+    "slug": "amstrad-cpc-464",
+    "name": "Amstrad CPC 464",
+    "maker": "amstrad",
+    "platform": "amstrad-cpc",
+    "type": "computers",
+    "year": 1984,
+    "sort_order": 810,
+    "notes": "Sold with its own monitor, which powered the machine — so a dead monitor is a dead computer.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80A @ 4 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB"
+      },
+      {
+        "label": "Video",
+        "value": "6845, 160x200 to 640x200"
+      },
+      {
+        "label": "Sound",
+        "value": "AY-3-8912"
+      },
+      {
+        "label": "Storage",
+        "value": "built-in cassette"
+      }
+    ],
+    "slots": [
+      {
+        "code": "edge",
+        "quantity": 1,
+        "notes": "expansion edge connector"
+      },
+      {
+        "code": "joy",
+        "quantity": 1,
+        "notes": "joystick port"
+      },
+      {
+        "code": "printer",
+        "quantity": 1,
+        "notes": "printer port"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "monitor connector"
+      }
+    ]
+  },
+  {
+    "slug": "amstrad-cpc-6128",
+    "name": "Amstrad CPC 6128",
+    "maker": "amstrad",
+    "platform": "amstrad-cpc",
+    "type": "computers",
+    "year": 1985,
+    "sort_order": 820,
+    "notes": "128 KB and a 3-inch disk drive, in the format only Amstrad ever really used.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80A @ 4 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "128 KB"
+      },
+      {
+        "label": "Video",
+        "value": "6845"
+      },
+      {
+        "label": "Sound",
+        "value": "AY-3-8912"
+      },
+      {
+        "label": "Storage",
+        "value": "built-in 3-inch floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "edge",
+        "quantity": 1,
+        "notes": "expansion edge connector"
+      },
+      {
+        "code": "floppy",
+        "quantity": 1,
+        "notes": "second drive port"
+      },
+      {
+        "code": "joy",
+        "quantity": 1,
+        "notes": "joystick port"
+      },
+      {
+        "code": "printer",
+        "quantity": 1,
+        "notes": "printer port"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "monitor connector"
+      }
+    ]
+  },
+  {
+    "slug": "msx2-machine",
+    "name": "MSX2",
+    "maker": "various-vendor",
+    "platform": "msx",
+    "type": "computers",
+    "year": 1985,
+    "sort_order": 830,
+    "notes": "A standard rather than a machine, so a Sony and a Philips run the same cartridges.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80A @ 3.58 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "64 to 128 KB"
+      },
+      {
+        "label": "Video",
+        "value": "V9938, 512x212"
+      },
+      {
+        "label": "Sound",
+        "value": "AY-3-8910"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette or floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 2,
+        "notes": "cartridge slots"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "joystick ports"
+      }
+    ]
+  },
+  {
+    "slug": "apple-iie",
+    "name": "Apple IIe",
+    "maker": "apple",
+    "platform": "apple-ii",
+    "type": "computers",
+    "year": 1983,
+    "sort_order": 840,
+    "notes": "Seven expansion slots and a machine that stayed on sale for eleven years.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6502 @ 1.02 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB, 128 KB with the auxiliary card"
+      },
+      {
+        "label": "Video",
+        "value": "280x192 colour, 80 columns with a card"
+      },
+      {
+        "label": "Storage",
+        "value": "Disk II"
+      }
+    ],
+    "slots": [
+      {
+        "code": "aslot",
+        "quantity": 7,
+        "notes": "expansion slots"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "auxiliary slot"
+      }
+    ]
+  },
+  {
+    "slug": "bbc-micro-b",
+    "name": "BBC Micro Model B",
+    "maker": "acorn",
+    "platform": "bbc-micro",
+    "type": "computers",
+    "year": 1981,
+    "sort_order": 850,
+    "notes": "The school computer, with more ports on the back than anything else of its size.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6502 @ 2 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "32 KB"
+      },
+      {
+        "label": "Video",
+        "value": "6845, seven modes"
+      },
+      {
+        "label": "Sound",
+        "value": "SN76489"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette, floppy with a DFS"
+      }
+    ],
+    "slots": [
+      {
+        "code": "tube",
+        "quantity": 1,
+        "notes": "Tube second-processor interface"
+      },
+      {
+        "code": "onemhz",
+        "quantity": 1,
+        "notes": "1 MHz bus"
+      },
+      {
+        "code": "userport",
+        "quantity": 1,
+        "notes": "user port"
+      },
+      {
+        "code": "econet",
+        "quantity": 1,
+        "notes": "Econet socket"
+      },
+      {
+        "code": "edge",
+        "quantity": 1,
+        "notes": "expansion connectors"
+      }
+    ]
+  },
+  {
+    "slug": "acorn-electron-machine",
+    "name": "Acorn Electron",
+    "maker": "acorn",
+    "platform": "acorn-electron",
+    "type": "computers",
+    "year": 1983,
+    "sort_order": 860,
+    "notes": "The cut-down BBC. One chip did most of it, and it was slower for the same reason it was cheaper.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6502A @ 2 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "32 KB"
+      },
+      {
+        "label": "Video",
+        "value": "ULA, BBC modes"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette"
+      }
+    ],
+    "slots": [
+      {
+        "code": "edge",
+        "quantity": 1,
+        "notes": "expansion connector"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "TV and monitor out"
+      }
+    ]
+  },
+  {
+    "slug": "archimedes-a3000",
+    "name": "Acorn A3000",
+    "maker": "acorn",
+    "platform": "archimedes",
+    "type": "computers",
+    "year": 1989,
+    "sort_order": 870,
+    "notes": "ARM in a home computer, six years before anybody was putting it in a telephone.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "ARM2 @ 8 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 MB"
+      },
+      {
+        "label": "Video",
+        "value": "VIDC, 640x480"
+      },
+      {
+        "label": "Storage",
+        "value": "internal floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "podule",
+        "quantity": 1,
+        "notes": "internal podule slot"
+      },
+      {
+        "code": "floppy",
+        "quantity": 1,
+        "notes": "internal drive"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "expansion connector"
+      }
+    ]
+  },
+  {
+    "slug": "atari-800xl",
+    "name": "Atari 800XL",
+    "maker": "atari",
+    "platform": "atari-8bit",
+    "type": "computers",
+    "year": 1983,
+    "sort_order": 880,
+    "notes": "ANTIC and GTIA doing display lists, years before anyone called it a graphics chip.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6502C @ 1.79 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "64 KB"
+      },
+      {
+        "label": "Video",
+        "value": "ANTIC and GTIA"
+      },
+      {
+        "label": "Sound",
+        "value": "POKEY"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette or 1050 floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "pbi",
+        "quantity": 1,
+        "notes": "parallel bus interface"
+      },
+      {
+        "code": "sio",
+        "quantity": 1,
+        "notes": "SIO daisy chain"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "joystick ports"
+      }
+    ]
+  },
+  {
+    "slug": "atari-130xe",
+    "name": "Atari 130XE",
+    "maker": "atari",
+    "platform": "atari-8bit",
+    "type": "computers",
+    "year": 1985,
+    "sort_order": 890,
+    "notes": "128 KB, bank switched, in the flatter case that matched the ST.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6502C @ 1.79 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "128 KB, bank switched"
+      },
+      {
+        "label": "Video",
+        "value": "ANTIC and GTIA"
+      },
+      {
+        "label": "Sound",
+        "value": "POKEY"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette or 1050 floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge slot"
+      },
+      {
+        "code": "eci",
+        "quantity": 1,
+        "notes": "enhanced cartridge interface"
+      },
+      {
+        "code": "sio",
+        "quantity": 1,
+        "notes": "SIO daisy chain"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "joystick ports"
+      }
+    ]
+  },
+  {
+    "slug": "mac-plus",
+    "name": "Macintosh Plus",
+    "maker": "apple",
+    "platform": "mac-68k",
+    "type": "computers",
+    "year": 1986,
+    "sort_order": 900,
+    "notes": "SCSI and a megabyte, and the first Mac you could sensibly expand.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 7.83 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 MB, to 4 MB"
+      },
+      {
+        "label": "Video",
+        "value": "512x342 mono, built in"
+      },
+      {
+        "label": "Storage",
+        "value": "800 KB floppy, SCSI"
+      }
+    ],
+    "slots": [
+      {
+        "code": "simm",
+        "quantity": 4,
+        "notes": "SIMM sockets"
+      },
+      {
+        "code": "scsi",
+        "quantity": 1,
+        "notes": "SCSI port"
+      },
+      {
+        "code": "floppy",
+        "quantity": 1,
+        "notes": "external floppy port"
+      },
+      {
+        "code": "ser",
+        "quantity": 2,
+        "notes": "printer and modem ports"
+      }
+    ]
+  },
+  {
+    "slug": "x68000-expert",
+    "name": "Sharp X68000 EXPERT",
+    "maker": "sharp",
+    "platform": "x68000",
+    "type": "computers",
+    "year": 1987,
+    "sort_order": 910,
+    "notes": "An arcade board Sharp sold as a home computer, in a case shaped like two towers.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68000 @ 10 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "2 MB"
+      },
+      {
+        "label": "Video",
+        "value": "Cynthia and VSOP, 65536 colours"
+      },
+      {
+        "label": "Sound",
+        "value": "YM2151 and ADPCM"
+      },
+      {
+        "label": "Storage",
+        "value": "two 5.25-inch floppies"
+      }
+    ],
+    "slots": [
+      {
+        "code": "floppy",
+        "quantity": 2,
+        "notes": "internal drives"
+      },
+      {
+        "code": "scsi",
+        "quantity": 1,
+        "notes": "SASI/SCSI"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "expansion slots"
+      }
+    ]
+  },
+  {
+    "slug": "pc-9801-vx",
+    "name": "NEC PC-9801VX",
+    "maker": "nec",
+    "platform": "pc-9801",
+    "type": "computers",
+    "year": 1986,
+    "sort_order": 920,
+    "notes": "The Japanese office standard for a decade, and nothing like a PC inside.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "80286 @ 10 MHz with V30"
+      },
+      {
+        "label": "Memory",
+        "value": "640 KB"
+      },
+      {
+        "label": "Video",
+        "value": "640x400, 16 colours"
+      },
+      {
+        "label": "Storage",
+        "value": "two 5.25-inch floppies"
+      }
+    ],
+    "slots": [
+      {
+        "code": "misc",
+        "quantity": 2,
+        "notes": "C-bus expansion slots"
+      },
+      {
+        "code": "floppy",
+        "quantity": 2,
+        "notes": "internal drives"
+      },
+      {
+        "code": "ser",
+        "quantity": 1,
+        "notes": "serial port"
+      },
+      {
+        "code": "par",
+        "quantity": 1,
+        "notes": "printer port"
+      }
+    ]
+  },
+  {
+    "slug": "trs-80-model-1",
+    "name": "TRS-80 Model I",
+    "maker": "tandy",
+    "platform": "trs-80",
+    "type": "computers",
+    "year": 1977,
+    "sort_order": 930,
+    "notes": "Sold in a high street chain, which is most of why it sold at all.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80 @ 1.77 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "4 to 48 KB"
+      },
+      {
+        "label": "Video",
+        "value": "64x16 characters, mono"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette"
+      }
+    ],
+    "slots": [
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "expansion interface connector"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      }
+    ]
+  },
+  {
+    "slug": "dragon-32-machine",
+    "name": "Dragon 32",
+    "maker": "various-vendor",
+    "platform": "dragon-32",
+    "type": "computers",
+    "year": 1982,
+    "sort_order": 940,
+    "notes": "Built in Wales, near enough a CoCo, and incompatible with everything British around it.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Motorola 6809E @ 0.89 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "32 KB"
+      },
+      {
+        "label": "Video",
+        "value": "6847"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette"
+      }
+    ],
+    "slots": [
+      {
+        "code": "cart",
+        "quantity": 1,
+        "notes": "cartridge port"
+      },
+      {
+        "code": "joy",
+        "quantity": 2,
+        "notes": "joystick ports"
+      },
+      {
+        "code": "ser",
+        "quantity": 1,
+        "notes": "serial printer port"
+      }
+    ]
+  },
+  {
+    "slug": "oric-atmos",
+    "name": "Oric Atmos",
+    "maker": "various-vendor",
+    "platform": "oric",
+    "type": "computers",
+    "year": 1984,
+    "sort_order": 950,
+    "notes": "The Oric-1 with a keyboard you could type on, which was the complaint it was built to answer.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "MOS 6502A @ 1 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "48 KB"
+      },
+      {
+        "label": "Video",
+        "value": "240x200"
+      },
+      {
+        "label": "Sound",
+        "value": "AY-3-8912"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette"
+      }
+    ],
+    "slots": [
+      {
+        "code": "edge",
+        "quantity": 1,
+        "notes": "expansion connector"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "printer port"
+      }
+    ]
+  },
+  {
+    "slug": "sam-coupe-machine",
+    "name": "SAM Coupé",
+    "maker": "various-vendor",
+    "platform": "sam-coupe",
+    "type": "computers",
+    "year": 1989,
+    "sort_order": 960,
+    "notes": "A Spectrum successor that arrived after everyone had bought an Amiga.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80B @ 6 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "256 or 512 KB"
+      },
+      {
+        "label": "Video",
+        "value": "256x192 to 512x192"
+      },
+      {
+        "label": "Sound",
+        "value": "Philips SAA1099"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette, optional floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "edge",
+        "quantity": 1,
+        "notes": "expansion connector"
+      },
+      {
+        "code": "floppy",
+        "quantity": 2,
+        "notes": "internal drive bays"
+      },
+      {
+        "code": "joy",
+        "quantity": 1,
+        "notes": "joystick port"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "MIDI and network"
+      }
+    ]
+  },
+  {
+    "slug": "sinclair-ql-machine",
+    "name": "Sinclair QL",
+    "maker": "sinclair",
+    "platform": "sinclair-ql",
+    "type": "computers",
+    "year": 1984,
+    "sort_order": 970,
+    "notes": "Microdrives, a 68008, and a launch so early the first machines shipped with a ROM hanging out of the back.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "68008 @ 7.5 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "128 KB"
+      },
+      {
+        "label": "Video",
+        "value": "512x256"
+      },
+      {
+        "label": "Storage",
+        "value": "two Microdrives"
+      }
+    ],
+    "slots": [
+      {
+        "code": "edge",
+        "quantity": 1,
+        "notes": "expansion connector"
+      },
+      {
+        "code": "ser",
+        "quantity": 2,
+        "notes": "serial ports"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "Microdrive expansion and network"
+      }
+    ]
+  },
+  {
+    "slug": "zx81-machine",
+    "name": "ZX81",
+    "maker": "sinclair",
+    "platform": "zx81",
+    "type": "computers",
+    "year": 1981,
+    "sort_order": 980,
+    "notes": "One kilobyte, a membrane keyboard, and a RAM pack that fell off if you breathed on it.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80A @ 3.25 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "1 KB, 16 KB with the RAM pack"
+      },
+      {
+        "label": "Video",
+        "value": "64x44 blocks, mono"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette"
+      }
+    ],
+    "slots": [
+      {
+        "code": "edge",
+        "quantity": 1,
+        "notes": "rear edge connector"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "EAR and MIC"
+      },
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "TV out"
+      }
+    ]
+  },
+  {
+    "slug": "abc-80-machine",
+    "name": "Luxor ABC 80",
+    "maker": "luxor",
+    "platform": "abc-80",
+    "type": "computers",
+    "year": 1978,
+    "sort_order": 990,
+    "notes": "The Swedish school computer, on an ABC bus and speaking BASIC in Swedish error messages.",
+    "fields": [
+      {
+        "label": "Processor",
+        "value": "Z80A @ 3 MHz"
+      },
+      {
+        "label": "Memory",
+        "value": "16 KB"
+      },
+      {
+        "label": "Video",
+        "value": "40x24 characters"
+      },
+      {
+        "label": "Storage",
+        "value": "cassette, ABC 830 floppy"
+      }
+    ],
+    "slots": [
+      {
+        "code": "misc",
+        "quantity": 1,
+        "notes": "ABC bus expansion"
+      },
+      {
+        "code": "ser",
+        "quantity": 1,
+        "notes": "serial port"
+      },
+      {
+        "code": "tape",
+        "quantity": 1,
+        "notes": "cassette port"
+      }
+    ]
+  }
+]

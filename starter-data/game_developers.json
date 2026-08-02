@@ -1,0 +1,655 @@
+[
+  {
+    "slug": "21st-century",
+    "name": "21st Century Entertainment",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "access-software",
+    "name": "Access Software",
+    "country": "United States"
+  },
+  {
+    "slug": "accolade",
+    "name": "Accolade",
+    "country": "United States"
+  },
+  {
+    "slug": "activision",
+    "name": "Activision",
+    "country": "United States"
+  },
+  {
+    "slug": "alligata",
+    "name": "Alligata Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "apogee-software",
+    "name": "Apogee Software",
+    "country": "United States"
+  },
+  {
+    "slug": "ariolasoft",
+    "name": "Ariolasoft",
+    "country": "Germany"
+  },
+  {
+    "slug": "ascii-corporation",
+    "name": "ASCII Corporation",
+    "country": "Japan"
+  },
+  {
+    "slug": "audiogenic",
+    "name": "Audiogenic",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "beam-software",
+    "name": "Beam Software",
+    "country": "Australia"
+  },
+  {
+    "slug": "beyond-software",
+    "name": "Beyond Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "bitmap-brothers",
+    "name": "Bitmap Brothers",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "bloodhouse",
+    "name": "Bloodhouse",
+    "country": "Finland"
+  },
+  {
+    "slug": "blue-byte",
+    "name": "Blue Byte",
+    "country": "Germany"
+  },
+  {
+    "slug": "broderbund",
+    "name": "Broderbund",
+    "country": "United States"
+  },
+  {
+    "slug": "bubble-bus",
+    "name": "Bubble Bus Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "bullfrog",
+    "name": "Bullfrog Productions",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "capcom",
+    "name": "Capcom",
+    "country": "Japan"
+  },
+  {
+    "slug": "cinemaware",
+    "name": "Cinemaware",
+    "country": "United States"
+  },
+  {
+    "slug": "codemasters",
+    "name": "Codemasters",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "coktel-vision",
+    "name": "Coktel Vision",
+    "country": "France"
+  },
+  {
+    "slug": "commodore",
+    "name": "Commodore",
+    "country": "United States"
+  },
+  {
+    "slug": "compile",
+    "name": "Compile",
+    "country": "Japan"
+  },
+  {
+    "slug": "core-design",
+    "name": "Core Design",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "crl-group",
+    "name": "CRL Group",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "datasoft",
+    "name": "Datasoft",
+    "country": "United States"
+  },
+  {
+    "slug": "daydream-software",
+    "name": "Daydream Software",
+    "country": "Sweden"
+  },
+  {
+    "slug": "deadline-games",
+    "name": "Deadline Games",
+    "country": "Denmark"
+  },
+  {
+    "slug": "delphine-software",
+    "name": "Delphine Software",
+    "country": "France"
+  },
+  {
+    "slug": "denton-designs",
+    "name": "Denton Designs",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "digital-illusions",
+    "name": "Digital Illusions",
+    "country": "Sweden"
+  },
+  {
+    "slug": "digital-illusions-ce",
+    "name": "Digital Illusions CE",
+    "country": "Sweden"
+  },
+  {
+    "slug": "dma-design",
+    "name": "DMA Design",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "domark",
+    "name": "Domark",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "durell-software",
+    "name": "Durell Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "electronic-arts",
+    "name": "Electronic Arts",
+    "country": "United States",
+    "website": "https://www.ea.com/"
+  },
+  {
+    "slug": "elite-systems",
+    "name": "Elite Systems",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "english-software",
+    "name": "English Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "epyx",
+    "name": "Epyx",
+    "country": "United States"
+  },
+  {
+    "slug": "ere-informatique",
+    "name": "Ere Informatique",
+    "country": "France"
+  },
+  {
+    "slug": "factor-5",
+    "name": "Factor 5",
+    "country": "Germany"
+  },
+  {
+    "slug": "firebird-software",
+    "name": "Firebird Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "first-star-software",
+    "name": "First Star Software",
+    "country": "United States"
+  },
+  {
+    "slug": "funcom",
+    "name": "Funcom",
+    "country": "Norway"
+  },
+  {
+    "slug": "golden-goblins",
+    "name": "Golden Goblins",
+    "country": "Germany"
+  },
+  {
+    "slug": "graftgold",
+    "name": "Graftgold",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "gremlin-graphics",
+    "name": "Gremlin Graphics",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "hewson-consultants",
+    "name": "Hewson Consultants",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "housemarque",
+    "name": "Housemarque",
+    "country": "Finland"
+  },
+  {
+    "slug": "hudson-soft",
+    "name": "Hudson Soft",
+    "country": "Japan"
+  },
+  {
+    "slug": "id-software",
+    "name": "id Software",
+    "country": "United States"
+  },
+  {
+    "slug": "imagine-software",
+    "name": "Imagine Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "infocom",
+    "name": "Infocom",
+    "country": "United States"
+  },
+  {
+    "slug": "infogrames",
+    "name": "Infogrames",
+    "country": "France"
+  },
+  {
+    "slug": "innerloop-studios",
+    "name": "Innerloop Studios",
+    "country": "Norway"
+  },
+  {
+    "slug": "interceptor-micros",
+    "name": "Interceptor Micros",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "interplay",
+    "name": "Interplay Productions",
+    "country": "United States"
+  },
+  {
+    "slug": "io-interactive",
+    "name": "IO Interactive",
+    "country": "Denmark"
+  },
+  {
+    "slug": "jam-productions",
+    "name": "JAM Productions",
+    "country": "United States"
+  },
+  {
+    "slug": "kingsoft",
+    "name": "Kingsoft",
+    "country": "Germany"
+  },
+  {
+    "slug": "konami",
+    "name": "Konami",
+    "country": "Japan",
+    "website": "https://www.konami.com/"
+  },
+  {
+    "slug": "lankhor",
+    "name": "Lankhor",
+    "country": "France"
+  },
+  {
+    "slug": "level-9",
+    "name": "Level 9 Computing",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "llamasoft",
+    "name": "Llamasoft",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "loriciel",
+    "name": "Loriciel",
+    "country": "France"
+  },
+  {
+    "slug": "lucasfilm-games",
+    "name": "Lucasfilm Games",
+    "country": "United States"
+  },
+  {
+    "slug": "magnetic-scrolls",
+    "name": "Magnetic Scrolls",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "martech",
+    "name": "Martech",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "massive-entertainment",
+    "name": "Massive Entertainment",
+    "country": "Sweden"
+  },
+  {
+    "slug": "mastertronic",
+    "name": "Mastertronic",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "max-design",
+    "name": "Max Design",
+    "country": "Austria"
+  },
+  {
+    "slug": "maxis",
+    "name": "Maxis",
+    "country": "United States"
+  },
+  {
+    "slug": "mediagenic",
+    "name": "Mediagenic",
+    "country": "United States"
+  },
+  {
+    "slug": "melbourne-house",
+    "name": "Melbourne House",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "micro-cabin",
+    "name": "Micro Cabin",
+    "country": "Japan"
+  },
+  {
+    "slug": "microillusions",
+    "name": "MicroIllusions",
+    "country": "United States"
+  },
+  {
+    "slug": "microprose",
+    "name": "Microprose Software",
+    "country": "United States"
+  },
+  {
+    "slug": "mikro-gen",
+    "name": "Mikro-Gen",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "millennium-interactive",
+    "name": "Millennium Interactive",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "mindscape",
+    "name": "Mindscape",
+    "country": "United States"
+  },
+  {
+    "slug": "namco",
+    "name": "Namco",
+    "country": "Japan"
+  },
+  {
+    "slug": "neo-software",
+    "name": "neo Software",
+    "country": "Austria"
+  },
+  {
+    "slug": "new-world-computing",
+    "name": "New World Computing",
+    "country": "United States"
+  },
+  {
+    "slug": "nihon-falcom",
+    "name": "Nihon Falcom",
+    "country": "Japan"
+  },
+  {
+    "slug": "nintendo",
+    "name": "Nintendo",
+    "country": "Japan"
+  },
+  {
+    "slug": "novagen",
+    "name": "Novagen Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "ocean-software",
+    "name": "Ocean Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "odin-computer-graphics",
+    "name": "Odin Computer Graphics",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "origin-systems",
+    "name": "Origin Systems",
+    "country": "United States"
+  },
+  {
+    "slug": "palace-software",
+    "name": "Palace Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "palace-france",
+    "name": "Palace Software France",
+    "country": "France"
+  },
+  {
+    "slug": "players-software",
+    "name": "Players Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "psionic-systems",
+    "name": "Psionic Systems",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "psygnosis",
+    "name": "Psygnosis",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "quicksilva",
+    "name": "Quicksilva",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "rainbird-software",
+    "name": "Rainbird Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "rainbow-arts",
+    "name": "Rainbow Arts",
+    "country": "Germany"
+  },
+  {
+    "slug": "rare",
+    "name": "Rare",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "realtime-games",
+    "name": "Realtime Games Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "reline-software",
+    "name": "reLINE Software",
+    "country": "Germany"
+  },
+  {
+    "slug": "renegade-software",
+    "name": "Renegade Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "sega",
+    "name": "Sega",
+    "country": "Japan"
+  },
+  {
+    "slug": "sensible-software",
+    "name": "Sensible Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "sierra-on-line",
+    "name": "Sierra On-Line",
+    "country": "United States"
+  },
+  {
+    "slug": "silmarils",
+    "name": "Silmarils",
+    "country": "France"
+  },
+  {
+    "slug": "sir-tech",
+    "name": "Sir-Tech",
+    "country": "United States"
+  },
+  {
+    "slug": "softgold",
+    "name": "Softgold",
+    "country": "Germany"
+  },
+  {
+    "slug": "software-projects",
+    "name": "Software Projects",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "special-fx",
+    "name": "Special FX Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "spectrum-holobyte",
+    "name": "Spectrum HoloByte",
+    "country": "United States"
+  },
+  {
+    "slug": "starbreeze",
+    "name": "Starbreeze Studios",
+    "country": "Sweden"
+  },
+  {
+    "slug": "ssi",
+    "name": "Strategic Simulations",
+    "country": "United States"
+  },
+  {
+    "slug": "superior-software",
+    "name": "Superior Software",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "synapse-software",
+    "name": "Synapse Software",
+    "country": "United States"
+  },
+  {
+    "slug": "system-3",
+    "name": "System 3",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "t-and-e-soft",
+    "name": "T&E Soft",
+    "country": "Japan"
+  },
+  {
+    "slug": "taito",
+    "name": "Taito",
+    "country": "Japan"
+  },
+  {
+    "slug": "team17",
+    "name": "Team17",
+    "country": "United Kingdom",
+    "website": "https://www.team17.com/"
+  },
+  {
+    "slug": "terramarque",
+    "name": "Terramarque",
+    "country": "Finland"
+  },
+  {
+    "slug": "thalamus",
+    "name": "Thalamus",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "thalion",
+    "name": "Thalion Software",
+    "country": "Germany"
+  },
+  {
+    "slug": "titus",
+    "name": "Titus Interactive",
+    "country": "France"
+  },
+  {
+    "slug": "tynesoft",
+    "name": "Tynesoft",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "us-gold",
+    "name": "U.S. Gold",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "ubi-soft",
+    "name": "Ubi Soft",
+    "country": "France"
+  },
+  {
+    "slug": "ultimate-play-the-game",
+    "name": "Ultimate Play the Game",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "uds",
+    "name": "Unique Development Studios",
+    "country": "Sweden"
+  },
+  {
+    "slug": "virgin-games",
+    "name": "Virgin Games",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "vivid-image",
+    "name": "Vivid Image",
+    "country": "United Kingdom"
+  },
+  {
+    "slug": "westwood-studios",
+    "name": "Westwood Studios",
+    "country": "United States"
+  }
+]

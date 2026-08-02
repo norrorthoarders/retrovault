@@ -1,0 +1,1297 @@
+[
+  {
+    "slug": "amiga-boxed-game-disk",
+    "name": "Amiga boxed game, 3.5-inch",
+    "platform": "amiga",
+    "category": "games",
+    "media": "3.5-inch disk",
+    "year_from": 1985,
+    "notes": "The common shape of a boxed Amiga game: a card box, disks in a sleeve, a manual, and often a registration card nobody ever posted.",
+    "fields": [
+      {
+        "label": "Disks",
+        "default_value": "1 x 3.5-inch",
+        "hint": "How many, and what size"
+      },
+      {
+        "label": "Copy protection",
+        "default_value": "manual lookup",
+        "hint": "Manual lookup, code wheel, dongle, none"
+      },
+      {
+        "label": "Language",
+        "default_value": "English"
+      },
+      {
+        "label": "Hard drive installable",
+        "default_value": "no"
+      },
+      {
+        "label": "Minimum memory",
+        "default_value": "512 KB"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box",
+        "note": "Card, usually"
+      },
+      {
+        "label": "Disks"
+      },
+      {
+        "label": "Manual"
+      },
+      {
+        "label": "Registration card"
+      },
+      {
+        "label": "Poster or map",
+        "note": "Bigger releases only"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-boxed-application",
+    "name": "Amiga boxed application",
+    "platform": "amiga",
+    "category": "applications",
+    "media": "3.5-inch disk",
+    "year_from": 1985,
+    "notes": "Productivity and creative software. Thicker manuals than games, a licence, and often a keyfile or dongle.",
+    "fields": [
+      {
+        "label": "Disks",
+        "default_value": "2 x 3.5-inch"
+      },
+      {
+        "label": "Version",
+        "hint": "The release on the disk, where it has one"
+      },
+      {
+        "label": "Licence",
+        "default_value": "single user"
+      },
+      {
+        "label": "Minimum memory",
+        "default_value": "1 MB"
+      },
+      {
+        "label": "Workbench",
+        "default_value": "2.0 or later"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box"
+      },
+      {
+        "label": "Disks"
+      },
+      {
+        "label": "Manual"
+      },
+      {
+        "label": "Reference card"
+      },
+      {
+        "label": "Licence or registration"
+      },
+      {
+        "label": "Dongle",
+        "note": "Some professional titles only"
+      }
+    ]
+  },
+  {
+    "slug": "pc-cdrom-game-bigbox",
+    "name": "PC big box game, CD-ROM",
+    "platform": "pc",
+    "category": "games",
+    "media": "CD-ROM",
+    "year_from": 1993,
+    "notes": "The big cardboard box of the CD era, before jewel cases and then DVD cases took over.",
+    "fields": [
+      {
+        "label": "Discs",
+        "default_value": "1 x CD-ROM"
+      },
+      {
+        "label": "Operating system",
+        "default_value": "MS-DOS"
+      },
+      {
+        "label": "Minimum processor",
+        "default_value": "386"
+      },
+      {
+        "label": "Minimum memory",
+        "default_value": "4 MB"
+      },
+      {
+        "label": "Sound support",
+        "default_value": "Sound Blaster"
+      },
+      {
+        "label": "Serial or key",
+        "hint": "Where the box carries one"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box"
+      },
+      {
+        "label": "Jewel case"
+      },
+      {
+        "label": "Disc"
+      },
+      {
+        "label": "Manual"
+      },
+      {
+        "label": "Quick reference card"
+      },
+      {
+        "label": "Registration card"
+      }
+    ]
+  },
+  {
+    "slug": "pc-cdrom-application",
+    "name": "PC application, CD-ROM",
+    "platform": "pc",
+    "category": "applications",
+    "media": "CD-ROM",
+    "year_from": 1993,
+    "fields": [
+      {
+        "label": "Discs",
+        "default_value": "1 x CD-ROM"
+      },
+      {
+        "label": "Version"
+      },
+      {
+        "label": "Operating system",
+        "default_value": "Windows 95"
+      },
+      {
+        "label": "Licence",
+        "default_value": "single user"
+      },
+      {
+        "label": "Serial or key"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box"
+      },
+      {
+        "label": "Disc"
+      },
+      {
+        "label": "Manual"
+      },
+      {
+        "label": "Licence or certificate of authenticity"
+      }
+    ]
+  },
+  {
+    "slug": "mega-drive-cart-game",
+    "name": "Mega Drive boxed cartridge",
+    "platform": "mega-drive",
+    "category": "games",
+    "media": "cartridge",
+    "year_from": 1988,
+    "notes": "A console release: plastic clamshell, cartridge, manual. No install, no disks, no memory requirement.",
+    "fields": [
+      {
+        "label": "Region",
+        "default_value": "PAL",
+        "hint": "PAL, NTSC-U/C or NTSC-J"
+      },
+      {
+        "label": "Cartridge size",
+        "hint": "Megabits, where it is worth knowing"
+      },
+      {
+        "label": "Save",
+        "default_value": "password"
+      },
+      {
+        "label": "Players",
+        "default_value": "1-2"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Case",
+        "note": "Clamshell, usually"
+      },
+      {
+        "label": "Cartridge"
+      },
+      {
+        "label": "Manual"
+      },
+      {
+        "label": "Inlay or slipcover"
+      }
+    ]
+  },
+  {
+    "slug": "game-boy-cart-game",
+    "name": "Game Boy boxed cartridge",
+    "platform": "game-boy",
+    "category": "games",
+    "media": "cartridge",
+    "year_from": 1989,
+    "fields": [
+      {
+        "label": "Region",
+        "default_value": "PAL"
+      },
+      {
+        "label": "Save",
+        "default_value": "battery"
+      },
+      {
+        "label": "Players",
+        "default_value": "1",
+        "hint": "Link cable titles say 2"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box"
+      },
+      {
+        "label": "Cartridge"
+      },
+      {
+        "label": "Manual"
+      },
+      {
+        "label": "Inner tray or insert"
+      }
+    ]
+  },
+  {
+    "slug": "pc-dos-floppy-bigbox",
+    "name": "PC MS-DOS game, big box",
+    "platform": "pc",
+    "category": "games",
+    "media": "3.5-inch disk",
+    "year_from": 1988,
+    "sort_order": 10,
+    "notes": "The DOS big box: a card box far larger than its contents, disks, a manual, and whatever the copy protection needed that year.",
+    "fields": [
+      {
+        "label": "Disks",
+        "default_value": "3 x 3.5-inch HD",
+        "hint": "How many, and what size — 5.25-inch on earlier releases"
+      },
+      {
+        "label": "DOS version",
+        "default_value": "5.0",
+        "hint": "The minimum the box claims"
+      },
+      {
+        "label": "Memory",
+        "default_value": "640 KB conventional",
+        "hint": "Conventional, EMS or XMS as the box states it"
+      },
+      {
+        "label": "Sound cards",
+        "default_value": "Sound Blaster, Ad Lib, PC speaker",
+        "hint": "What the installer offers"
+      },
+      {
+        "label": "Copy protection",
+        "default_value": "manual lookup",
+        "hint": "Manual lookup, code wheel, keydisk, none"
+      },
+      {
+        "label": "Installed size",
+        "default_value": "12 MB",
+        "hint": ""
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box",
+        "note": "Card, and mostly air"
+      },
+      {
+        "label": "Disks",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": ""
+      },
+      {
+        "label": "Reference card",
+        "note": "Keyboard commands, usually"
+      },
+      {
+        "label": "Registration card",
+        "note": ""
+      },
+      {
+        "label": "Code wheel or feelie",
+        "note": "The bigger publishers"
+      }
+    ]
+  },
+  {
+    "slug": "pc-win9x-cdrom-jewel",
+    "name": "PC Windows 9x game, jewel case",
+    "platform": "pc",
+    "category": "games",
+    "media": "CD-ROM",
+    "year_from": 1997,
+    "sort_order": 20,
+    "notes": "The shape releases took once the big box was retired: a jewel case, one CD, and a manual folded into the tray.",
+    "fields": [
+      {
+        "label": "Discs",
+        "default_value": "1 x CD-ROM",
+        "hint": ""
+      },
+      {
+        "label": "Windows version",
+        "default_value": "95 or 98",
+        "hint": ""
+      },
+      {
+        "label": "DirectX",
+        "default_value": "6.0",
+        "hint": "The version on the disc"
+      },
+      {
+        "label": "3D acceleration",
+        "default_value": "Direct3D or Glide",
+        "hint": "Software only, Direct3D, Glide, or a choice"
+      },
+      {
+        "label": "Installed size",
+        "default_value": "300 MB",
+        "hint": ""
+      },
+      {
+        "label": "CD key",
+        "default_value": "on the case",
+        "hint": "Where the key was printed, if there was one"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Jewel case",
+        "note": ""
+      },
+      {
+        "label": "Disc",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": "Often a booklet in the tray"
+      },
+      {
+        "label": "CD key",
+        "note": "Printed on the case or the sleeve"
+      }
+    ]
+  },
+  {
+    "slug": "atari-st-boxed-game-disk",
+    "name": "Atari ST boxed game, 3.5-inch",
+    "platform": "atari-st",
+    "category": "games",
+    "media": "3.5-inch disk",
+    "year_from": 1985,
+    "sort_order": 30,
+    "notes": "The ST equivalent of the Amiga box, and often the same game in a different sleeve: a card box, single-sided or double-sided disks, a manual.",
+    "fields": [
+      {
+        "label": "Disks",
+        "default_value": "1 x 3.5-inch DS",
+        "hint": "Single or double sided — early ST disks are single"
+      },
+      {
+        "label": "Memory",
+        "default_value": "512 KB",
+        "hint": "520ST or 1040ST"
+      },
+      {
+        "label": "Copy protection",
+        "default_value": "manual lookup",
+        "hint": "Manual lookup, code wheel, custom format, none"
+      },
+      {
+        "label": "Hard drive installable",
+        "default_value": "no",
+        "hint": ""
+      },
+      {
+        "label": "Colour or mono",
+        "default_value": "colour",
+        "hint": "Some applications are mono monitor only"
+      },
+      {
+        "label": "Language",
+        "default_value": "English",
+        "hint": ""
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box",
+        "note": "Card, usually"
+      },
+      {
+        "label": "Disks",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": ""
+      },
+      {
+        "label": "Registration card",
+        "note": ""
+      },
+      {
+        "label": "Poster or map",
+        "note": "Bigger releases only"
+      }
+    ]
+  },
+  {
+    "slug": "c64-cassette-game",
+    "name": "C64 game, cassette",
+    "platform": "c64",
+    "category": "games",
+    "media": "cassette",
+    "year_from": 1982,
+    "sort_order": 40,
+    "notes": "The budget shape, and how most C64 games were actually bought: a cassette in a library case, loaded with a counter and hope.",
+    "fields": [
+      {
+        "label": "Tapes",
+        "default_value": "1",
+        "hint": ""
+      },
+      {
+        "label": "Loader",
+        "default_value": "Novaload",
+        "hint": "Novaload, Turbo, standard, or the publisher's own"
+      },
+      {
+        "label": "Sides",
+        "default_value": "one",
+        "hint": "Some releases put a second game or a demo on side B"
+      },
+      {
+        "label": "Language",
+        "default_value": "English",
+        "hint": ""
+      }
+    ],
+    "contents": [
+      {
+        "label": "Library case",
+        "note": "The clear plastic hinged case"
+      },
+      {
+        "label": "Cassette",
+        "note": ""
+      },
+      {
+        "label": "Inlay card",
+        "note": "Folded, with the instructions on the inside"
+      }
+    ]
+  },
+  {
+    "slug": "c64-disk-game",
+    "name": "C64 game, 5.25-inch disk",
+    "platform": "c64",
+    "category": "games",
+    "media": "5.25-inch disk",
+    "year_from": 1983,
+    "sort_order": 50,
+    "notes": "The disk release: a card box or a folder, one or two 5.25-inch disks, flipped over for side B as often as not.",
+    "fields": [
+      {
+        "label": "Disks",
+        "default_value": "1 x 5.25-inch",
+        "hint": ""
+      },
+      {
+        "label": "Sides used",
+        "default_value": "both",
+        "hint": "A single-sided drive reading a flippy is two sides of one disk"
+      },
+      {
+        "label": "Copy protection",
+        "default_value": "custom format",
+        "hint": "Custom format, manual lookup, none"
+      },
+      {
+        "label": "Fast loader",
+        "default_value": "yes",
+        "hint": "Whether it carries its own"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box or folder",
+        "note": ""
+      },
+      {
+        "label": "Disks",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": ""
+      },
+      {
+        "label": "Registration card",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "slug": "c64-cartridge",
+    "name": "C64 cartridge",
+    "platform": "c64",
+    "category": "games",
+    "media": "cartridge",
+    "year_from": 1982,
+    "sort_order": 60,
+    "notes": "Instant loading and no piracy, which is why publishers liked them and buyers did not — they cost three times a cassette.",
+    "fields": [
+      {
+        "label": "Cartridge",
+        "default_value": "1",
+        "hint": ""
+      },
+      {
+        "label": "Bank switching",
+        "default_value": "none",
+        "hint": "Plain 8/16 KB, or a banked type such as Ocean or System 3"
+      },
+      {
+        "label": "Region",
+        "default_value": "PAL",
+        "hint": ""
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box",
+        "note": ""
+      },
+      {
+        "label": "Cartridge",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": "Often a single folded sheet"
+      }
+    ]
+  },
+  {
+    "slug": "zx-spectrum-cassette",
+    "name": "ZX Spectrum game, cassette",
+    "platform": "zx-spectrum",
+    "category": "games",
+    "media": "cassette",
+    "year_from": 1982,
+    "sort_order": 70,
+    "notes": "The dominant British shape: a cassette in a library case, and a loading screen drawn a line at a time while you waited.",
+    "fields": [
+      {
+        "label": "Tapes",
+        "default_value": "1",
+        "hint": ""
+      },
+      {
+        "label": "Model",
+        "default_value": "48K",
+        "hint": "48K, 128K, or both on one tape"
+      },
+      {
+        "label": "Loader",
+        "default_value": "standard",
+        "hint": "Standard ROM loader, Speedlock, or the publisher's own"
+      },
+      {
+        "label": "Language",
+        "default_value": "English",
+        "hint": ""
+      }
+    ],
+    "contents": [
+      {
+        "label": "Library case",
+        "note": ""
+      },
+      {
+        "label": "Cassette",
+        "note": ""
+      },
+      {
+        "label": "Inlay card",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "slug": "amstrad-cpc-cassette",
+    "name": "Amstrad CPC game, cassette",
+    "platform": "amstrad-cpc",
+    "category": "games",
+    "media": "cassette",
+    "year_from": 1984,
+    "sort_order": 80,
+    "notes": "The 464's format, and the one most CPC software shipped on even after the 6128 arrived.",
+    "fields": [
+      {
+        "label": "Tapes",
+        "default_value": "1",
+        "hint": ""
+      },
+      {
+        "label": "Memory",
+        "default_value": "64 KB",
+        "hint": ""
+      },
+      {
+        "label": "Loader",
+        "default_value": "standard",
+        "hint": "Standard, Speedlock, or the publisher's own"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Library case",
+        "note": ""
+      },
+      {
+        "label": "Cassette",
+        "note": ""
+      },
+      {
+        "label": "Inlay card",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "slug": "msx-cartridge",
+    "name": "MSX cartridge",
+    "platform": "msx",
+    "category": "games",
+    "media": "cartridge",
+    "year_from": 1983,
+    "sort_order": 90,
+    "notes": "The MSX standard meant one cartridge ran on a Sony, a Philips or a Panasonic, which almost nothing else of the era could claim.",
+    "fields": [
+      {
+        "label": "Cartridge",
+        "default_value": "1",
+        "hint": ""
+      },
+      {
+        "label": "Standard",
+        "default_value": "MSX",
+        "hint": "MSX, MSX2, MSX2+ or turboR"
+      },
+      {
+        "label": "Sound chip",
+        "default_value": "PSG",
+        "hint": "PSG, or SCC and FM-PAC where the cartridge carries one"
+      },
+      {
+        "label": "Region",
+        "default_value": "Japan",
+        "hint": ""
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box",
+        "note": "Card or clamshell"
+      },
+      {
+        "label": "Cartridge",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "slug": "nes-cart-game",
+    "name": "NES boxed cartridge",
+    "platform": "nes",
+    "category": "games",
+    "media": "cartridge",
+    "year_from": 1985,
+    "sort_order": 100,
+    "notes": "A card box, a cartridge in a dust sleeve, and a manual — the shape almost every console followed afterwards.",
+    "fields": [
+      {
+        "label": "Cartridges",
+        "default_value": "1",
+        "hint": ""
+      },
+      {
+        "label": "Mapper",
+        "default_value": "MMC1",
+        "hint": "The board's mapper, where it is known"
+      },
+      {
+        "label": "Region",
+        "default_value": "PAL A",
+        "hint": "NTSC, PAL A or PAL B"
+      },
+      {
+        "label": "Battery save",
+        "default_value": "no",
+        "hint": ""
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box",
+        "note": "Card"
+      },
+      {
+        "label": "Cartridge",
+        "note": ""
+      },
+      {
+        "label": "Dust sleeve",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": ""
+      },
+      {
+        "label": "Poster or insert",
+        "note": "Bigger releases only"
+      }
+    ]
+  },
+  {
+    "slug": "snes-cart-game",
+    "name": "Super Nintendo boxed cartridge",
+    "platform": "snes",
+    "category": "games",
+    "media": "cartridge",
+    "year_from": 1990,
+    "sort_order": 110,
+    "notes": "Card box, cartridge, manual. The PAL cartridge is a different shape from the Japanese one, which is a lockout rather than an accident.",
+    "fields": [
+      {
+        "label": "Cartridges",
+        "default_value": "1",
+        "hint": ""
+      },
+      {
+        "label": "Enhancement chip",
+        "default_value": "none",
+        "hint": "DSP-1, SA-1, Super FX, or none"
+      },
+      {
+        "label": "Region",
+        "default_value": "PAL",
+        "hint": ""
+      },
+      {
+        "label": "Battery save",
+        "default_value": "yes",
+        "hint": ""
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box",
+        "note": "Card"
+      },
+      {
+        "label": "Cartridge",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": ""
+      },
+      {
+        "label": "Insert",
+        "note": "Poster, map or advertising"
+      }
+    ]
+  },
+  {
+    "slug": "master-system-cart",
+    "name": "Master System boxed cartridge",
+    "platform": "master-system",
+    "category": "games",
+    "media": "cartridge",
+    "year_from": 1985,
+    "sort_order": 120,
+    "notes": "Sega's clamshell case rather than a card box, which is why so many more of them survive intact.",
+    "fields": [
+      {
+        "label": "Cartridges",
+        "default_value": "1",
+        "hint": ""
+      },
+      {
+        "label": "Region",
+        "default_value": "PAL",
+        "hint": ""
+      },
+      {
+        "label": "FM sound",
+        "default_value": "no",
+        "hint": "Japanese machines only"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Clamshell case",
+        "note": ""
+      },
+      {
+        "label": "Cartridge",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "slug": "playstation-cd-jewel",
+    "name": "PlayStation game, jewel case",
+    "platform": "playstation",
+    "category": "games",
+    "media": "CD-ROM",
+    "year_from": 1995,
+    "sort_order": 130,
+    "notes": "A double-height jewel case, a black-bottomed disc, and a manual. The case hinges are what break.",
+    "fields": [
+      {
+        "label": "Discs",
+        "default_value": "1 x CD-ROM",
+        "hint": ""
+      },
+      {
+        "label": "Serial",
+        "default_value": "SLES-00000",
+        "hint": "The SLES, SLUS or SLPS number on the disc"
+      },
+      {
+        "label": "Region",
+        "default_value": "PAL",
+        "hint": ""
+      },
+      {
+        "label": "Memory card blocks",
+        "default_value": "1",
+        "hint": ""
+      }
+    ],
+    "contents": [
+      {
+        "label": "Jewel case",
+        "note": ""
+      },
+      {
+        "label": "Disc",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": ""
+      },
+      {
+        "label": "Registration card",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "slug": "amiga-cd32-cd",
+    "name": "Amiga CD32 game, jewel case",
+    "platform": "cd32",
+    "category": "games",
+    "media": "CD-ROM",
+    "year_from": 1993,
+    "sort_order": 140,
+    "notes": "A CD in a jewel case inside a tall card sleeve. The sleeve is almost always what is gone, so it is worth ticking separately.",
+    "fields": [
+      {
+        "label": "Discs",
+        "default_value": "1 x CD-ROM",
+        "hint": ""
+      },
+      {
+        "label": "Kickstart",
+        "default_value": "3.1",
+        "hint": ""
+      },
+      {
+        "label": "Memory",
+        "default_value": "2 MB chip",
+        "hint": ""
+      },
+      {
+        "label": "Save to",
+        "default_value": "internal flash",
+        "hint": "Internal flash memory, or the FMV cartridge"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Card sleeve",
+        "note": "Tall outer sleeve; usually the missing piece"
+      },
+      {
+        "label": "Jewel case",
+        "note": ""
+      },
+      {
+        "label": "Disc",
+        "note": ""
+      },
+      {
+        "label": "Manual",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "slug": "amiga-sleeved-game",
+    "name": "Amiga game, sleeved",
+    "platform": "amiga",
+    "category": "games",
+    "media": "3.5-inch disk",
+    "year_from": 1987,
+    "notes": "No box: the disk lives in a card or plastic sleeve, usually with the manual folded in. Budget labels, magazine bundles and compilation splits all arrive this way, and the sleeve is the first thing to go.",
+    "fields": [
+      {
+        "label": "Disks",
+        "default_value": "1 x 3.5-inch",
+        "hint": "How many, and what size"
+      },
+      {
+        "label": "Sleeve",
+        "default_value": "card",
+        "hint": "Card wallet, plastic sleeve, or none"
+      },
+      {
+        "label": "Copy protection",
+        "default_value": "none",
+        "hint": "Manual lookup, code wheel, dongle, none"
+      },
+      {
+        "label": "Language",
+        "default_value": "English"
+      },
+      {
+        "label": "Minimum memory",
+        "default_value": "512 KB"
+      },
+      {
+        "label": "Hard drive installable",
+        "default_value": "no"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Sleeve",
+        "note": "Card or plastic; often missing"
+      },
+      {
+        "label": "Disks"
+      },
+      {
+        "label": "Instruction leaflet",
+        "note": "Folded sheet rather than a manual"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-budget-rerelease",
+    "name": "Amiga budget re-release",
+    "platform": "amiga",
+    "category": "games",
+    "media": "3.5-inch disk",
+    "year_from": 1989,
+    "notes": "Kixx, The Hit Squad, GBH and the rest: an older title reissued cheaply, usually in a smaller box with a thinner manual and the original artwork reworked.",
+    "fields": [
+      {
+        "label": "Label",
+        "default_value": "Kixx",
+        "hint": "Kixx, The Hit Squad, GBH, Action Sixteen…"
+      },
+      {
+        "label": "Disks",
+        "default_value": "1 x 3.5-inch"
+      },
+      {
+        "label": "Copy protection",
+        "default_value": "manual lookup"
+      },
+      {
+        "label": "Language",
+        "default_value": "English"
+      },
+      {
+        "label": "Minimum memory",
+        "default_value": "512 KB"
+      },
+      {
+        "label": "Originally released",
+        "default_value": "",
+        "hint": "The year of the first edition, if known"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box",
+        "note": "Smaller than the original"
+      },
+      {
+        "label": "Disks"
+      },
+      {
+        "label": "Manual",
+        "note": "Often reduced to a leaflet"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-compilation",
+    "name": "Amiga compilation",
+    "platform": "amiga",
+    "category": "games",
+    "media": "3.5-inch disk",
+    "year_from": 1988,
+    "notes": "Several titles in one box. Worth cataloguing as one thing with a list of what is in it, rather than as several entries that each claim the same box.",
+    "fields": [
+      {
+        "label": "Titles included",
+        "default_value": "",
+        "hint": "One per line, or a count"
+      },
+      {
+        "label": "Disks",
+        "default_value": "4 x 3.5-inch"
+      },
+      {
+        "label": "Language",
+        "default_value": "English"
+      },
+      {
+        "label": "Minimum memory",
+        "default_value": "512 KB"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box"
+      },
+      {
+        "label": "Disks"
+      },
+      {
+        "label": "Manual",
+        "note": "Sometimes one per title"
+      },
+      {
+        "label": "Inlay or sleeve"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-big-box",
+    "name": "Amiga big box",
+    "platform": "amiga",
+    "category": "games",
+    "media": "3.5-inch disk",
+    "year_from": 1987,
+    "notes": "The larger cardboard boxes the flagship releases came in, with room for a thick manual and the extras - a cloth map, a code wheel, a novella.",
+    "fields": [
+      {
+        "label": "Disks",
+        "default_value": "3 x 3.5-inch"
+      },
+      {
+        "label": "Copy protection",
+        "default_value": "code wheel",
+        "hint": "Manual lookup, code wheel, dongle, none"
+      },
+      {
+        "label": "Language",
+        "default_value": "English"
+      },
+      {
+        "label": "Minimum memory",
+        "default_value": "1 MB"
+      },
+      {
+        "label": "Hard drive installable",
+        "default_value": "yes"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Box",
+        "note": "Large card"
+      },
+      {
+        "label": "Disks"
+      },
+      {
+        "label": "Manual",
+        "note": "Usually substantial"
+      },
+      {
+        "label": "Registration card"
+      },
+      {
+        "label": "Code wheel or lookup card",
+        "note": "Where the protection needs one"
+      },
+      {
+        "label": "Map, poster or cloth"
+      },
+      {
+        "label": "Reference card"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-cover-disk",
+    "name": "Amiga magazine cover disk",
+    "platform": "amiga",
+    "category": "games",
+    "media": "3.5-inch disk",
+    "year_from": 1987,
+    "notes": "The disk stuck to the front of a magazine: demos, full games given away, and utilities. Often the only surviving copy of something, and worth recording which issue it came with.",
+    "fields": [
+      {
+        "label": "Magazine",
+        "default_value": "",
+        "hint": "Amiga Format, CU Amiga, Amiga Power…"
+      },
+      {
+        "label": "Issue",
+        "default_value": ""
+      },
+      {
+        "label": "Cover date",
+        "default_value": ""
+      },
+      {
+        "label": "Disks",
+        "default_value": "1 x 3.5-inch"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Disk"
+      },
+      {
+        "label": "Magazine",
+        "note": "If you kept it"
+      }
+    ]
+  },
+  {
+    "slug": "amiga-pd-licenceware",
+    "name": "Amiga PD or licenceware disk",
+    "platform": "amiga",
+    "category": "applications",
+    "media": "3.5-inch disk",
+    "year_from": 1986,
+    "notes": "Public domain, shareware and licenceware from the disk libraries - Fred Fish, 17-Bit, Assassins. A catalogue number and a library name identify these far better than a title does.",
+    "fields": [
+      {
+        "label": "Library",
+        "default_value": "",
+        "hint": "Fred Fish, 17-Bit, Assassins, NBS…"
+      },
+      {
+        "label": "Catalogue number",
+        "default_value": ""
+      },
+      {
+        "label": "Disks",
+        "default_value": "1 x 3.5-inch"
+      },
+      {
+        "label": "Licence",
+        "default_value": "public domain",
+        "hint": "Public domain, shareware, licenceware"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Disk"
+      },
+      {
+        "label": "Label",
+        "note": "Printed or handwritten"
+      }
+    ]
+  },
+  {
+    "slug": "cdtv-disc",
+    "name": "CDTV disc",
+    "platform": "cdtv",
+    "category": "applications",
+    "media": "CD-ROM",
+    "year_from": 1991,
+    "notes": "The CDTV releases: reference works and multimedia titles as often as games, in a jewel case or a card caddy box.",
+    "fields": [
+      {
+        "label": "Discs",
+        "default_value": "1 x CD"
+      },
+      {
+        "label": "Language",
+        "default_value": "English"
+      }
+    ],
+    "contents": [
+      {
+        "label": "Case"
+      },
+      {
+        "label": "Disc"
+      },
+      {
+        "label": "Manual or inlay"
+      }
+    ]
+  }
+]

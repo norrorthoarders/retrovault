@@ -1,0 +1,569 @@
+[
+  {
+    "slug": "amiga",
+    "name": "Amiga",
+    "maker": "commodore",
+    "class": "computer",
+    "year": 1985,
+    "colour": "#f38ba8",
+    "sort_order": 10
+  },
+  {
+    "slug": "pc",
+    "name": "PC",
+    "class": "computer",
+    "year": 1981,
+    "colour": "#94e2d5",
+    "sort_order": 15,
+    "maker": "ibm"
+  },
+  {
+    "slug": "c64",
+    "name": "C64",
+    "maker": "commodore",
+    "class": "computer",
+    "year": 1982,
+    "colour": "#a6e3a1",
+    "sort_order": 20
+  },
+  {
+    "slug": "msx",
+    "name": "MSX / MSX2",
+    "class": "computer",
+    "year": 1983,
+    "colour": "#89b4fa",
+    "sort_order": 30,
+    "maker": "ascii"
+  },
+  {
+    "slug": "atari-st",
+    "name": "Atari ST",
+    "maker": "atari",
+    "class": "computer",
+    "year": 1985,
+    "colour": "#fab387",
+    "sort_order": 40
+  },
+  {
+    "slug": "zx-spectrum",
+    "name": "ZX Spectrum",
+    "maker": "sinclair",
+    "class": "computer",
+    "year": 1982,
+    "colour": "#f9e2af",
+    "sort_order": 50
+  },
+  {
+    "slug": "amstrad-cpc",
+    "name": "Amstrad CPC",
+    "maker": "amstrad",
+    "class": "computer",
+    "year": 1984,
+    "colour": "#94e2d5",
+    "sort_order": 60
+  },
+  {
+    "slug": "nes",
+    "name": "NES",
+    "maker": "nintendo",
+    "class": "console",
+    "year": 1983,
+    "colour": "#eba0ac",
+    "sort_order": 80
+  },
+  {
+    "slug": "mega-drive",
+    "name": "Mega Drive",
+    "maker": "sega",
+    "class": "console",
+    "year": 1988,
+    "colour": "#74c7ec",
+    "sort_order": 90
+  },
+  {
+    "slug": "vic-20",
+    "name": "VIC-20",
+    "maker": "commodore",
+    "class": "computer",
+    "year": 1980,
+    "colour": "#b4befe",
+    "sort_order": 100
+  },
+  {
+    "slug": "pet",
+    "name": "PET",
+    "maker": "commodore",
+    "class": "computer",
+    "year": 1977,
+    "colour": "#b4befe",
+    "sort_order": 110
+  },
+  {
+    "slug": "plus4",
+    "name": "Plus/4",
+    "maker": "commodore",
+    "class": "computer",
+    "year": 1984,
+    "colour": "#f5c2e7",
+    "sort_order": 120
+  },
+  {
+    "slug": "cd32",
+    "name": "Amiga CD32",
+    "maker": "commodore",
+    "class": "console",
+    "year": 1993,
+    "colour": "#f38ba8",
+    "sort_order": 130
+  },
+  {
+    "slug": "cdtv",
+    "name": "CDTV",
+    "maker": "commodore",
+    "class": "console",
+    "year": 1991,
+    "colour": "#eba0ac",
+    "sort_order": 140
+  },
+  {
+    "slug": "zx81",
+    "name": "ZX81",
+    "maker": "sinclair",
+    "class": "computer",
+    "year": 1981,
+    "colour": "#bac2de",
+    "sort_order": 150
+  },
+  {
+    "slug": "sinclair-ql",
+    "name": "QL",
+    "maker": "sinclair",
+    "class": "computer",
+    "year": 1984,
+    "colour": "#cba6f7",
+    "sort_order": 160
+  },
+  {
+    "slug": "sam-coupe",
+    "name": "SAM Coupe",
+    "class": "computer",
+    "year": 1989,
+    "colour": "#f5e0dc",
+    "sort_order": 170,
+    "maker": "mgt"
+  },
+  {
+    "slug": "bbc-micro",
+    "name": "BBC Micro",
+    "maker": "acorn",
+    "class": "computer",
+    "year": 1981,
+    "colour": "#f9e2af",
+    "sort_order": 180
+  },
+  {
+    "slug": "acorn-electron",
+    "name": "Electron",
+    "maker": "acorn",
+    "class": "computer",
+    "year": 1983,
+    "colour": "#f5e0dc",
+    "sort_order": 190
+  },
+  {
+    "slug": "archimedes",
+    "name": "Archimedes",
+    "maker": "acorn",
+    "class": "computer",
+    "year": 1987,
+    "colour": "#fab387",
+    "sort_order": 200
+  },
+  {
+    "slug": "risc-pc",
+    "name": "RISC PC",
+    "maker": "acorn",
+    "class": "computer",
+    "year": 1994,
+    "colour": "#eba0ac",
+    "sort_order": 210
+  },
+  {
+    "slug": "amstrad-pcw",
+    "name": "PCW",
+    "maker": "amstrad",
+    "class": "computer",
+    "year": 1985,
+    "colour": "#fab387",
+    "sort_order": 220
+  },
+  {
+    "slug": "compis",
+    "name": "Compis",
+    "class": "computer",
+    "year": 1985,
+    "colour": "#94e2d5",
+    "sort_order": 230,
+    "maker": "telenova"
+  },
+  {
+    "slug": "abc-80",
+    "name": "ABC 80",
+    "maker": "luxor",
+    "class": "computer",
+    "year": 1978,
+    "colour": "#a6e3a1",
+    "sort_order": 240
+  },
+  {
+    "slug": "abc-800",
+    "name": "ABC 800",
+    "maker": "luxor",
+    "class": "computer",
+    "year": 1981,
+    "colour": "#89dceb",
+    "sort_order": 250
+  },
+  {
+    "slug": "apple-ii",
+    "name": "II",
+    "maker": "apple",
+    "class": "computer",
+    "year": 1977,
+    "colour": "#a6e3a1",
+    "sort_order": 260
+  },
+  {
+    "slug": "atari-8bit",
+    "name": "8-bit",
+    "maker": "atari",
+    "class": "computer",
+    "year": 1979,
+    "colour": "#fab387",
+    "sort_order": 270
+  },
+  {
+    "slug": "trs-80",
+    "name": "TRS-80",
+    "maker": "tandy",
+    "class": "computer",
+    "year": 1977,
+    "colour": "#a6adc8",
+    "sort_order": 280
+  },
+  {
+    "slug": "dragon-32",
+    "name": "Dragon 32/64",
+    "class": "computer",
+    "year": 1982,
+    "colour": "#a6e3a1",
+    "sort_order": 290,
+    "maker": "dragon-data"
+  },
+  {
+    "slug": "oric",
+    "name": "Oric-1 / Atmos",
+    "class": "computer",
+    "year": 1983,
+    "colour": "#f9e2af",
+    "sort_order": 300,
+    "maker": "tangerine"
+  },
+  {
+    "slug": "thomson",
+    "name": "MO/TO",
+    "class": "computer",
+    "year": 1982,
+    "colour": "#f5c2e7",
+    "sort_order": 310,
+    "maker": "thomson"
+  },
+  {
+    "slug": "sharp-mz",
+    "name": "MZ series",
+    "maker": "sharp",
+    "class": "computer",
+    "year": 1978,
+    "colour": "#94e2d5",
+    "sort_order": 320
+  },
+  {
+    "slug": "mac-68k",
+    "name": "Macintosh 68k",
+    "maker": "apple",
+    "class": "computer",
+    "year": 1984,
+    "colour": "#cdd6f4",
+    "sort_order": 330
+  },
+  {
+    "slug": "x68000",
+    "name": "X68000",
+    "maker": "sharp",
+    "class": "computer",
+    "year": 1987,
+    "colour": "#89b4fa",
+    "sort_order": 340
+  },
+  {
+    "slug": "pc-8801",
+    "name": "PC-8801",
+    "maker": "nec",
+    "class": "computer",
+    "year": 1981,
+    "colour": "#74c7ec",
+    "sort_order": 350
+  },
+  {
+    "slug": "pc-9801",
+    "name": "PC-9801",
+    "maker": "nec",
+    "class": "computer",
+    "year": 1982,
+    "colour": "#89dceb",
+    "sort_order": 360
+  },
+  {
+    "slug": "fm-towns",
+    "name": "FM Towns",
+    "maker": "fujitsu",
+    "class": "computer",
+    "year": 1989,
+    "colour": "#b4befe",
+    "sort_order": 370
+  },
+  {
+    "slug": "sg-1000",
+    "name": "SG-1000",
+    "maker": "sega",
+    "class": "console",
+    "year": 1983,
+    "colour": "#f38ba8",
+    "sort_order": 400
+  },
+  {
+    "slug": "master-system",
+    "name": "Master System",
+    "maker": "sega",
+    "class": "console",
+    "year": 1985,
+    "colour": "#89dceb",
+    "sort_order": 410
+  },
+  {
+    "slug": "game-gear",
+    "name": "Game Gear",
+    "maker": "sega",
+    "class": "handheld",
+    "year": 1990,
+    "colour": "#94e2d5",
+    "sort_order": 420
+  },
+  {
+    "slug": "mega-cd",
+    "name": "Mega-CD",
+    "maker": "sega",
+    "class": "console",
+    "year": 1991,
+    "colour": "#a6e3a1",
+    "sort_order": 430
+  },
+  {
+    "slug": "sega-32x",
+    "name": "32X",
+    "maker": "sega",
+    "class": "console",
+    "year": 1994,
+    "colour": "#eba0ac",
+    "sort_order": 440
+  },
+  {
+    "slug": "saturn",
+    "name": "Saturn",
+    "maker": "sega",
+    "class": "console",
+    "year": 1994,
+    "colour": "#b4befe",
+    "sort_order": 450
+  },
+  {
+    "slug": "dreamcast",
+    "name": "Dreamcast",
+    "maker": "sega",
+    "class": "console",
+    "year": 1998,
+    "colour": "#cba6f7",
+    "sort_order": 460
+  },
+  {
+    "slug": "snes",
+    "name": "Super Nintendo",
+    "maker": "nintendo",
+    "class": "console",
+    "year": 1990,
+    "colour": "#cba6f7",
+    "sort_order": 470
+  },
+  {
+    "slug": "game-boy",
+    "name": "Game Boy",
+    "maker": "nintendo",
+    "class": "handheld",
+    "year": 1989,
+    "colour": "#94e2d5",
+    "sort_order": 480
+  },
+  {
+    "slug": "n64",
+    "name": "64",
+    "maker": "nintendo",
+    "class": "console",
+    "year": 1996,
+    "colour": "#a6e3a1",
+    "sort_order": 490
+  },
+  {
+    "slug": "gba",
+    "name": "Game Boy Advance",
+    "maker": "nintendo",
+    "class": "handheld",
+    "year": 2001,
+    "colour": "#b4befe",
+    "sort_order": 500
+  },
+  {
+    "slug": "virtual-boy",
+    "name": "Virtual Boy",
+    "maker": "nintendo",
+    "class": "console",
+    "year": 1995,
+    "colour": "#f38ba8",
+    "sort_order": 510
+  },
+  {
+    "slug": "atari-2600",
+    "name": "2600",
+    "maker": "atari",
+    "class": "console",
+    "year": 1977,
+    "colour": "#f38ba8",
+    "sort_order": 520
+  },
+  {
+    "slug": "atari-5200",
+    "name": "5200",
+    "maker": "atari",
+    "class": "console",
+    "year": 1982,
+    "colour": "#fab387",
+    "sort_order": 530
+  },
+  {
+    "slug": "atari-7800",
+    "name": "7800",
+    "maker": "atari",
+    "class": "console",
+    "year": 1986,
+    "colour": "#eba0ac",
+    "sort_order": 540
+  },
+  {
+    "slug": "lynx",
+    "name": "Lynx",
+    "maker": "atari",
+    "class": "handheld",
+    "year": 1989,
+    "colour": "#a6e3a1",
+    "sort_order": 550
+  },
+  {
+    "slug": "jaguar",
+    "name": "Jaguar",
+    "maker": "atari",
+    "class": "console",
+    "year": 1993,
+    "colour": "#f9e2af",
+    "sort_order": 560
+  },
+  {
+    "slug": "pc-engine",
+    "name": "PC Engine",
+    "maker": "nec",
+    "class": "console",
+    "year": 1987,
+    "colour": "#f38ba8",
+    "sort_order": 570
+  },
+  {
+    "slug": "neo-geo",
+    "name": "Neo Geo AES",
+    "maker": "snk",
+    "class": "console",
+    "year": 1990,
+    "colour": "#f9e2af",
+    "sort_order": 580
+  },
+  {
+    "slug": "playstation",
+    "name": "PlayStation",
+    "maker": "sony",
+    "class": "console",
+    "year": 1994,
+    "colour": "#bac2de",
+    "sort_order": 590
+  },
+  {
+    "slug": "3do",
+    "name": "3DO Interactive",
+    "class": "console",
+    "year": 1993,
+    "colour": "#89dceb",
+    "sort_order": 600,
+    "maker": "the-3do-company"
+  },
+  {
+    "slug": "cd-i",
+    "name": "CD-i",
+    "maker": "philips",
+    "class": "console",
+    "year": 1991,
+    "colour": "#b4befe",
+    "sort_order": 610
+  },
+  {
+    "slug": "intellivision",
+    "name": "Intellivision",
+    "maker": "mattel",
+    "class": "console",
+    "year": 1979,
+    "colour": "#fab387",
+    "sort_order": 620
+  },
+  {
+    "slug": "colecovision",
+    "name": "ColecoVision",
+    "class": "console",
+    "year": 1982,
+    "colour": "#a6e3a1",
+    "sort_order": 630,
+    "maker": "coleco"
+  },
+  {
+    "slug": "vectrex",
+    "name": "Vectrex",
+    "class": "console",
+    "year": 1982,
+    "colour": "#cdd6f4",
+    "sort_order": 640,
+    "maker": "gce"
+  },
+  {
+    "slug": "wonderswan",
+    "name": "WonderSwan",
+    "maker": "bandai",
+    "class": "handheld",
+    "year": 1999,
+    "colour": "#f5c2e7",
+    "sort_order": 650
+  }
+]

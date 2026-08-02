@@ -1,0 +1,291 @@
+[
+  {
+    "slug": "acorn",
+    "name": "Acorn",
+    "country": "GB",
+    "sort_order": 1,
+    "founded": 1978,
+    "defunct": 2000,
+    "wikipedia": "https://en.wikipedia.org/wiki/Acorn_Computers"
+  },
+  {
+    "slug": "amstrad",
+    "name": "Amstrad",
+    "country": "GB",
+    "sort_order": 2,
+    "founded": 1968,
+    "wikipedia": "https://en.wikipedia.org/wiki/Amstrad"
+  },
+  {
+    "slug": "apple",
+    "name": "Apple",
+    "country": "US",
+    "sort_order": 3,
+    "founded": 1976,
+    "website": "https://www.apple.com",
+    "wikipedia": "https://en.wikipedia.org/wiki/Apple_Inc."
+  },
+  {
+    "slug": "ascii",
+    "name": "ASCII Corporation",
+    "country": "Japan",
+    "founded": 1977,
+    "defunct": 2008,
+    "wikipedia": "https://en.wikipedia.org/wiki/ASCII_Corporation",
+    "sort_order": 4
+  },
+  {
+    "slug": "atari",
+    "name": "Atari",
+    "country": "US",
+    "sort_order": 5,
+    "founded": 1972,
+    "wikipedia": "https://en.wikipedia.org/wiki/Atari"
+  },
+  {
+    "slug": "bandai",
+    "name": "Bandai",
+    "country": "JP",
+    "sort_order": 6,
+    "founded": 1950,
+    "website": "https://www.bandai.com"
+  },
+  {
+    "slug": "coleco",
+    "name": "Coleco",
+    "country": "United States",
+    "founded": 1932,
+    "defunct": 1988,
+    "wikipedia": "https://en.wikipedia.org/wiki/Coleco",
+    "sort_order": 7
+  },
+  {
+    "slug": "commodore",
+    "name": "Commodore",
+    "country": "US",
+    "sort_order": 8,
+    "founded": 1954,
+    "defunct": 1994,
+    "wikipedia": "https://en.wikipedia.org/wiki/Commodore_International"
+  },
+  {
+    "slug": "csg",
+    "name": "Commodore Semiconductor",
+    "country": "US",
+    "sort_order": 9,
+    "defunct": 1994
+  },
+  {
+    "slug": "creative",
+    "name": "Creative Labs",
+    "country": "SG",
+    "sort_order": 10,
+    "founded": 1981,
+    "website": "https://www.creative.com",
+    "wikipedia": "https://en.wikipedia.org/wiki/Creative_Technology"
+  },
+  {
+    "slug": "dragon-data",
+    "name": "Dragon Data",
+    "country": "United Kingdom",
+    "founded": 1982,
+    "defunct": 1984,
+    "wikipedia": "https://en.wikipedia.org/wiki/Dragon_Data",
+    "sort_order": 11
+  },
+  {
+    "slug": "fujitsu",
+    "name": "Fujitsu",
+    "country": "JP",
+    "sort_order": 12,
+    "founded": 1935,
+    "website": "https://www.fujitsu.com"
+  },
+  {
+    "slug": "gce",
+    "name": "General Consumer Electronics",
+    "country": "United States",
+    "founded": 1981,
+    "defunct": 1983,
+    "wikipedia": "https://en.wikipedia.org/wiki/Vectrex",
+    "sort_order": 13
+  },
+  {
+    "slug": "gvp",
+    "name": "Great Valley Products",
+    "country": "US",
+    "sort_order": 14,
+    "defunct": 1998
+  },
+  {
+    "slug": "ibm",
+    "name": "IBM",
+    "country": "US",
+    "sort_order": 15,
+    "founded": 1911,
+    "website": "https://www.ibm.com",
+    "wikipedia": "https://en.wikipedia.org/wiki/IBM"
+  },
+  {
+    "slug": "luxor",
+    "name": "Luxor",
+    "country": "SE",
+    "sort_order": 16,
+    "founded": 1923,
+    "defunct": 1984,
+    "wikipedia": "https://en.wikipedia.org/wiki/Luxor_AB"
+  },
+  {
+    "slug": "mattel",
+    "name": "Mattel",
+    "country": "US",
+    "sort_order": 17,
+    "founded": 1945,
+    "website": "https://www.mattel.com"
+  },
+  {
+    "slug": "mgt",
+    "name": "Miles Gordon Technology",
+    "country": "United Kingdom",
+    "founded": 1986,
+    "defunct": 1990,
+    "wikipedia": "https://en.wikipedia.org/wiki/Miles_Gordon_Technology",
+    "sort_order": 18
+  },
+  {
+    "slug": "mnt-research",
+    "name": "MNT Research",
+    "country": "DE",
+    "sort_order": 19,
+    "founded": 2015,
+    "website": "https://mntre.com",
+    "wikipedia": "https://en.wikipedia.org/wiki/MNT_Reform"
+  },
+  {
+    "slug": "nec",
+    "name": "NEC",
+    "country": "JP",
+    "sort_order": 20,
+    "founded": 1899,
+    "website": "https://www.nec.com"
+  },
+  {
+    "slug": "nintendo",
+    "name": "Nintendo",
+    "country": "JP",
+    "sort_order": 21,
+    "founded": 1889,
+    "website": "https://www.nintendo.com",
+    "wikipedia": "https://en.wikipedia.org/wiki/Nintendo"
+  },
+  {
+    "slug": "phase-5",
+    "name": "Phase 5",
+    "country": "DE",
+    "sort_order": 22,
+    "defunct": 2001
+  },
+  {
+    "slug": "philips",
+    "name": "Philips",
+    "country": "NL",
+    "sort_order": 23,
+    "founded": 1891,
+    "website": "https://www.philips.com",
+    "wikipedia": "https://en.wikipedia.org/wiki/Philips"
+  },
+  {
+    "slug": "sega",
+    "name": "Sega",
+    "country": "JP",
+    "sort_order": 24,
+    "founded": 1960,
+    "website": "https://www.sega.com",
+    "wikipedia": "https://en.wikipedia.org/wiki/Sega"
+  },
+  {
+    "slug": "sharp",
+    "name": "Sharp",
+    "country": "JP",
+    "sort_order": 25,
+    "founded": 1912,
+    "website": "https://global.sharp"
+  },
+  {
+    "slug": "sinclair",
+    "name": "Sinclair",
+    "country": "GB",
+    "sort_order": 26,
+    "founded": 1973,
+    "wikipedia": "https://en.wikipedia.org/wiki/Sinclair_Research"
+  },
+  {
+    "slug": "snk",
+    "name": "SNK",
+    "country": "JP",
+    "sort_order": 27,
+    "founded": 1978
+  },
+  {
+    "slug": "sony",
+    "name": "Sony",
+    "country": "JP",
+    "sort_order": 28,
+    "founded": 1946,
+    "website": "https://www.sony.com"
+  },
+  {
+    "slug": "tandy",
+    "name": "Tandy",
+    "country": "US",
+    "sort_order": 29,
+    "founded": 1919
+  },
+  {
+    "slug": "tangerine",
+    "name": "Tangerine Computer Systems",
+    "country": "United Kingdom",
+    "founded": 1979,
+    "defunct": 1984,
+    "wikipedia": "https://en.wikipedia.org/wiki/Tangerine_Computer_Systems",
+    "sort_order": 30
+  },
+  {
+    "slug": "telenova",
+    "name": "TeleNova",
+    "country": "Sweden",
+    "founded": 1984,
+    "defunct": 1988,
+    "wikipedia": "https://en.wikipedia.org/wiki/Compis",
+    "sort_order": 31
+  },
+  {
+    "slug": "the-3do-company",
+    "name": "The 3DO Company",
+    "country": "United States",
+    "founded": 1991,
+    "defunct": 2003,
+    "wikipedia": "https://en.wikipedia.org/wiki/The_3DO_Company",
+    "sort_order": 32
+  },
+  {
+    "slug": "thomson",
+    "name": "Thomson",
+    "country": "France",
+    "founded": 1893,
+    "defunct": null,
+    "wikipedia": "https://en.wikipedia.org/wiki/Thomson_SA",
+    "sort_order": 33
+  },
+  {
+    "slug": "various-vendor",
+    "name": "Various",
+    "sort_order": 34
+  },
+  {
+    "slug": "waw-elektronik",
+    "name": "W.A.W. Elektronik",
+    "country": "DE",
+    "sort_order": 35
+  }
+]

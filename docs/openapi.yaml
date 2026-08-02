@@ -1,0 +1,913 @@
+openapi: 3.1.0
+
+info:
+  title: RetroVault API
+  version: "1.0.0"
+  description: |
+    JSON REST API for a retro software collection. Every endpoint except
+    `/meta` requires a bearer token.
+
+    Feed this file to openapi-generator or swift-openapi-generator to get a
+    typed client instead of hand-writing one.
+
+servers:
+  - url: https://your-host/api/v1
+    description: Replace with your own host
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Auth
+  - name: Items
+  - name: Titles
+    description: >-
+      The software itself, as against your copy of it. The counterpart to a
+      hardware model.
+  - name: Images
+  - name: Taxonomy
+  - name: Sync
+
+paths:
+  /meta:
+    get:
+      tags: [Auth]
+      summary: Server capabilities and enum values
+      security: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      name: { type: string }
+                      api_version: { type: string }
+                      currency: { type: string }
+                      server_time: { type: string, format: date-time }
+                      authenticated: { type: boolean }
+                      max_upload_bytes: { type: integer }
+                      image_kinds: { type: array, items: { $ref: "#/components/schemas/EnumOption" } }
+                      conditions: { type: array, items: { $ref: "#/components/schemas/EnumOption" } }
+                      completeness: { type: array, items: { $ref: "#/components/schemas/EnumOption" } }
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Exchange credentials for a token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username: { type: string }
+                password: { type: string, format: password }
+                device_name: { type: string, example: "Tommy's iPhone" }
+                platform: { type: string, enum: [ios, macos, android, other] }
+                scope: { type: string, enum: [read, write], default: write }
+      responses:
+        "201":
+          description: Token issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      token: { type: string, example: "rvt_9f8e7d6c5b4a" }
+                      token_type: { type: string, example: Bearer }
+                      scope: { type: string, enum: [read, write] }
+                      expires_at: { type: [string, "null"], format: date-time }
+                      user: { $ref: "#/components/schemas/User" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /auth/logout:
+    post:
+      tags: [Auth]
+      summary: Revoke the token used for this call
+      responses:
+        "204": { description: Revoked }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /auth/me:
+    get:
+      tags: [Auth]
+      summary: The current user and token
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user: { $ref: "#/components/schemas/User" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /tokens:
+    get:
+      tags: [Auth]
+      summary: List this account's tokens
+      responses:
+        "200": { description: OK }
+    post:
+      tags: [Auth]
+      summary: Create a token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string }
+                scope: { type: string, enum: [read, write] }
+                platform: { type: string }
+      responses:
+        "201": { description: Created, with the plaintext token shown once }
+
+  /tokens/{id}:
+    delete:
+      tags: [Auth]
+      summary: Revoke a token
+      parameters: [{ $ref: "#/components/parameters/Id" }]
+      responses:
+        "204": { description: Revoked }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /items:
+    get:
+      tags: [Items]
+      summary: List catalogue entries
+      parameters:
+        - { name: q, in: query, schema: { type: string }, description: Free-text search }
+        - { name: platform, in: query, schema: { type: string }, description: Library slug }
+        - { name: library, in: query, schema: { type: string }, description: Library slug - the shelf it is on }
+        - { name: title_id, in: query, schema: { type: integer }, description: Every copy of one title }
+        - { name: work, in: query, schema: { type: string }, description: Every release of one work, across platforms }
+        - { name: category, in: query, schema: { type: string } }
+        - { name: developer, in: query, schema: { type: string } }
+        - { name: year, in: query, schema: { type: integer } }
+        - { name: decade, in: query, schema: { type: integer, example: 1990 } }
+        - { name: min_rating, in: query, schema: { type: integer, minimum: 1, maximum: 10 } }
+        - { name: condition, in: query, schema: { $ref: "#/components/schemas/Condition" } }
+        - { name: photos, in: query, schema: { type: string, enum: [none, some] } }
+        - { name: status, in: query, schema: { type: string, enum: [owned, wishlist, ordered, lent, sold, all] } }
+        - { name: tag, in: query, schema: { type: string }, description: Comma-separated tag slugs; all must match }
+        - { name: barcode, in: query, schema: { type: string } }
+        - { name: list, in: query, schema: { type: string, enum: [wishlist] }, deprecated: true }
+        - { name: sort, in: query, schema: { type: string, enum: [title, title_desc, year, year_desc, rating, rating_asc, value, price, added, updated, platform] } }
+        - { name: page, in: query, schema: { type: integer, default: 1 } }
+        - { name: per_page, in: query, schema: { type: integer, default: 24, maximum: 200 } }
+        - { name: include, in: query, schema: { type: string, enum: [images] } }
+        - { name: If-None-Match, in: header, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          headers:
+            ETag: { schema: { type: string } }
+            X-Total-Count: { schema: { type: integer } }
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: "#/components/schemas/Item" } }
+                  meta: { $ref: "#/components/schemas/PageMeta" }
+        "304": { description: Not modified }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      tags: [Items]
+      summary: Create an entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ItemWrite" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { data: { $ref: "#/components/schemas/Item" } }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+
+  /items/bulk:
+    post:
+      tags: [Items]
+      summary: Create up to 100 entries in one request
+      description: Partial success is normal; each entry reports its own outcome.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [items]
+              properties:
+                items:
+                  type: array
+                  maxItems: 100
+                  items: { $ref: "#/components/schemas/ItemWrite" }
+      responses:
+        "201": { description: At least one entry created }
+        "422": { description: Nothing could be created }
+
+  /items/random:
+    get:
+      tags: [Items]
+      summary: One entry at random, honouring the /items filters
+      responses:
+        "200": { description: OK }
+        "404": { description: Nothing matches }
+
+  /barcode/{code}:
+    get:
+      tags: [Items]
+      summary: Find entries by barcode
+      description: A miss returns 200 with found=false, not a 404.
+      parameters:
+        - { name: code, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      barcode: { type: string }
+                      found: { type: boolean }
+                      items: { type: array, items: { $ref: "#/components/schemas/Item" } }
+
+  /items/{id}:
+    parameters: [{ $ref: "#/components/parameters/Id" }]
+    get:
+      tags: [Items]
+      summary: One entry, with images and tags
+      responses:
+        "200":
+          description: OK
+          headers: { ETag: { schema: { type: string } } }
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { data: { $ref: "#/components/schemas/Item" } }
+        "404": { $ref: "#/components/responses/NotFound" }
+    patch:
+      tags: [Items]
+      summary: Partial update
+      description: Only the keys you send are changed. Send null to clear a field.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ItemWrite" }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { data: { $ref: "#/components/schemas/Item" } }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+    delete:
+      tags: [Items]
+      summary: Delete an entry and its photos
+      responses:
+        "204": { description: Deleted }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /items/{id}/images:
+    parameters: [{ $ref: "#/components/parameters/Id" }]
+    get:
+      tags: [Images]
+      summary: List an entry's photos
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: "#/components/schemas/Image" } }
+    post:
+      tags: [Images]
+      summary: Upload photos
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: { type: string, format: binary }
+                kind: { $ref: "#/components/schemas/ImageKind" }
+          application/json:
+            schema:
+              type: object
+              required: [file_base64]
+              properties:
+                file_base64: { type: string, description: "Raw base64 or a data: URL" }
+                kind: { $ref: "#/components/schemas/ImageKind" }
+                caption: { type: string }
+                filename: { type: string }
+      responses:
+        "201":
+          description: Stored
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: "#/components/schemas/Image" } }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+
+  /images/{id}:
+    parameters: [{ $ref: "#/components/parameters/Id" }]
+    patch:
+      tags: [Images]
+      summary: Change a photo's metadata or make it the cover
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                kind: { $ref: "#/components/schemas/ImageKind" }
+                caption: { type: [string, "null"] }
+                sort_order: { type: integer }
+                is_primary: { type: boolean }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { data: { $ref: "#/components/schemas/Image" } }
+    delete:
+      tags: [Images]
+      summary: Delete a photo
+      responses:
+        "204": { description: Deleted }
+
+  /libraries:
+    get:
+      tags: [Taxonomy]
+      summary: Libraries you can read
+      description: >-
+        A library is a shelf with members and is the only access boundary in the
+        system. Only libraries this account can read are returned, each with the
+        caller's access level and a count of the entries they can see in it.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: "#/components/schemas/Library" } }
+
+  /platforms:
+    get:
+      tags: [Taxonomy]
+      summary: Platforms, with counts of what you can see on each
+      description: >-
+        A platform is the machine an entry runs on. It is not an access boundary
+        and carries no access level; the counts hanging off it are filtered to
+        what the caller can see. Before 1.3 this lived at `GET /libraries`,
+        which is what led the API to authorise against the wrong column.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: "#/components/schemas/Platform" } }
+    post:
+      tags: [Taxonomy]
+      summary: Create a platform
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string }
+                manufacturer: { type: string }
+                year_introduced: { type: integer }
+                color: { type: string, example: "#cba6f7" }
+                sort_order: { type: integer }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Platform" }
+
+  /titles:
+    get:
+      tags: [Titles]
+      summary: Canonical titles
+      description: >-
+        The software itself, as against your copies of it. Use this to link a
+        new entry to something already catalogued rather than retyping its
+        metadata, and to check what you already own before adding a copy.
+      parameters:
+        - { name: q, in: query, schema: { type: string }, description: Match against name and subtitle }
+        - { name: platform_id, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { type: array, items: { $ref: "#/components/schemas/Title" } }
+    post:
+      tags: [Titles]
+      summary: Create a title
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, platform_id]
+              properties:
+                name: { type: string }
+                subtitle: { type: string }
+                sort_name: { type: string }
+                platform_id: { type: integer }
+                category_id: { type: integer }
+                developer: { type: string, description: Plain name; created if new }
+                publisher: { type: string, description: Plain name; created if new }
+                release_year: { type: integer }
+                release_date: { type: string, format: date }
+                language: { type: string }
+                region: { type: string }
+                external_url: { type: string }
+                synopsis: { type: string }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: { $ref: "#/components/schemas/Title" }
+        "422": { description: Validation failed }
+
+  /categories:
+    get:
+      tags: [Taxonomy]
+      summary: Software types
+      responses: { "200": { description: OK } }
+
+  /companies:
+    get:
+      tags: [Taxonomy]
+      summary: Developers and publishers
+      parameters:
+        - { name: q, in: query, schema: { type: string } }
+      responses: { "200": { description: OK } }
+
+  /companies/{id}:
+    get:
+      tags: [Taxonomy]
+      summary: One company plus what they developed and published
+      parameters: [{ $ref: "#/components/parameters/Id" }]
+      responses:
+        "200": { description: OK }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /tags:
+    get:
+      tags: [Taxonomy]
+      summary: Tags
+      responses: { "200": { description: OK } }
+
+  /stats:
+    get:
+      tags: [Sync]
+      summary: Dashboard figures
+      responses: { "200": { description: OK } }
+
+  /sync:
+    get:
+      tags: [Sync]
+      summary: Delta sync for offline clients
+      description: |
+        Omit `since` for a full sync. Store the returned `server_time` and pass
+        it back next time to receive only changes and deletions.
+      parameters:
+        - name: since
+          in: query
+          schema: { type: string, format: date-time }
+          example: "2026-07-25T09:30:00Z"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      server_time: { type: string, format: date-time }
+                      full_sync: { type: boolean }
+                      items: { type: array, items: { $ref: "#/components/schemas/Item" } }
+                      deleted:
+                        type: object
+                        properties:
+                          items: { type: array, items: { type: integer } }
+                          item_images: { type: array, items: { type: integer } }
+        "422": { $ref: "#/components/responses/ValidationFailed" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: rvt
+
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: { type: integer }
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid token
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: No such resource
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    ValidationFailed:
+      description: Field-level problems, listed in details
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string, example: validation_failed }
+            message: { type: string }
+            details: { type: object, additionalProperties: { type: string } }
+
+    EnumOption:
+      type: object
+      properties:
+        value: { type: string }
+        label: { type: string }
+
+    PageMeta:
+      type: object
+      properties:
+        page: { type: integer }
+        per_page: { type: integer }
+        total: { type: integer }
+        pages: { type: integer }
+        has_more: { type: boolean }
+
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        username: { type: string }
+        display_name: { type: [string, "null"] }
+        role:
+          type: string
+          enum: [admin, user]
+          description: >-
+            Instance role only: may this account configure the system.
+            It does not decide catalogue access, which is per library below.
+            Changed; was [viewer, editor, admin].
+        can_edit:
+          type: boolean
+          description: True when the account can write to at least one library.
+        is_admin: { type: boolean }
+        libraries:
+          type: array
+          description: Libraries this account can read, each with its access level.
+          items:
+            type: object
+            properties:
+              id: { type: integer }
+              name: { type: string }
+              slug: { type: string }
+              color: { type: string, example: "#cba6f7" }
+              access: { $ref: "#/components/schemas/LibraryAccess" }
+        platforms:
+          type: array
+          description: >-
+            Every platform on the instance. A platform is the machine an entry
+            runs on and is not an access boundary, so no access field is
+            reported here.
+          items:
+            type: object
+            properties:
+              id: { type: integer }
+              name: { type: string }
+              slug: { type: string }
+
+    Title:
+      type: object
+      description: >-
+        The software itself, recorded once, as against your copy of it. The
+        counterpart to a hardware model. Two copies of one game are two items
+        pointing at one title; they differ in condition and completeness, which
+        is exactly what makes them two entries rather than a duplicate.
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        subtitle: { type: [string, "null"] }
+        sort_name: { type: [string, "null"] }
+        slug: { type: string }
+        work_key:
+          type: string
+          description: >-
+            Shared across platforms, so the Amiga and C64 releases of one game
+            can be found together while staying separate records.
+        platform:
+          type: object
+          properties:
+            id: { type: integer }
+            name: { type: [string, "null"] }
+            slug: { type: [string, "null"] }
+        category_id: { type: [integer, "null"] }
+        developer: { type: [string, "null"] }
+        publisher: { type: [string, "null"] }
+        release_year: { type: [integer, "null"] }
+        release_date: { type: [string, "null"], format: date }
+        language: { type: [string, "null"] }
+        region: { type: [string, "null"] }
+        external_url: { type: [string, "null"] }
+        synopsis: { type: [string, "null"] }
+        copy_count:
+          type: [integer, "null"]
+          description: How many entries point at this title.
+        created_at: { type: [string, "null"], format: date-time }
+        updated_at: { type: [string, "null"], format: date-time }
+
+    Condition:
+      type: string
+      enum: [unknown, mint, near_mint, very_good, good, fair, poor]
+
+    ComponentCondition:
+      type: string
+      description: Component grades add "missing", which an overall grade has no use for.
+      enum: [unknown, mint, near_mint, very_good, good, fair, poor, missing]
+
+    Status:
+      type: string
+      enum: [owned, wishlist, ordered, lent, sold]
+
+    LibraryAccess:
+      type: string
+      enum: [none, viewer, contributor, curator, owner]
+
+    Completeness:
+      type: string
+      enum: [unknown, cib, boxed_no_manual, loose, manual_only, digital]
+
+    ImageKind:
+      type: string
+      enum: [box_front, box_back, box_spine, media, manual, extras, screenshot, other]
+
+    Library:
+      type: object
+      description: >-
+        A shelf with members. This is the only access boundary in the system,
+        which is why it is the only one of the two that carries an access level.
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        slug: { type: string }
+        description: { type: [string, "null"] }
+        color: { type: string, example: "#cba6f7" }
+        visibility:
+          type: string
+          enum: [private, shared]
+          description: A shared library is readable by anyone signed in - readable only.
+        is_personal:
+          type: boolean
+          description: >-
+            Created with the account and never deletable, so there is always
+            somewhere to put things.
+        sort_order: { type: integer }
+        item_count:
+          type: [integer, "null"]
+          description: Entries in this library that the caller can see.
+        access: { $ref: "#/components/schemas/LibraryAccess" }
+
+    Platform:
+      type: object
+      description: >-
+        The machine an entry runs on. Not an access boundary and deliberately
+        carries no access field - reporting one here was the serialiser end of
+        the bug that had the API authorising against platform_id.
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        slug: { type: string }
+        manufacturer: { type: [string, "null"] }
+        year_introduced: { type: [integer, "null"] }
+        color: { type: string, example: "#cba6f7" }
+        description: { type: [string, "null"] }
+        sort_order: { type: integer }
+        item_count:
+          type: [integer, "null"]
+          description: Entries on this platform that the caller can see.
+
+    Ref:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        slug: { type: string }
+
+    ComponentGrade:
+      type: object
+      properties:
+        value: { $ref: "#/components/schemas/ComponentCondition" }
+        label: { type: string }
+
+    Image:
+      type: object
+      properties:
+        id: { type: integer }
+        item_id: { type: integer }
+        kind: { $ref: "#/components/schemas/ImageKind" }
+        kind_label: { type: string }
+        caption: { type: [string, "null"] }
+        is_primary: { type: boolean }
+        sort_order: { type: integer }
+        width: { type: [integer, "null"] }
+        height: { type: [integer, "null"] }
+        filesize: { type: [integer, "null"] }
+        urls:
+          type: object
+          properties:
+            thumb: { type: [string, "null"], format: uri }
+            display: { type: [string, "null"], format: uri }
+            original: { type: [string, "null"], format: uri }
+        created_at: { type: [string, "null"], format: date-time }
+
+    Item:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        subtitle: { type: [string, "null"] }
+        sort_title: { type: [string, "null"] }
+        library: { $ref: "#/components/schemas/Library" }
+        category: { $ref: "#/components/schemas/Ref" }
+        genre: { oneOf: [{ $ref: "#/components/schemas/Ref" }, { type: "null" }] }
+        developer: { oneOf: [{ $ref: "#/components/schemas/Ref" }, { type: "null" }] }
+        publisher: { oneOf: [{ $ref: "#/components/schemas/Ref" }, { type: "null" }] }
+        release_year: { type: [integer, "null"] }
+        release_date: { type: [string, "null"], format: date }
+        rating: { type: [integer, "null"], minimum: 1, maximum: 10 }
+        condition: { $ref: "#/components/schemas/Condition" }
+        condition_label: { type: string }
+        components:
+          type: object
+          properties:
+            box:    { $ref: "#/components/schemas/ComponentGrade" }
+            manual: { $ref: "#/components/schemas/ComponentGrade" }
+            media:  { $ref: "#/components/schemas/ComponentGrade" }
+        completeness: { $ref: "#/components/schemas/Completeness" }
+        completeness_label: { type: string }
+        media_type: { type: [string, "null"] }
+        media_count: { type: integer }
+        catalog_number: { type: [string, "null"] }
+        barcode: { type: [string, "null"] }
+        language: { type: [string, "null"] }
+        region: { type: [string, "null"] }
+        acquired_on: { type: [string, "null"], format: date }
+        acquired_price: { type: [number, "null"] }
+        currency: { type: string }
+        storage_location: { type: [string, "null"] }
+        is_original: { type: boolean }
+        status: { $ref: "#/components/schemas/Status" }
+        status_label: { type: string }
+        is_wishlist: { type: boolean, description: Derived from status }
+        copies: { type: integer }
+        lent_to: { type: [string, "null"] }
+        lent_on: { type: [string, "null"], format: date }
+        sold_on: { type: [string, "null"], format: date }
+        sold_price: { type: [number, "null"] }
+        current_value: { type: [number, "null"] }
+        valued_on: { type: [string, "null"], format: date }
+        can_edit: { type: boolean, description: Whether the caller may change this entry }
+        external_url: { type: [string, "null"], format: uri }
+        notes: { type: [string, "null"] }
+        image_count: { type: integer }
+        cover:
+          type: object
+          properties:
+            thumb: { type: [string, "null"], format: uri }
+            display: { type: [string, "null"], format: uri }
+        images: { type: array, items: { $ref: "#/components/schemas/Image" } }
+        tags: { type: array, items: { type: string } }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+        url: { type: string, format: uri }
+
+    ItemWrite:
+      type: object
+      description: |
+        Required on create: title, platform_id, category_id. On PATCH every key
+        is optional and only what you send is changed.
+      properties:
+        title: { type: string, maxLength: 220 }
+        subtitle: { type: [string, "null"] }
+        sort_title: { type: [string, "null"] }
+        platform_id: { type: integer }
+        category_id: { type: integer }
+        developer_id: { type: [integer, "null"] }
+        developer_name: { type: [string, "null"], description: Created if unknown }
+        publisher_id: { type: [integer, "null"] }
+        publisher_name: { type: [string, "null"] }
+        release_year: { type: [integer, "null"], minimum: 1950 }
+        release_date: { type: [string, "null"], format: date }
+        rating: { type: [integer, "null"], minimum: 1, maximum: 10 }
+        condition: { $ref: "#/components/schemas/Condition" }
+        completeness: { $ref: "#/components/schemas/Completeness" }
+        media_type: { type: [string, "null"] }
+        media_count: { type: integer, minimum: 1 }
+        catalog_number: { type: [string, "null"] }
+        barcode: { type: [string, "null"] }
+        language: { type: [string, "null"] }
+        region: { type: [string, "null"] }
+        acquired_on: { type: [string, "null"], format: date }
+        acquired_price: { type: [number, "null"] }
+        currency: { type: string, maxLength: 3 }
+        storage_location: { type: [string, "null"] }
+        is_original: { type: boolean }
+        status: { $ref: "#/components/schemas/Status" }
+        is_wishlist: { type: boolean, description: Legacy; mapped onto status }
+        copies: { type: integer, minimum: 1 }
+        lent_to: { type: [string, "null"] }
+        lent_on: { type: [string, "null"], format: date }
+        sold_on: { type: [string, "null"], format: date }
+        sold_price: { type: [number, "null"] }
+        current_value: { type: [number, "null"] }
+        valued_on: { type: [string, "null"], format: date }
+        components:
+          type: object
+          description: Component grades; may also be sent flat as condition_box etc.
+          properties:
+            box:    { $ref: "#/components/schemas/ComponentCondition" }
+            manual: { $ref: "#/components/schemas/ComponentCondition" }
+            media:  { $ref: "#/components/schemas/ComponentCondition" }
+        external_url: { type: [string, "null"], format: uri }
+        notes: { type: [string, "null"] }
+        tags: { type: array, items: { type: string } }
