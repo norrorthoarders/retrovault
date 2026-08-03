@@ -124,6 +124,19 @@ function maintenance_jobs(): array
             'repair_label' => 'Delete them',
         ],
 
+        'php_limits' => [
+            'label'  => 'What PHP will accept',
+            'scope'  => 'instance',
+            'access' => 'admin',
+            'blurb'  => 'The limits the running instance actually has, which is not always the '
+                      . 'php.ini somebody edited: there is one per SAPI and a php-fpm pool can '
+                      . 'override all of them. Reported here because the installer checked this '
+                      . 'once and was then deleted, leaving no way to ask.',
+            'check'  => 'maintenance_check_php_limits',
+            'repair' => null,
+            'repair_label' => null,
+        ],
+
         // --- One library, for whoever holds it -------------------------------
         'rootless_branches' => [
             'label'  => 'Top-level branches with no machine',
@@ -474,6 +487,68 @@ function maintenance_repair_orphan_vocab(): array
               WHERE hv.platform_id <> 0
                 AND NOT EXISTS (SELECT 1 FROM platforms p WHERE p.id = hv.platform_id)");
     return ['done' => true, 'message' => $st->rowCount() . ' specification name(s) deleted.'];
+}
+
+/**
+ * What this instance will actually accept, and whether it holds together.
+ *
+ * post_max_size caps the whole request, so an upload_max_filesize above it can
+ * never be reached - a common and invisible mistake, because the larger number
+ * is the one that looks like the answer. When a request exceeds post_max_size
+ * PHP discards the body entirely, which surfaces as a request that arrives
+ * carrying nothing rather than as an error anybody can read.
+ */
+function maintenance_check_php_limits(): array
+{
+    // Its own parser, small as it is. The installer has one, but the installer
+    // is a standalone file that the application never loads - and is often
+    // deleted, which is half the reason this check exists.
+    $bytes = static function (string $value): int {
+        $value = trim($value);
+        if ($value === '' || $value === '-1') { return -1; }
+        $unit = strtolower(substr($value, -1));
+        $n    = (int) $value;
+        return match ($unit) {
+            'g' => $n * 1024 * 1024 * 1024,
+            'm' => $n * 1024 * 1024,
+            'k' => $n * 1024,
+            default => $n,
+        };
+    };
+
+    $post   = $bytes((string) ini_get('post_max_size'));
+    $upload = $bytes((string) ini_get('upload_max_filesize'));
+    $memory = $bytes((string) ini_get('memory_limit'));
+
+    $rows = [
+        ['what' => 'post_max_size',       'detail' => (string) ini_get('post_max_size')],
+        ['what' => 'upload_max_filesize', 'detail' => (string) ini_get('upload_max_filesize')],
+        ['what' => 'memory_limit',        'detail' => (string) ini_get('memory_limit')],
+        ['what' => 'php.ini in use',      'detail' => (string) (php_ini_loaded_file() ?: 'none')],
+        ['what' => 'running as',          'detail' => PHP_SAPI],
+    ];
+
+    $wrong = [];
+    if ($post > 0 && $upload > $post) {
+        $wrong[] = sprintf('upload_max_filesize (%s) is above post_max_size (%s), so it can '
+                         . 'never be reached', ini_get('upload_max_filesize'),
+                           ini_get('post_max_size'));
+    }
+    if ($upload > 0 && $upload < 16 * 1024 * 1024) {
+        $wrong[] = 'upload_max_filesize is under 16M, which a photograph of a boxed machine '
+                 . 'can exceed';
+    }
+    if ($post > 0 && $post < 32 * 1024 * 1024) {
+        $wrong[] = 'post_max_size is under 32M, and a batch of photographs arrives in one '
+                 . 'request';
+    }
+    if ($memory > 0 && $memory < 128 * 1024 * 1024) {
+        $wrong[] = 'memory_limit is under 128M, which resizing a large photograph needs';
+    }
+
+    return maintenance_result(count($wrong),
+        array_merge($rows, array_map(fn($w) => ['what' => 'problem', 'detail' => $w], $wrong)),
+        $wrong === [] ? 'The limits are sensible and consistent.' : implode('; ', $wrong));
 }
 
 // --- Library checks ---------------------------------------------------------

@@ -78,6 +78,13 @@ First public release.
 
 **API**
 
+- **A 401 says which of five things went wrong.** No header at all, a token nobody has heard of,
+  a revoked one, an expired one, an account since disabled — all produced "Send a valid bearer
+  token in the Authorization header", which is true of every one of them and useful for none. It
+  sent people to check a header that was fine. The no-header case now names the proxy in front
+  as a candidate, because a header that leaves the client and does not arrive is the hardest of
+  these to reason about from either end.
+
 - **Every API refusal is now in the log.** Nothing the API did reached the log page before: no
   sign-ins, no refusals, nothing — so an operator watching the log while being told "the app
   will not save" saw an empty screen. Refusals about who you are go in the security stream, the
@@ -127,6 +134,12 @@ First public release.
   and then writes rather than testing what was stored last time somebody pressed Save.
 
 **Fixed**
+
+- A maintenance job reporting **what PHP will accept**: `post_max_size`, `upload_max_filesize`,
+  `memory_limit`, which `php.ini` is actually loaded and under which SAPI. It flags an
+  `upload_max_filesize` above `post_max_size` — which can never be reached, because the smaller
+  number caps the whole request — and limits too low for a photograph of a boxed machine. The
+  installer checked this once and is then deleted, which left no way to ask a running instance.
 
 - **A command line install switched on no metadata sources.** The wizard has always enabled the
   ones needing no account; `bin/install.php` never did, so an instance built from a response

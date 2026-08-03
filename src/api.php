@@ -241,7 +241,19 @@ function bearer_token(): ?string
  *
  * Returns [user, tokenRow|null] or null.
  */
-function api_identify(): ?array
+/**
+ * Who is calling, and when nobody is, why not.
+ *
+ * `$why` exists because five different failures used to produce one sentence:
+ * no header at all, a token nobody has heard of, a revoked one, an expired one,
+ * and an account since disabled. "Send a valid bearer token in the Authorization
+ * header" is true of all five and useful for none - it sends somebody to check
+ * the header when the header was fine and the token was revoked.
+ *
+ * The distinction is safe to publish. It says nothing about which token exists,
+ * only what happened to the one presented, which the presenter already holds.
+ */
+function api_identify(?string &$why = null): ?array
 {
     $plain = bearer_token();
     if ($plain !== null) {
@@ -250,13 +262,18 @@ function api_identify(): ?array
             [token_hash($plain)]
         );
         if ($token === null) {
+            $why = 'That token is not recognised. It may have been revoked - '
+                 . 'check App access on the web.';
             return null;
         }
         if ($token['expires_at'] !== null && strtotime((string) $token['expires_at']) < time()) {
+            $why = 'That token expired on '
+                 . date('j M Y', (int) strtotime((string) $token['expires_at'])) . '.';
             return null;
         }
         $user = one('SELECT id, username, display_name, avatar_filename, email, role, auth_method_id, is_active FROM users WHERE id = ? AND is_active = 1', [(int) $token['user_id']]);
         if ($user === null) {
+            $why = 'The account that token belongs to is closed or disabled.';
             return null;
         }
         // Worth recording for spotting a lost device, but a syncing phone makes
@@ -273,14 +290,24 @@ function api_identify(): ?array
     }
 
     $user = current_user();
-    return $user === null ? null : [$user, null];
+    if ($user === null) {
+        // Nothing arrived. Naming the proxy is not idle: this instance sits
+        // behind one, and a header that leaves the client and does not arrive is
+        // the hardest of these to reason about from either end.
+        $why = 'No Authorization header reached the server, and there is no session '
+             . 'either. If a proxy sits in front of this instance, it may be dropping it.';
+        return null;
+    }
+    return [$user, null];
 }
 
 function api_require_auth(): array
 {
-    $identity = api_identify();
+    $why = null;
+    $identity = api_identify($why);
     if ($identity === null) {
-        api_error('unauthenticated', 'Send a valid bearer token in the Authorization header.', 401);
+        api_error('unauthenticated',
+                  $why ?? 'Send a valid bearer token in the Authorization header.', 401);
     }
     return $identity;
 }
