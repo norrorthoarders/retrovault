@@ -78,6 +78,14 @@ First public release.
 
 **API**
 
+- **Every API refusal is now in the log.** Nothing the API did reached the log page before: no
+  sign-ins, no refusals, nothing — so an operator watching the log while being told "the app
+  will not save" saw an empty screen. Refusals about who you are go in the security stream, the
+  rest in the server stream, with the method, the path, the status and the fields complained
+  about.
+- **A token issued to a device is recorded** as `api.token.issued`, named after the device, so
+  "which phone was that" has an answer.
+
 - `GET` **`/admin/logs`** with the filters the web viewer offers, plus the per-channel counts
   and the events that have actually happened, so a client draws the same tabs without four
   requests. `GET` and `POST` **`/admin/maintenance`**: every check is run to answer the list,

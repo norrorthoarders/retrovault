@@ -68,7 +68,54 @@ function api_error(string $code, string $message, int $status = 400, array $deta
     if ($details !== []) {
         $error['details'] = $details;
     }
+
+    // Recorded, because until now the API was invisible.
+    //
+    // Every refusal the app ever received - a bad token, a field the server did
+    // not like, an entry that is not there - happened without a line anywhere.
+    // An operator watching the log while somebody said "the app will not save"
+    // saw nothing at all, which is the worst possible answer to that sentence.
+    api_log_refusal($code, $message, $status, $details);
+
     api_send(['error' => $error], $status);
+}
+
+/**
+ * One line per refusal.
+ *
+ * Refusals about who you are go in the security stream, because that is where
+ * somebody looks after "why can this phone not sign in". Everything else is the
+ * server stream. Severity follows how much it matters: a 5xx is the server's
+ * fault, a 401 or 403 is worth noticing, a 422 is somebody typing.
+ */
+function api_log_refusal(string $code, string $message, int $status, array $details = []): void
+{
+    if (!function_exists('log_security')) {
+        return;
+    }
+
+    $security = in_array($status, [401, 403, 429], true);
+    $severity = $status >= 500 ? LOG_ERR : ($security ? LOG_WARNING : LOG_NOTICE);
+
+    $path   = (string) (parse_url((string) ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH) ?? '');
+    $method = (string) ($_SERVER['REQUEST_METHOD'] ?? '?');
+
+    // The fields it complained about, named. "Some fields need attention" in a
+    // log is the same non-answer it is on a screen.
+    $fields = '';
+    if ($details !== []) {
+        $named = array_slice(array_keys($details), 0, 6);
+        $fields = ' (' . implode(', ', array_map('strval', $named)) . ')';
+    }
+
+    $line = sprintf('%s %s refused %d %s: %s%s',
+                    $method, $path, $status, $code, $message, $fields);
+
+    if ($security) {
+        log_security('api.refused', $line, $severity);
+    } else {
+        log_server('api.refused', $line, $severity);
+    }
 }
 
 function api_no_content(): never

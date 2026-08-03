@@ -100,6 +100,20 @@ function api_login(): void
     );
 
     q('UPDATE users SET last_login_at = NOW() WHERE id = ?', [(int) $row['id']]);
+
+    // Not log_auth_attempt(): verify_credentials() already writes auth_log for
+    // both outcomes, and a second call there was two rows for one sign-in.
+    //
+    // This is the line that was genuinely missing - auth_log is its own table
+    // and its own screen, while the log page shows `logs`, where the API had
+    // never written anything at all. A device now holds a credential for this
+    // account, named, so "which phone was that" has an answer.
+    log_security('api.token.issued',
+                 sprintf('Token issued to "%s" for %s, %s access',
+                         $device !== '' ? $device : 'API client',
+                         $username, $scope),
+                 LOG_NOTICE, ['subject_type' => 'user', 'subject_id' => (int) $row['id']]);
+
     $user = one('SELECT id, username, display_name, role, is_active FROM users WHERE id = ?', [(int) $row['id']]);
 
     api_ok([
