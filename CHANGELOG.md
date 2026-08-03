@@ -44,6 +44,9 @@ First public release.
   `--example` prints one, `--dry-run` checks everything and writes nothing, and the exit status
   is 0 only if the install finished. It includes the web installer for its helpers rather than
   keeping a second copy of them to drift. Every complaint about the answers is reported at once.
+- The answer file is now the **response file**: `.rsp` rather than `.ini`, and the drop zone
+  reads *Response configuration*. Still INI in shape, and `.ini` is still accepted by the file
+  picker.
 - The web installer **writes an answer file** on its review step and again at the end, and
   **reads one** on its first,
   so the second machine is one page and a drop rather than seven pages of the same answers. The
@@ -75,6 +78,17 @@ First public release.
 
 **API**
 
+- `GET` **`/admin/logs`** with the filters the web viewer offers, plus the per-channel counts
+  and the events that have actually happened, so a client draws the same tabs without four
+  requests. `GET` and `POST` **`/admin/maintenance`**: every check is run to answer the list,
+  because the reason to press a repair is that its check found something, and the check is run
+  again afterwards so the answer says what is left.
+
+- `docs/openapi.yaml` describes `/notifications`, `/notifications/read` and `/metadata/search`,
+  which it had never mentioned. The suite now compares the routes in `public/index.php` against
+  the spec and fails on anything missing — or written twice, which YAML resolves by keeping the
+  last and saying nothing.
+
 - The API suite covers the settings endpoints: every field kind, the bounds, the all-or-nothing
   rule on a batch, and that a secret never comes back. 27 assertions to 71.
 
@@ -87,6 +101,13 @@ First public release.
 
 **Instance settings**
 
+- The starter-data table **moved to the library screen**, where it answers the question people
+  have. It counted the template set against the files — one answer for the whole instance — and
+  now counts what a library holds against what there is to copy, beside the button that copies
+  it. A row is marked only when the library has fewer; the filing tree is built once per
+  platform, so its branch counts are legitimately larger. Instance settings keeps the address to
+  fetch from, which is genuinely instance-wide, and the button that fetches.
+
 - **Starter data** is one table: what this instance holds of each kind against how many the
   files held when they were last fetched, marked where they disagree. Every sync records both
   numbers and writes the local ones into the server log, so "when did the peripherals go from 4
@@ -98,6 +119,26 @@ First public release.
   and then writes rather than testing what was stored last time somebody pressed Save.
 
 **Fixed**
+
+- **A command line install switched on no metadata sources.** The wizard has always enabled the
+  ones needing no account; `bin/install.php` never did, so an instance built from a response
+  file came up with nothing to look titles up with and no sign it was meant to have any. Both
+  now share `installer_enable_metadata_sources()`, and `metadata_sources` in the response file
+  says whether to.
+
+- A maintenance job for **specification names whose machine is gone**. Deleting a library takes
+  its platforms and leaves the vocabulary behind pointing at rows that no longer exist —
+  `ON DELETE SET NULL` on the category side, nothing at all on this one. Nothing read them and
+  nothing counted them, and they accumulated: 4,552 on a database that had been used for a
+  while.
+- The maintenance API sent an **empty message for every job**. `maintenance_result()` calls it
+  `note` and the endpoint read `message`, so the native screen showed a count and no sentence.
+
+- **Specification names read 1158 against 589 on a freshly installed instance**, in red, with
+  nothing wrong. `seed_library_hardware()` copies the interface vocabulary for a library's own
+  platforms — a library with platforms and not the words for what plugs into them cannot
+  describe a card — so the table grows by roughly the file's size with every library made. The
+  count now takes the template rows only, and holds still as libraries are added.
 
 - The **peripheral model count** on the settings screen read 0 while twenty-one were filed. It
   tested `role = 'peripheral'` on the model's own branch, and the tree declares that kind on the

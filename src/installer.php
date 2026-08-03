@@ -778,7 +778,7 @@ function answers_defaults(): array
         'server'   => ['web_user' => '', 'web_group' => ''],
         'install'  => ['deploy' => 'install', 'erase_uploads' => false,
                        'force_erase' => false, 'delete_installer' => false,
-                       'sign_in' => false,
+                       'sign_in' => false, 'metadata_sources' => true,
                        'templates' => 'remote', 'examples' => false],
     ];
 }
@@ -827,8 +827,8 @@ function answers_export(array $v): string
     $lines[] = ';';
     $lines[] = '; Fill in the four blanks below and this installs without asking anything:';
     $lines[] = ';';
-    $lines[] = ';     php bin/install.php --answers this-file.ini --dry-run';
-    $lines[] = ';     php bin/install.php --answers this-file.ini';
+    $lines[] = ';     php bin/install.php --answers this-file.rsp --dry-run';
+    $lines[] = ';     php bin/install.php --answers this-file.rsp';
     $lines[] = ';';
     $lines[] = '; The web installer takes it too, on its first page.';
     $lines[] = ';';
@@ -886,6 +886,10 @@ function answers_export(array $v): string
     $lines[] = 'templates = ' . $q($v['install']['templates'] ?? 'remote');
     $lines[] = '; A handful of catalogue entries to look at.';
     $lines[] = 'examples = ' . $bool($v['install']['examples'] ?? false);
+    $lines[] = '; Switch on the lookup sources that need no account or key. The ones';
+    $lines[] = '; that do - IGDB, TheGamesDB - are added by hand afterwards, because';
+    $lines[] = '; somebody has to go and fetch credentials for them.';
+    $lines[] = 'metadata_sources = ' . $bool($v['install']['metadata_sources'] ?? true);
     $lines[] = '; Delete public/install.php once the install has finished. A file that';
     $lines[] = '; refuses to run is still better removed than left in a document root.';
     $lines[] = 'delete_installer = ' . $bool($v['install']['delete_installer'] ?? false);
@@ -1064,4 +1068,45 @@ function web_server_account(string $wantUser = '', string $wantGroup = ''): arra
         }
     }
     return [null, null];
+}
+
+/**
+ * Switch on the metadata sources that need no account.
+ *
+ * The ones that ask for nothing: no key, no terms, no sign-up. IGDB and
+ * TheGamesDB are left out because somebody has to go and fetch credentials for
+ * them, and an installer cannot.
+ *
+ * Here rather than inside the wizard, where it started, because the command line
+ * installer did not do it at all - an instance installed from a response file
+ * came up with no lookup sources and no sign that it was supposed to have any.
+ *
+ * Existing rows are left alone, so running it twice adds nothing.
+ *
+ * @return int  how many were added
+ */
+function installer_enable_metadata_sources(): int
+{
+    if (!function_exists('metadata_provider_types')) {
+        return 0;
+    }
+
+    $added = 0;
+    foreach (metadata_provider_types() as $type => $def) {
+        if (!empty($def['needs_key'])) {
+            continue;
+        }
+        if ((int) scalar('SELECT COUNT(*) FROM metadata_providers WHERE type = ?', [$type]) > 0) {
+            continue;
+        }
+        insert_row('metadata_providers', [
+            'name'       => (string) ($def['label'] ?? $type),
+            'type'       => (string) $type,
+            'params'     => json_encode($def['params'] ?? []),
+            'priority'   => 100,
+            'is_enabled' => 1,
+        ]);
+        $added++;
+    }
+    return $added;
 }

@@ -135,7 +135,7 @@ not echoed and are typed twice, and each answer is checked as it is given — a 
 that asks fifteen questions and then complains about the third has wasted the
 other twelve. Nothing is written until the end.
 
-Add `--save-answers install.ini` and it writes the answers out afterwards, in the
+Add `--save-answers install.rsp` and it writes the answers out afterwards, in the
 same form the wizard hands you, so the machine after this one needs no questions
 either. `--answers` and `--interactive` combine: the file fills in what it knows
 and the questions cover the rest.
@@ -143,14 +143,15 @@ and the questions cover the rest.
 From a file:
 
 ```
-php bin/install.php --example > install.ini
-chmod 600 install.ini
-$EDITOR install.ini
-php bin/install.php --answers install.ini --dry-run
-php bin/install.php --answers install.ini
+php bin/install.php --example > install.rsp
+chmod 600 install.rsp
+$EDITOR install.rsp
+php bin/install.php --answers install.rsp --dry-run
+php bin/install.php --answers install.rsp
 ```
 
-The answer file is INI, in four sections. `--example` prints a commented one, and
+The response file is INI in shape and `.rsp` by name, in five sections. `--example`
+prints a commented one, and
 **the last page of the web installer writes one from the answers you just gave** —
 which is the easiest way to get a correct file for the second machine.
 
@@ -177,7 +178,7 @@ What it holds:
 | `[admin]` | username, password, email, display name |
 | `[instance]` | name, tagline, public address, currency, timezone, trusted proxies |
 | `[server]` | `web_user`, `web_group` — who the web server runs as |
-| `[install]` | `deploy` (`install` on an empty database, `erase` to drop what is there first, `keep` to write the configuration only), `erase_uploads`, `force_erase`, `templates` (`remote`, `shipped` or `none`), `examples`, `delete_installer`, `sign_in` |
+| `[install]` | `metadata_sources` (switch on the lookup sources needing no key), `deploy` (`install` on an empty database, `erase` to drop what is there first, `keep` to write the configuration only), `erase_uploads`, `force_erase`, `templates` (`remote`, `shipped` or `none`), `examples`, `delete_installer`, `sign_in` |
 
 ### Running it as root
 
@@ -257,7 +258,7 @@ is non-zero when it does not, so a run is either invisible or explained:
 
 ```
 RETROVAULT_DB_PASS=... RETROVAULT_ADMIN_PASS=... \
-  php bin/install.php --answers install.ini --quiet || exit 1
+  php bin/install.php --answers install.rsp --quiet || exit 1
 ```
 
 `RETROVAULT_DB_PASS` and `RETROVAULT_ADMIN_PASS` override `db.pass` and

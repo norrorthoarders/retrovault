@@ -189,12 +189,44 @@ $pendingTo  = (int) ($lib['pending_owner_id'] ?? 0);
   <h2 class="panel__title">Synchronise template data from the internet</h2>
   <p class="lede" style="font-size:.9rem;margin-top:0">
     Fetches the latest structure from the repository and copies anything this library
-    does not have yet —
-    <?= (int) $templateCounts['platforms'] ?> platforms,
-    <?= (int) $templateCounts['vendors'] ?> makers,
-    <?= (int) $templateCounts['models'] ?> machine models and
-    <?= (int) $templateCounts['parts'] ?> peripheral models are available.
+    does not have yet.
   </p>
+  <?php
+  // What this library holds, against what there is to copy.
+  //
+  // This table was on the instance settings page, counting the template set
+  // against the files it came from - one answer for the whole instance, when the
+  // question anybody actually has is whether *this* library is behind. The
+  // address to fetch from is still instance-wide and still lives there.
+  //
+  // A row is marked only when this library has fewer. The branch counts are
+  // legitimately larger: the filing tree is built once per platform, so
+  // twenty-six template branches become a thousand of them here.
+  ?>
+  <table class="table" style="margin:.4rem 0 1rem">
+    <thead>
+      <tr>
+        <th>Holds</th>
+        <th style="text-align:right">In this library</th>
+        <th style="text-align:right">Available</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach (($templateRows ?? []) as $i => $available): ?>
+        <?php
+        $mine   = (int) ($libraryRows[$i]['n'] ?? 0);
+        $behind = $mine < (int) $available['n'];
+        ?>
+        <tr>
+          <td><?= e((string) $available['holds']) ?></td>
+          <td style="text-align:right<?= $behind ? ';color:var(--bad);font-weight:600' : '' ?>">
+            <?= $mine ?>
+          </td>
+          <td style="text-align:right"><?= (int) $available['n'] ?></td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
   <?php
   // Off by default, and deliberately so.
   //

@@ -27,6 +27,8 @@ tags:
   - name: Images
   - name: Taxonomy
   - name: Sync
+  - name: Notifications
+  - name: Metadata
 
 paths:
   /meta:
@@ -205,6 +207,158 @@ paths:
         "200": { description: OK }
         "422": { description: Refused, with each field named in details }
         "403": { description: Administrator access is required }
+
+  /notifications:
+    get:
+      tags: [Notifications]
+      summary: Notices for this account
+      description: >
+        Newest first. The unread total rides along in `meta` so a badge costs one
+        request rather than two, along with a `cursor` to pass back as `since`.
+        `link_path` is a path and never a URL - an absolute address written into
+        a row goes wrong the moment the instance moves - so a client joins it to
+        its own host.
+      parameters:
+        - name: since
+          in: query
+          description: Only notices newer than this. Anything strtotime() reads.
+          schema: { type: string }
+        - name: unread
+          in: query
+          description: Only the unread ones. Anything but "0" means yes.
+          schema: { type: string }
+        - name: limit
+          in: query
+          description: 1 to 200. Defaults to 50.
+          schema: { type: integer, minimum: 1, maximum: 200, default: 50 }
+      responses:
+        "200": { description: OK }
+        "422": { description: since was not a timestamp the server could read }
+
+  /notifications/read:
+    post:
+      tags: [Notifications]
+      summary: Mark some read, or all of them
+      description: >
+        `ids` takes an array, or the string "all" - which is the server's
+        spelling and not worth a second endpoint. An empty array means all too.
+        At most 200 ids per call. Answers with how many were marked and what is
+        left unread. Marking is a write, so a read-only token is refused.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  oneOf:
+                    - type: array
+                      items: { type: integer }
+                    - type: string
+                      enum: [all]
+      responses:
+        "200": { description: OK }
+        "403": { description: A read-only token }
+        "422": { description: ids was neither an array nor "all" }
+
+  /metadata/search:
+    get:
+      tags: [Metadata]
+      summary: Look a title up in the configured sources
+      description: >
+        Asks every enabled provider and returns what they said, with the ones
+        that failed named in `meta.errors` rather than silently missing. A write
+        token, because searching spends somebody's API quota. Nothing is stored:
+        what the caller does with a result is decided when they write it to a
+        library.
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: The title to look for.
+          schema: { type: string }
+        - name: platform_id
+          in: query
+          description: Narrow to one platform. Not an access boundary, only a filter.
+          schema: { type: integer }
+      responses:
+        "200": { description: OK }
+        "403": { description: A read-only token }
+        "422": { description: q was missing, or platform_id names no platform }
+
+  /admin/logs:
+    get:
+      tags: [Admin]
+      summary: The log, filtered
+      description: >
+        Administrator only, for the same reason the screen is: the security
+        stream names who signed in from where. `meta` carries the per-channel
+        counts and the events that have actually happened, so a client can draw
+        the same tabs and filters the web viewer offers without four requests.
+      parameters:
+        - name: channel
+          in: query
+          schema: { type: string, enum: [all, security, server, metadata], default: all }
+        - name: event
+          in: query
+          description: Exact, or a prefix with a trailing asterisk.
+          schema: { type: string }
+        - name: severity
+          in: query
+          description: This syslog level or more severe.
+          schema: { type: integer, minimum: 0, maximum: 7 }
+        - name: actor
+          in: query
+          schema: { type: integer }
+        - name: since
+          in: query
+          schema: { type: string }
+        - name: q
+          in: query
+          description: Substring of the message or the actor's name.
+          schema: { type: string }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 500, default: 100 }
+        - name: offset
+          in: query
+          schema: { type: integer, minimum: 0, default: 0 }
+      responses:
+        "200": { description: OK }
+        "403": { description: Administrator access is required }
+        "422": { description: An unknown channel, or a severity outside 0-7 }
+
+  /admin/maintenance:
+    get:
+      tags: [Admin]
+      summary: The instance jobs, and what each one currently finds
+      description: >
+        Every check is run to answer this, which is the point: the reason to run
+        a repair is that its check found something. `rows` are examples, capped
+        by the check itself. Library-scoped jobs are not here - they belong to a
+        library and are reached through it.
+      responses:
+        "200": { description: OK }
+        "403": { description: Administrator access is required }
+
+  /admin/maintenance/{job}:
+    post:
+      tags: [Admin]
+      summary: Run one repair
+      description: >
+        The check is run again afterwards, so `count` is what is left rather than
+        what was found before. Recorded in the security log. Jobs that only
+        report are refused rather than silently doing nothing.
+      parameters:
+        - name: job
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+        "403": { description: Administrator access is required }
+        "404": { description: No instance job by that name }
+        "422": { description: That job reports and does not repair }
 
   /tokens:
     get:

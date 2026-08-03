@@ -1001,9 +1001,19 @@ function template_refresh_agents(bool $remote): array
  *
  * @return array<int,array{file:string,holds:string,n:int}>
  */
-function template_row_counts(): array
+function template_row_counts(?int $libraryId = null): array
 {
-    $tpl = 'library_id IS NULL';
+    // Null counts the template set; an id counts what one library holds of it.
+    //
+    // One function rather than two, because the two are compared side by side on
+    // the library screen and a second implementation would be a second set of
+    // labels to drift out of step with these.
+    $tpl = $libraryId === null
+        ? 'library_id IS NULL'
+        : 'library_id = ' . (int) $libraryId;
+    $platformScope = $libraryId === null
+        ? 'p.library_id IS NULL'
+        : 'p.library_id = ' . (int) $libraryId;
     $rows = [
         ['platforms', 'Machines', (int) scalar("SELECT COUNT(*) FROM platforms WHERE $tpl")],
         ['hardware_manufacturers', 'Companies that make hardware',
@@ -1033,8 +1043,25 @@ function template_row_counts(): array
                            WHERE m.$tpl AND c.role <> 'machine'")],
         ['software_models', 'Software models',
             (int) scalar("SELECT COUNT(*) FROM software_models WHERE $tpl")],
+        // Template rows only, which is the whole table minus every library's
+        // copies of it.
+        //
+        // seed_library_hardware() copies the vocabulary for a library's own
+        // platforms, because a library that has platforms and not the words for
+        // what plugs into them cannot describe a card. So the table grows by
+        // roughly the file's size with every library made - and counting all of
+        // it against the file said 1158 against 589 on a freshly installed
+        // instance, in red, for ever. The two numbers were counting different
+        // things.
+        //
+        // platform_id 0 is the sentinel for "applies anywhere" and is shared
+        // rather than copied, which is why those rows never doubled.
         ['hardware_specifications', 'Specification names',
-            (int) scalar("SELECT COUNT(*) FROM hardware_vocab")],
+            (int) scalar("SELECT COUNT(*) FROM hardware_vocab hv
+                           WHERE hv.platform_id = 0
+                              OR EXISTS (SELECT 1 FROM platforms p
+                                          WHERE p.id = hv.platform_id
+                                            AND $platformScope)")],
         ['environments', 'Environments',
             // The table is operating_systems; "environments" is what the file and
             // the screens call them.

@@ -540,7 +540,7 @@ if (($_GET['download'] ?? '') === 'answers') {
     }
     $body = answers_export(answers_from_session());
     header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="retrovault-install.ini"');
+    header('Content-Disposition: attachment; filename="retrovault-install.rsp"');
     header('Content-Length: ' . strlen($body));
     header('Cache-Control: no-store');
     header('X-Content-Type-Options: nosniff');
@@ -695,6 +695,7 @@ if ($step === 1 && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preset
                 // have the installer deleted underneath them.
                 'delete_installer'   => (bool) $answers['install']['delete_installer'],
                 'sign_in'            => (bool) $answers['install']['sign_in'],
+                'metadata_sources'   => (bool) $answers['install']['metadata_sources'],
             ]);
             // Credentials only if the file actually carried them - which it does
             // when the environment filled the placeholders in, and does not when
@@ -861,7 +862,7 @@ if ($step === 1) {
              border:2px dashed <?= $presetOk ? 'var(--ok,#3ba55d)' : ($presetProblems ? 'var(--bad,#e05260)' : 'var(--line,#3a3a4a)') ?>;
              border-radius:10px;padding:1.4rem;text-align:center;cursor:pointer;
              transition:border-color .15s, background .15s">
-          <strong style="font-size:.95rem">No-prompt installation configuration</strong>
+          <strong style="font-size:.95rem">Response configuration</strong>
 
           <?php if ($presetOk): ?>
             <div style="margin-top:.5rem;color:var(--ok,#3ba55d);font-size:.9rem">
@@ -885,7 +886,7 @@ if ($step === 1) {
             </ul>
           <?php endif; ?>
 
-          <input type="file" name="answers" id="rv-file" accept=".ini,text/plain"
+          <input type="file" name="answers" id="rv-file" accept=".rsp,.ini,text/plain"
                  style="display:block;margin:.7rem auto 0">
           <noscript><button class="btn" type="submit" style="margin-top:.6rem">Use it</button></noscript>
         </div>
@@ -1729,26 +1730,10 @@ if ($running) {
                     // ones that ask for nothing: no account, no key, no terms to
                     // agree to. IGDB and TheGamesDB are left out because they
                     // need credentials somebody has to go and get.
-                    $sources = 0;
-                    if (function_exists('metadata_provider_types')) {
-                        foreach (metadata_provider_types() as $type => $def) {
-                            if (!empty($def['needs_key'])) {
-                                continue;
-                            }
-                            if ((int) scalar('SELECT COUNT(*) FROM metadata_providers WHERE type = ?',
-                                             [$type]) > 0) {
-                                continue;
-                            }
-                            insert_row('metadata_providers', [
-                                'name'       => (string) ($def['label'] ?? $type),
-                                'type'       => (string) $type,
-                                'params'     => json_encode($def['params'] ?? []),
-                                'priority'   => 100,
-                                'is_enabled' => 1,
-                            ]);
-                            $sources++;
-                        }
-                    }
+                    // Shared with bin/install.php, which used to skip this
+                    // entirely - see installer_enable_metadata_sources().
+                    $sources = (bool) recall('metadata_sources', true)
+                        ? installer_enable_metadata_sources() : 0;
                     if ($sources > 0) {
                         $log[] = sprintf('Metadata sources configured: %d, the ones needing no key',
                                          $sources);

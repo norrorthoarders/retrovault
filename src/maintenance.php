@@ -87,6 +87,19 @@ function maintenance_jobs(): array
             'repair' => 'maintenance_repair_missing_uploads',
             'repair_label' => 'Forget the rows whose file is gone',
         ],
+        'orphan_vocab' => [
+            'label'  => 'Specification names for machines that are gone',
+            'scope'  => 'instance',
+            'access' => 'admin',
+            'blurb'  => 'The interface vocabulary is copied into a library along with its '
+                      . 'platforms, so a card can say what it plugs into. Deleting a library '
+                      . 'takes the platforms and leaves the words behind, pointing at rows '
+                      . 'that no longer exist. Nothing reads them and nothing counts them, '
+                      . 'and they accumulate for as long as libraries come and go.',
+            'check'  => 'maintenance_check_orphan_vocab',
+            'repair' => 'maintenance_repair_orphan_vocab',
+            'repair_label' => 'Delete them',
+        ],
         'slot_platforms' => [
             'label'  => 'Slots belonging to another machine',
             'scope'  => 'instance',
@@ -424,6 +437,43 @@ function maintenance_repair_expired_tokens(): array
     $st = q("DELETE FROM api_tokens
               WHERE (expires_at IS NOT NULL AND expires_at < NOW()) OR revoked_at IS NOT NULL");
     return ['done' => true, 'message' => $st->rowCount() . ' token(s) deleted.'];
+}
+
+/**
+ * Vocabulary rows whose platform is not there any more.
+ *
+ * platform_id 0 is the sentinel for "applies anywhere" and belongs to nobody, so
+ * it is excluded rather than swept up with the rest - it is the one value that
+ * is meant not to join.
+ */
+function maintenance_check_orphan_vocab(): array
+{
+    $rows = all(
+        "SELECT hv.id, hv.kind, hv.code, hv.platform_id
+           FROM hardware_vocab hv
+          WHERE hv.platform_id <> 0
+            AND NOT EXISTS (SELECT 1 FROM platforms p WHERE p.id = hv.platform_id)
+          LIMIT 200"
+    );
+    $total = (int) scalar(
+        "SELECT COUNT(*) FROM hardware_vocab hv
+          WHERE hv.platform_id <> 0
+            AND NOT EXISTS (SELECT 1 FROM platforms p WHERE p.id = hv.platform_id)"
+    );
+
+    return maintenance_result($total,
+        array_map(fn($r) => ['what'   => (string) $r['code'],
+                             'detail' => (string) $r['kind'] . ', machine '
+                                       . (string) $r['platform_id'] . ' no longer exists'], $rows),
+        $total === 0 ? 'Every specification name still belongs to a machine.' : '');
+}
+
+function maintenance_repair_orphan_vocab(): array
+{
+    $st = q("DELETE hv FROM hardware_vocab hv
+              WHERE hv.platform_id <> 0
+                AND NOT EXISTS (SELECT 1 FROM platforms p WHERE p.id = hv.platform_id)");
+    return ['done' => true, 'message' => $st->rowCount() . ' specification name(s) deleted.'];
 }
 
 // --- Library checks ---------------------------------------------------------

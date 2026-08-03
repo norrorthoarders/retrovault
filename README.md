@@ -40,9 +40,9 @@ one that has to come up unattended:
 
 ```
 php bin/install.php --interactive               # or, asked at the terminal
-php bin/install.php --example > install.ini      # or download one from the wizard
-php bin/install.php --answers install.ini --dry-run
-php bin/install.php --answers install.ini --quiet
+php bin/install.php --example > install.rsp      # or download one from the wizard
+php bin/install.php --answers install.rsp --dry-run
+php bin/install.php --answers install.rsp --quiet
 ```
 
 The last page of the web installer writes one of these files from the answers it was just

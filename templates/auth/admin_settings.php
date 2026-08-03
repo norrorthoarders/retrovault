@@ -464,83 +464,31 @@
     </div>
 
     <?php
-    // One table. What this instance holds of each kind, against how many the
-    // files held when they were last fetched.
+    // No table here any more.
     //
-    // There were two, and the second counted added, corrected, skipped and
-    // refused per file. Those describe one run and answer nothing afterwards -
-    // "added 0" is what a sync says whether the file matched what was here or
-    // the fetch quietly served something a year old. Two numbers and a mark
-    // where they disagree is the whole question: is what I have what is
-    // published.
-    //
-    // Keyed by what it holds rather than by file, because two files - the game
-    // and software developer lists - fill one thing and had no business being
-    // two rows saying half a number each.
+    // What it showed was the template set against the files, which is one number
+    // per kind for the whole instance - and the question people actually have is
+    // "is my library up to date", which is per library and is answered on the
+    // library screen. This page keeps the address, because where to fetch from
+    // is genuinely instance-wide, and the button that fetches from it.
     ?>
     <?php if (!empty($templates['error'])): ?>
       <p class="hint" style="color:var(--bad)"><?= e((string) $templates['error']) ?></p>
+    <?php elseif (($templates['last_sync'] ?? null) !== null): ?>
+      <p class="hint">
+        Last fetched
+        <?= e(date('j M Y, H:i', strtotime((string) $templates['last_sync']['at']))) ?><?php
+          ?><?= !empty($templates['last_sync']['forced']) ? ', forced' : '' ?>.
+        <strong>Force update</strong> rewrites rows that are already here, which is
+        how a correction to something that shipped wrong arrives; an ordinary fetch
+        leaves them alone. Neither touches a library &mdash; each library says what
+        it holds, and resyncs, on its own page.
+      </p>
+    <?php elseif ($templates['synced_at']): ?>
+      <p class="hint">Last fetched
+        <?= e(date('j M Y, H:i', strtotime((string) $templates['synced_at']))) ?>.</p>
     <?php else: ?>
-      <?php $last = $templates['last_sync'] ?? null; ?>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Holds</th>
-            <th style="text-align:right">Rows local</th>
-            <th style="text-align:right">Rows remote</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach (($templates['rows'] ?? []) as $r): ?>
-            <?php
-            // A row may be filled by more than one file, so the remote side is
-            // the sum of those it names. Null when the last sync did not record
-            // that file - before this instance kept the numbers, or on a file
-            // that failed - and null is drawn as a dash rather than as zero,
-            // which would read as "the file is empty".
-            $remote = null;
-            foreach (array_map('trim', explode(',', (string) $r['file'])) as $f) {
-                if (isset($last['remote'][$f])) {
-                    $remote = (int) $remote + (int) $last['remote'][$f];
-                }
-            }
-            $differs = $remote !== null && $remote !== (int) $r['n'];
-            ?>
-            <tr>
-              <td><?= e($r['holds']) ?></td>
-              <td style="text-align:right<?= $differs ? ';color:var(--bad);font-weight:600' : '' ?>">
-                <?= (int) $r['n'] ?>
-              </td>
-              <td style="text-align:right<?= $differs ? ';color:var(--bad);font-weight:600' : '' ?>">
-                <?= $remote === null ? '&mdash;' : $remote ?>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-
-      <?php if ($last !== null): ?>
-        <p class="hint">
-          Remote counted
-          <?= e(date('j M Y, H:i', strtotime((string) $last['at']))) ?>
-          from <span class="mono" style="font-size:.8rem"><?= e((string) $last['from']) ?></span><?php
-            ?><?= !empty($last['forced']) ? ', forced' : '' ?>.
-          A row marked in red holds a different number here than the files did.
-          <strong>Force update</strong> rewrites rows that are already present,
-          which is how a correction to something that shipped wrong arrives;
-          an ordinary fetch leaves them alone. Neither touches a library &mdash;
-          resync the library to copy changes into it.
-        </p>
-      <?php elseif ($templates['synced_at']): ?>
-        <p class="hint">
-          Last fetched
-          <?= e(date('j M Y, H:i', strtotime((string) $templates['synced_at']))) ?>,
-          before this instance kept a count of what was in the files.
-          Force update takes them again and records it.
-        </p>
-      <?php else: ?>
-        <p class="hint">Never fetched. Force update takes what is at the address above.</p>
-      <?php endif; ?>
+      <p class="hint">Never fetched. Force update takes what is at the address above.</p>
     <?php endif; ?>
     <div class="formactions">
       <button class="btn" type="submit" name="action" value="force">Force update</button>

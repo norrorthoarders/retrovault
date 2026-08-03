@@ -3049,6 +3049,14 @@ function library_edit_form(int $id): void
     render('auth/library_edit', [
         'pageTitle' => 'Edit ' . $library['name'],
         'library'   => $library,
+        // What this library holds of the template set, beside what the set
+        // holds. The same function for both, so the labels cannot disagree.
+        //
+        // It used to be on the instance settings page, counting the templates
+        // against the files - one set of numbers for the whole instance, when
+        // the question people have is whether a particular library is behind.
+        'templateRows' => template_row_counts(),
+        'libraryRows'  => template_row_counts($id),
         'maintJobs'    => $maintJobs,
         'maintResults' => $maintResults,
         // What it currently holds, per kind. The point of the page is that all of

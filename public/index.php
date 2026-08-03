@@ -243,6 +243,10 @@ if (str_starts_with($path, '/api/')) {
         ['PATCH',  '#^/api/v1/profile/notifications$#',   fn() => api_notification_prefs_update()],
         ['GET',    '#^/api/v1/admin/settings$#',          fn() => api_settings_show()],
         ['PATCH',  '#^/api/v1/admin/settings$#',          fn() => api_settings_update()],
+        ['GET',    '#^/api/v1/admin/logs$#',              fn() => api_logs_index()],
+        ['GET',    '#^/api/v1/admin/maintenance$#',       fn() => api_maintenance_index()],
+        ['POST',   '#^/api/v1/admin/maintenance/([a-z_]+)$#',
+                                                          fn($job) => api_maintenance_run((string) $job)],
 
         ['GET',    '#^/api/v1/tokens$#',                  fn() => api_tokens_index()],
         ['POST',   '#^/api/v1/tokens$#',                  fn() => api_tokens_create()],

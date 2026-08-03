@@ -15,10 +15,10 @@ declare(strict_types=1);
  * helpers rather than keeping a second copy of pdo_connect() and config_php()
  * that would drift.
  *
- *   php bin/install.php --example > install.ini
- *   $EDITOR install.ini
- *   php bin/install.php --answers install.ini --dry-run
- *   php bin/install.php --answers install.ini
+ *   php bin/install.php --example > install.rsp
+ *   $EDITOR install.rsp
+ *   php bin/install.php --answers install.rsp --dry-run
+ *   php bin/install.php --answers install.rsp
  *
  * Exit status is 0 only if the install finished. Anything else is a failure with
  * a reason on stderr, which is what a provisioning script needs and what a web
@@ -201,7 +201,7 @@ function ask_secret(string $label): string
  * The whole questionnaire, seeded with whatever is already known.
  *
  * `$a` starts as the defaults, or as an answer file if one was given - so
- * `--answers half-filled.ini --interactive` asks about the gaps and offers the
+ * `--answers half-filled.rsp --interactive` asks about the gaps and offers the
  * rest for confirmation, which is the useful case rather than an edge one.
  */
 function ask_everything(array $a): array
@@ -343,8 +343,8 @@ for ($i = 1; $i < $argc; $i++) {
 RetroVault installer.
 
   php bin/install.php --interactive
-  php bin/install.php --example > install.ini
-  php bin/install.php --answers install.ini [--dry-run] [--force]
+  php bin/install.php --example > install.rsp
+  php bin/install.php --answers install.rsp [--dry-run] [--force]
 
   --interactive   ask the questions instead of reading a file
   --example       print an answer file to start from
@@ -357,7 +357,7 @@ RetroVault installer.
 Without a file at all:
 
   php bin/install.php --interactive
-  php bin/install.php --interactive --save-answers install.ini
+  php bin/install.php --interactive --save-answers install.rsp
 
 --answers and --interactive combine: the file fills in what it knows and the
 questions cover the rest.
@@ -365,7 +365,7 @@ questions cover the rest.
 Silent, for a provisioning run:
 
   RETROVAULT_DB_PASS=... RETROVAULT_ADMIN_PASS=... \
-    php bin/install.php --answers install.ini --quiet || handle-failure
+    php bin/install.php --answers install.rsp --quiet || handle-failure
 
 RETROVAULT_DB_PASS and RETROVAULT_ADMIN_PASS override db.pass and
 admin.password, so the answer file can be templated and hold no secret. Or pipe
@@ -608,6 +608,18 @@ if ($a['install']['templates'] !== 'none') {
     // The counts go into the log by way of template_sync(), so an install leaves
     // the same trail a later sync does and the settings screen has something to
     // compare against from the first day.
+}
+
+// The lookup sources that need no account.
+//
+// The wizard has always done this and the command line installer never did, so
+// an instance built from a response file came up with nothing to look titles up
+// with, and no sign that it was meant to have any.
+if ($a['install']['metadata_sources']) {
+    $sources = installer_enable_metadata_sources();
+    say($sources > 0
+        ? sprintf('Metadata sources switched on: %d, the ones needing no key', $sources)
+        : 'Metadata sources already configured');
 }
 
 if ($a['install']['deploy'] !== 'keep') {

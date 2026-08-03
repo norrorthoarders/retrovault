@@ -280,3 +280,186 @@ function api_settings_update(): void
 
     api_settings_show();
 }
+
+// ---------------------------------------------------------------------------
+// The log
+// ---------------------------------------------------------------------------
+
+/**
+ * The log, filtered.
+ *
+ * Read-only, and administrator-only for the same reason the screen is: the
+ * security stream names who signed in from where, and that is not a thing a
+ * library curator is entitled to read.
+ *
+ * The filters are the ones the web viewer offers, because a client that can see
+ * less than the page it replaces is not a replacement.
+ */
+function api_logs_index(): void
+{
+    api_require_admin();
+
+    $channel = (string) ($_GET['channel'] ?? 'all');
+    if ($channel !== 'all' && !in_array($channel, log_channels(), true)) {
+        api_error('validation_failed',
+                  'channel must be all, ' . implode(', ', log_channels()) . '.', 422);
+    }
+
+    $filters = [];
+    foreach (['event', 'actor', 'since', 'q'] as $key) {
+        if (isset($_GET[$key]) && trim((string) $_GET[$key]) !== '') {
+            $filters[$key] = trim((string) $_GET[$key]);
+        }
+    }
+    if (isset($_GET['severity']) && $_GET['severity'] !== '') {
+        if (!preg_match('/^[0-7]$/', (string) $_GET['severity'])) {
+            api_error('validation_failed', 'severity is a syslog level, 0 to 7.', 422);
+        }
+        $filters['severity'] = (int) $_GET['severity'];
+    }
+    if (isset($filters['since']) && strtotime($filters['since']) === false) {
+        api_error('validation_failed', 'since must be a timestamp the server can read.', 422);
+    }
+
+    $limit  = max(1, min(500, (int) ($_GET['limit'] ?? 100)));
+    $offset = max(0, (int) ($_GET['offset'] ?? 0));
+
+    $rows = log_entries($channel, $filters, $limit, $offset);
+
+    api_ok(array_map('log_entry_to_api', $rows), [
+        'channel'  => $channel,
+        'limit'    => $limit,
+        'offset'   => $offset,
+        // What the tabs on the web viewer count, so a client can draw the same
+        // thing without four requests.
+        'channels' => log_channel_counts(),
+        // Only the events that have happened, so a filter is a list rather than
+        // guesswork.
+        'events'   => log_known_events($channel),
+    ]);
+}
+
+/** One entry, as the API sends it. */
+function log_entry_to_api(array $row): array
+{
+    return [
+        'id'        => (int) $row['id'],
+        'channel'   => (string) $row['channel'],
+        'severity'  => (int) $row['severity'],
+        // The word as well as the number, from log.php's own table rather than
+        // a second copy of it here - a client should not have to carry the
+        // syslog levels around to draw a coloured dot.
+        'severity_label' => log_severity_label((int) $row['severity']),
+        'event'     => (string) $row['event'],
+        'message'   => (string) $row['message'],
+        'actor'     => $row['actor_id'] === null ? null : [
+            'id'   => (int) $row['actor_id'],
+            'name' => (string) ($row['actor_name'] ?? ''),
+        ],
+        'subject'   => ($row['subject_type'] ?? null) === null ? null : [
+            'type' => (string) $row['subject_type'],
+            'id'   => $row['subject_id'] === null ? null : (int) $row['subject_id'],
+        ],
+        'ip'         => $row['ip'] ?? null,
+        'created_at' => api_datetime($row['created_at'] ?? null),
+    ];
+}
+
+/** Per channel, for the tabs. */
+function log_channel_counts(): array
+{
+    $out = ['all' => (int) scalar('SELECT COUNT(*) FROM logs')];
+    foreach (log_channels() as $channel) {
+        $out[$channel] = (int) scalar('SELECT COUNT(*) FROM logs WHERE channel = ?', [$channel]);
+    }
+    return $out;
+}
+
+// ---------------------------------------------------------------------------
+// Maintenance
+// ---------------------------------------------------------------------------
+
+/**
+ * The jobs, and what each one currently finds.
+ *
+ * Every check is run to answer this, which is the point: a list of jobs with no
+ * findings beside them is a list of things somebody might press, and the reason
+ * to press one is that it found something.
+ *
+ * Instance jobs only. The library ones belong to a library and are reached
+ * through it, and mixing the two here would mean this endpoint answering
+ * differently depending on which library the caller happens to be looking at.
+ */
+function api_maintenance_index(): void
+{
+    api_require_admin();
+
+    // Not maintenance_jobs_for(), which filters admin jobs with is_admin() -
+    // and that reads the session, which an API request does not have. It would
+    // have returned an empty list to an administrator holding a valid token, and
+    // it did. api_require_admin() above has already established the same thing
+    // from the token, so the filter here is only about scope.
+    $out = [];
+    foreach (maintenance_jobs() as $key => $job) {
+        if ($job['scope'] !== 'instance') {
+            continue;
+        }
+        $result = maintenance_run_check($key);
+        $out[] = [
+            'job'          => $key,
+            'label'        => (string) $job['label'],
+            'blurb'        => (string) $job['blurb'],
+            'count'        => (int) ($result['count'] ?? 0),
+            // maintenance_result() calls it `note`. Read as `message` it was
+            // always the empty string, so every job on the native screen said
+            // nothing about what it had found.
+            'message'      => (string) ($result['note'] ?? ''),
+            // Examples, capped by the check itself: "nine thousand" and the
+            // first ten of them is as much as anybody can act on at once.
+            'rows'         => array_values((array) ($result['rows'] ?? [])),
+            'repairable'   => $job['repair'] !== null,
+            'repair_label' => $job['repair_label'],
+        ];
+    }
+
+    api_ok($out);
+}
+
+/**
+ * Run one repair.
+ *
+ * A write, and an administrator's: these delete files, rewrite paths and forget
+ * rows. The check is run again afterwards so the answer says what is left rather
+ * than what was found before.
+ */
+function api_maintenance_run(string $key): void
+{
+    api_require_admin();
+
+    $jobs = maintenance_jobs();
+    if (!isset($jobs[$key]) || $jobs[$key]['scope'] !== 'instance') {
+        api_error('not_found', 'No instance job called "' . $key . '".', 404);
+    }
+    $job = $jobs[$key];
+    if ($job['repair'] === null) {
+        api_error('validation_failed',
+                  '"' . $job['label'] . '" reports and does not repair.', 422);
+    }
+
+    $fn  = $job['repair'];
+    $out = $fn();
+
+    log_security('maintenance.run',
+                 sprintf('Ran "%s" from the API: %s', $job['label'],
+                         (string) ($out['message'] ?? '')),
+                 LOG_NOTICE);
+
+    $after = maintenance_run_check($key);
+    api_ok([
+        'job'     => $key,
+        'label'   => (string) $job['label'],
+        'done'    => (bool) ($out['done'] ?? false),
+        'message' => (string) ($out['message'] ?? ''),
+        'count'   => (int) ($after['count'] ?? 0),
+    ]);
+}
