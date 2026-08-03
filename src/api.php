@@ -448,9 +448,7 @@ function item_to_api(array $r, bool $withImages = false): array
     // round trips for fields no list shows.
     $hardware = null;
     if ($withImages) {
-        $hw = one('SELECT model, board_revision, firmware, serial_number, modifications,
-                          working_state
-                     FROM item_hardware WHERE item_id = ?', [(int) $r['id']]);
+        $hw = one('SELECT * FROM item_hardware WHERE item_id = ?', [(int) $r['id']]);
         $hardware = $hw === null ? null : [
             'model'          => $hw['model'],
             'board_revision' => $hw['board_revision'],
@@ -458,6 +456,17 @@ function item_to_api(array $r, bool $withImages = false): array
             'serial_number'  => $hw['serial_number'],
             'modifications'  => $hw['modifications'],
             'working_state'  => $hw['working_state'],
+            'interface'      => $hw['interface'],
+            'provides'       => $hw['provides'],
+            'fits'           => $hw['fits'],
+            'recapped_on'    => $hw['recapped_on'],
+            'serviced_on'    => $hw['serviced_on'],
+            'manufactured_year' => $hw['manufactured_year'] === null
+                ? null : (int) $hw['manufactured_year'],
+            // Decoded, not handed over as a string. A client that has to parse
+            // JSON out of a JSON field is being asked to do the same work twice.
+            'specs'          => $hw['specs'] === null
+                ? [] : (json_decode((string) $hw['specs'], true) ?: []),
         ];
     }
 

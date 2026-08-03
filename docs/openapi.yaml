@@ -700,6 +700,72 @@ paths:
         "204": { description: Deleted }
         "404": { $ref: "#/components/responses/NotFound" }
 
+  /items/{id}/links:
+    get:
+      tags: [Items]
+      summary: What is fitted to an entry, and what it is fitted to
+      description: >
+        Both directions: `contains` is what sits inside this entry, `inside` is
+        what this entry sits in. The same table read two ways — a client given
+        one of them has half an answer.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200": { description: OK }
+        "404": { description: No entry with that id }
+    post:
+      tags: [Items]
+      summary: Fit one entry to another
+      description: >
+        `direction` decides which way round — `contains` makes this entry the
+        machine, `inside` makes it the part. Without it a client would have to
+        know which of two entries is the parent before it could say they are
+        related, which is a question about the API rather than about the things.
+        Loops are refused: a catalogue that lets a machine sit inside itself is
+        no longer describing anything.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [other_id]
+              properties:
+                other_id: { type: integer }
+                direction: { type: string, enum: [contains, inside], default: contains }
+                relation:
+                  type: string
+                  enum: [installed_in, bundled_with, spare_for, connects_to]
+                  default: installed_in
+                note: { type: string, maxLength: 255 }
+      responses:
+        "201": { description: Linked, with both directions returned }
+        "422": { description: No such entry, an unknown relation, itself, or a loop }
+
+  /items/{id}/links/{linkId}:
+    delete:
+      tags: [Items]
+      summary: Take one apart again
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+        - name: linkId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Gone }
+        "404": { description: No such link on this entry }
+
   /items/{id}/images/import:
     post:
       tags: [Items]

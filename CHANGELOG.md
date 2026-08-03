@@ -78,6 +78,26 @@ First public release.
 
 **API**
 
+- **The rest of `item_hardware`**: `interface`, `provides`, `fits`, `recapped_on`, `serviced_on`,
+  `manufactured_year`, and the **specification rows**. Those are a JSON column of
+  `{label, value}` rather than columns, because an Amiga has a chipset and a PC has a bus and
+  neither list is finite. The API decodes it before sending, so a client is not parsing JSON out
+  of a JSON field.
+
+- **`/items/{id}/links`** — what is fitted to an entry and what it is fitted to, in both
+  directions, plus fitting and unfitting. `item_links` is the catalogue's one genuinely
+  relational idea and the API had nothing at all for it, so a phone could see *Installed
+  peripherals* on the web and not know the relationship existed. `direction` decides which way
+  round, because otherwise a client would have to know which of two entries is the parent before
+  it could say they are related. Loops are refused through the same `item_link_would_loop()` the
+  web calls.
+
+- **Fixed: a library made through the API was invisible to whoever made it.** `owner_id` says
+  whose a library is; `library_members` decides who may *see* it, and `accessible_library_ids()`
+  reads the second. Neither create route wrote that row, so the library existed, appeared under
+  library management — which asks the server for everything — and was missing from the caller's
+  own list and every picker built from it. The web has always written both.
+
 - `working_state` is writable and returned with the rest of the `hardware` object — the web calls
   it **Does it work**, and it is the first thing anybody asks about a machine.
 

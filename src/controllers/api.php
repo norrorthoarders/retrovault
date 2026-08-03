@@ -520,8 +520,14 @@ function api_apply_item_hardware(int $itemId, array $in): void
         }
     }
 
-    foreach (['model' => 190, 'board_revision' => 120, 'firmware' => 120,
-              'serial_number' => 120, 'modifications' => 65535] as $key => $max) {
+    // The rest of what item_hardware holds. `interface`, `provides` and `fits`
+    // are free text on this table - the vocabulary id beside them is the web's
+    // autocomplete, not a constraint - and `recapped_on` is the date somebody
+    // last had the lid off, which is the question a twenty-year-old machine
+    // raises first.
+    foreach (['model' => 160, 'board_revision' => 80, 'firmware' => 80,
+              'serial_number' => 120, 'modifications' => 65535,
+              'interface' => 80, 'provides' => 120, 'fits' => 255] as $key => $max) {
         if (!array_key_exists($key, $in)) {
             continue;
         }
@@ -531,6 +537,44 @@ function api_apply_item_hardware(int $itemId, array $in): void
         }
         $value = $value === null ? null : mb_substr(trim((string) $value), 0, $max);
         $fields[$key] = ($value === '') ? null : $value;
+    }
+
+    foreach (['recapped_on', 'serviced_on'] as $key) {
+        if (array_key_exists($key, $in)) {
+            $date = trim((string) ($in[$key] ?? ''));
+            $fields[$key] = $date === '' ? null : $date;
+        }
+    }
+
+    if (array_key_exists('manufactured_year', $in)) {
+        $year = (int) $in['manufactured_year'];
+        $fields['manufactured_year'] = $year > 0 ? $year : null;
+    }
+
+    // The specification rows: Processor, Memory, Expansion, Storage, whatever
+    // this machine has. A JSON column of {label, value} rather than columns,
+    // because an Amiga has a chipset and a PC has a bus and neither list is
+    // finite - and the web already writes it in exactly this shape.
+    if (array_key_exists('specs', $in)) {
+        if (!is_array($in['specs'])) {
+            api_error('validation_failed', 'Specification must be a list of {label, value}.',
+                      422, ['specs' => 'Must be an array.']);
+        }
+        $rows = [];
+        foreach ($in['specs'] as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+            $label = mb_substr(trim((string) ($row['label'] ?? '')), 0, 80);
+            $value = mb_substr(trim((string) ($row['value'] ?? '')), 0, 255);
+            // A row with no label is not a row. A row with a label and no value
+            // is somebody saying "this machine has one of these and I do not
+            // know which", which is worth keeping.
+            if ($label !== '') {
+                $rows[] = ['label' => $label, 'value' => $value];
+            }
+        }
+        $fields['specs'] = $rows === [] ? null : json_encode($rows);
     }
 
     if ($fields !== []) {
@@ -1544,9 +1588,147 @@ function api_libraries_create(): void
         'is_active'    => 1,
     ]);
 
+    // Owning it is not the same as being a member of it.
+    //
+    // `libraries.owner_id` says whose it is; `library_members` decides who may
+    // see it, and accessible_library_ids() reads the second. Without this row
+    // the library existed, appeared under library management - which asks the
+    // server for everything - and was invisible in the caller's own list and
+    // every picker built from it. The web has always written both.
+    q('INSERT IGNORE INTO library_members (library_id, user_id, access, granted_by)
+       VALUES (?, ?, ?, ?)',
+      [$id, (int) $user['id'], ACCESS_OWNER, (int) $user['id']]);
+    // The cache was filled before the row existed, and this request still has
+    // work to do with it.
+    $GLOBALS['__membership_cache'] = [];
+
     log_security('library.created', sprintf('Created library "%s"', $name), LOG_NOTICE,
                  ['subject_type' => 'library', 'subject_id' => $id]);
 
     $row = one('SELECT l.*, 0 AS n FROM libraries l WHERE l.id = ?', [$id]);
     api_ok(library_to_api($row), null, 201);
+}
+
+/**
+ * What is fitted to an entry, and what it is fitted to.
+ *
+ * The catalogue's one genuinely relational idea: a Blizzard 1230 is installed in
+ * an A1200, a SIMM is installed in the Blizzard, a monitor was bundled with the
+ * machine. The web has had this since item_links existed and the API had nothing
+ * at all, so a phone could see "Installed peripherals" on the web and not know
+ * the relationship exists.
+ */
+function api_item_links_index(int $itemId): void
+{
+    api_require_auth();
+    $item = find_item($itemId);
+    if ($item === null || !can_read_library((int) $item['library_id'])) {
+        api_error('not_found', 'No catalogue entry with that id.', 404);
+    }
+
+    api_ok([
+        // Both directions, because "what is in this machine" and "what is this
+        // card sitting in" are the same table read two ways, and a client that
+        // gets one of them has half an answer.
+        'contains' => array_map('api_item_link_row', item_children($itemId)),
+        'inside'   => array_map('api_item_link_row', item_parents($itemId)),
+    ], ['relations' => [
+        'installed_in' => 'Installed in',
+        'bundled_with' => 'Bundled with',
+        'spare_for'    => 'Spare for',
+        'connects_to'  => 'Connects to',
+    ]]);
+}
+
+function api_item_link_row(array $r): array
+{
+    return [
+        'link_id'  => (int) $r['link_id'],
+        'id'       => (int) $r['id'],
+        'title'    => $r['title'],
+        'relation' => $r['relation'],
+        'note'     => $r['note'],
+    ];
+}
+
+/**
+ * Fit one entry to another.
+ *
+ * `direction` decides which way round: `contains` means the entry in the path is
+ * the machine and `other_id` is the card, `inside` means the reverse. Without it
+ * a client would have to know which of two entries is the parent before it can
+ * say they are related, which is a question about the API rather than about the
+ * things.
+ *
+ * The loop check is item_link_would_loop(), the same one the web calls. SQL
+ * cannot express "and no path from child back to parent", so it is a walk - and
+ * a catalogue that lets a machine sit inside itself is no longer describing
+ * anything.
+ */
+function api_item_links_create(int $itemId): void
+{
+    api_require_write();
+    $item = find_item($itemId);
+    if ($item === null || !can_write_library((int) $item['library_id'])) {
+        api_error('not_found', 'No catalogue entry with that id.', 404);
+    }
+
+    $in      = api_body();
+    $otherId = (int) ($in['other_id'] ?? 0);
+    $other   = $otherId > 0 ? find_item($otherId) : null;
+    if ($other === null || !can_read_library((int) $other['library_id'])) {
+        api_error('validation_failed', 'No entry with that id.', 422,
+                  ['other_id' => 'Not found, or not yours to see.']);
+    }
+
+    $relation = (string) ($in['relation'] ?? 'installed_in');
+    if (!in_array($relation, ['installed_in', 'bundled_with', 'spare_for', 'connects_to'], true)) {
+        api_error('validation_failed', 'Unknown relation.', 422,
+                  ['relation' => 'Not a known value.']);
+    }
+
+    $contains = ($in['direction'] ?? 'contains') === 'contains';
+    $parent   = $contains ? $itemId : $otherId;
+    $child    = $contains ? $otherId : $itemId;
+
+    if ($parent === $child) {
+        api_error('validation_failed', 'An entry cannot be fitted to itself.', 422);
+    }
+    if (item_link_would_loop($parent, $child)) {
+        api_error('validation_failed',
+                  sprintf('That would make a loop: %s already sits inside this one, '
+                        . 'directly or through something else.', (string) $other['title']), 422);
+    }
+
+    q('INSERT IGNORE INTO item_links (parent_item_id, child_item_id, relation, note)
+       VALUES (?, ?, ?, ?)',
+      [$parent, $child, $relation,
+       isset($in['note']) ? mb_substr(trim((string) $in['note']), 0, 255) : null]);
+
+    api_ok([
+        'contains' => array_map('api_item_link_row', item_children($itemId)),
+        'inside'   => array_map('api_item_link_row', item_parents($itemId)),
+    ], null, 201);
+}
+
+/** Take one apart again. */
+function api_item_links_delete(int $itemId, int $linkId): void
+{
+    api_require_write();
+    $item = find_item($itemId);
+    if ($item === null || !can_write_library((int) $item['library_id'])) {
+        api_error('not_found', 'No catalogue entry with that id.', 404);
+    }
+
+    // Checked against this entry, so a link id from somewhere else cannot be
+    // used to unpick a machine the caller may not touch.
+    $link = one('SELECT id FROM item_links
+                  WHERE id = ? AND (parent_item_id = ? OR child_item_id = ?)',
+                [$linkId, $itemId, $itemId]);
+    if ($link === null) {
+        api_error('not_found', 'No such link on this entry.', 404);
+    }
+
+    q('DELETE FROM item_links WHERE id = ?', [$linkId]);
+    api_no_content();
 }

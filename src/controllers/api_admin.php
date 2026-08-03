@@ -728,6 +728,15 @@ function api_admin_libraries_create(): void
 
     $id = (int) insert_row('libraries', $fields);
 
+    // The same membership row the web writes and the user-level route now
+    // writes. owner_id says whose it is; library_members decides who may see it,
+    // and without this an administrator could make a library and not find it in
+    // their own picker.
+    q('INSERT IGNORE INTO library_members (library_id, user_id, access, granted_by)
+       VALUES (?, ?, ?, ?)',
+      [$id, (int) $me['id'], ACCESS_OWNER, (int) $me['id']]);
+    $GLOBALS['__membership_cache'] = [];
+
     log_security('library.created',
                  sprintf('Created library "%s"', $fields['name']),
                  LOG_NOTICE, ['subject_type' => 'library', 'subject_id' => $id]);
