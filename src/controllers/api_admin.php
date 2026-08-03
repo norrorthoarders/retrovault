@@ -821,3 +821,115 @@ function api_admin_libraries_delete(int $id): void
 
     api_no_content();
 }
+
+/**
+ * A new avatar, uploaded.
+ *
+ * Multipart, field `avatar`, because store_user_avatar() reads $_FILES and that
+ * is the same path the web form takes - one place decides what a valid picture
+ * is, what it is resized to and what it is called.
+ *
+ * No crop. The web form lets somebody drag a square over the picture before it
+ * is cut, which needs a picture on screen to drag over; a client that wants that
+ * can crop before uploading, and one that does not gets the middle, which is
+ * what happens on the web without JavaScript too.
+ */
+function api_profile_avatar_upload(): void
+{
+    [$user] = api_require_auth();
+
+    if (!isset($_FILES['avatar'])) {
+        api_error('validation_failed',
+                  'Send the picture as multipart, in a field called "avatar".', 422);
+    }
+
+    [$name, $error] = store_user_avatar((int) $user['id'], 'avatar');
+    if ($error !== null) {
+        api_error('upload_failed', $error, 422);
+    }
+    if ($name === null) {
+        api_error('validation_failed', 'No picture arrived.', 422);
+    }
+
+    log_security('profile.avatar', 'Avatar changed', LOG_INFO,
+                 ['subject_type' => 'user', 'subject_id' => (int) $user['id']]);
+
+    api_ok(['avatar' => absolute_url(image_url($name, 'thumb'))]);
+}
+
+/** Back to initials on a coloured circle, which is what no avatar looks like. */
+function api_profile_avatar_delete(): void
+{
+    [$user] = api_require_auth();
+    delete_user_avatar((int) $user['id']);
+    log_security('profile.avatar', 'Avatar removed', LOG_INFO,
+                 ['subject_type' => 'user', 'subject_id' => (int) $user['id']]);
+    api_no_content();
+}
+
+/**
+ * Make an account.
+ *
+ * Through create_user(), which is the same route the installer and
+ * bin/create-user.php take: it checks the address is not already in use, hashes
+ * the password, and gives the account a personal library - the one shelf
+ * everybody is promised, and without which a new account cannot catalogue
+ * anything at all.
+ *
+ * The username is checked here because create_user() does not: it trusts its
+ * callers, and until now its callers were an installer and a command line.
+ */
+function api_users_create(): void
+{
+    api_require_admin();
+
+    $in     = api_body();
+    $errors = [];
+
+    $username = trim((string) ($in['username'] ?? ''));
+    if (!preg_match('/^[a-zA-Z0-9._-]{3,60}$/', $username)) {
+        $errors['username'] = 'Three to sixty characters: letters, digits, dot, dash '
+                            . 'or underscore.';
+    } elseif (one('SELECT id FROM users WHERE username = ?', [$username]) !== null) {
+        $errors['username'] = 'That username is taken.';
+    }
+
+    $password = (string) ($in['password'] ?? '');
+    if (mb_strlen($password) < 10) {
+        $errors['password'] = 'At least ten characters.';
+    }
+
+    $email = trim((string) ($in['email'] ?? ''));
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'An address is required.';
+    }
+
+    $role = (string) ($in['role'] ?? 'user');
+    if (!in_array($role, ['admin', 'user'], true)) {
+        $errors['role'] = 'Must be admin or user.';
+    }
+
+    if ($errors !== []) {
+        api_error('validation_failed', 'Some fields need attention.', 422, $errors);
+    }
+
+    try {
+        $id = (int) create_user($username, $password,
+                                trim((string) ($in['display_name'] ?? '')) ?: $username,
+                                $role, $email);
+    } catch (InvalidArgumentException $e) {
+        // Its own complaints, which are about the address rather than the
+        // username - worth attaching to the field they belong to.
+        api_error('validation_failed', 'Some fields need attention.', 422,
+                  ['email' => $e->getMessage()]);
+    }
+
+    log_security('user.created',
+                 sprintf('Created account "%s" as %s', $username, $role),
+                 LOG_NOTICE, ['subject_type' => 'user', 'subject_id' => $id]);
+
+    $row = one("SELECT u.*, am.name AS auth_name FROM users u
+                  LEFT JOIN auth_methods am ON am.id = u.auth_method_id
+                 WHERE u.id = ?", [$id]);
+    api_ok(api_user_row($row), null, 201);
+}

@@ -6,12 +6,6 @@
   <div>
     <span class="eyebrow">Server</span>
     <h1>Logs</h1>
-    <p class="lede">
-      Two streams, because they answer different questions. <strong>Security</strong>
-      is who got in and who did not; <strong>Server</strong> is what the instance
-      did. Both carry a syslog severity, so forwarding them somewhere that keeps
-      logs properly is a matter of switching it on below.
-    </p>
   </div>
 </div>
 

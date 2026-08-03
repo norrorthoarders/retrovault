@@ -78,6 +78,14 @@ First public release.
 
 **API**
 
+- `POST` **`/admin/users`**, so accounts can be made from a phone. Through the same
+  `create_user()` the installer uses, which gives the account its personal library on the way
+  past — the one shelf everybody is promised.
+
+- `POST` and `DELETE` **`/profile/avatar`**, so a picture can be set from a phone. Multipart into
+  `store_user_avatar()`, the same path the web form takes — one place decides what a valid
+  picture is and what it is resized to.
+
 - **`/admin/libraries`** — list, create, change, delete. The list is every library, not the ones
   the caller may read: an administrator needs it complete, since a library nobody can see is one
   nobody can fix. Deleting is refused for a library that still holds anything, and for the last
@@ -125,6 +133,9 @@ First public release.
   rebuilt. Secrets report only whether they are set.
 
 **Instance settings**
+
+- The paragraph above the log streams is gone. The tabs say Security and Server; explaining what
+  those mean above a screen that shows them was furniture.
 
 - The starter-data table **moved to the library screen**, where it answers the question people
   have. It counted the template set against the files — one answer for the whole instance — and

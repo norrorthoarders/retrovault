@@ -145,6 +145,26 @@ paths:
         "200": { description: OK }
         "422": { description: Refused, with the field named in details }
 
+  /profile/avatar:
+    post:
+      tags: [Auth]
+      summary: Set your avatar
+      description: >
+        Multipart, in a field called `avatar`. The same path the web form takes,
+        so one place decides what a valid picture is and what it is resized to.
+        No crop: the web form lets somebody drag a square over the picture first,
+        which needs a picture on screen to drag over — here the middle is kept,
+        as it is on the web without JavaScript.
+      responses:
+        "200": { description: OK, with the new address }
+        "422": { description: Nothing arrived, or it was not an image }
+    delete:
+      tags: [Auth]
+      summary: Remove it
+      description: Back to initials on a coloured circle.
+      responses:
+        "204": { description: Gone }
+
   /profile/notifications:
     get:
       tags: [Auth]
@@ -298,6 +318,31 @@ paths:
       responses:
         "200": { description: OK }
         "403": { description: Administrator access is required }
+
+    post:
+      tags: [Admin]
+      summary: Make an account
+      description: >
+        Through the same `create_user()` the installer and `bin/create-user.php`
+        use, so the account gets a personal library on the way past — the one
+        shelf everybody is promised, and without which a new account cannot
+        catalogue anything. Access to any other library is granted separately.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password, email]
+              properties:
+                username: { type: string, pattern: "^[a-zA-Z0-9._-]{3,60}$" }
+                password: { type: string, minLength: 10 }
+                email: { type: string }
+                display_name: { type: string }
+                role: { type: string, enum: [admin, user], default: user }
+      responses:
+        "201": { description: Created }
+        "403": { description: Administrator access is required }
+        "422": { description: A taken username or address, a short password, or an unknown role }
 
   /admin/users/{id}:
     patch:
