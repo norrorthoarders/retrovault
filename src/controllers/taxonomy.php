@@ -1287,6 +1287,40 @@ function platforms_manage_save(): void
                                    $used, $used === 1 ? 'entry is' : 'entries are', $row['name']));
             redirect('/manage/platforms', $back);
         }
+        // The branch the machine carries goes with the machine.
+        //
+        // categories.platform_id is ON DELETE SET NULL, so this used to leave the
+        // root standing: the filing tree went on showing the machine's name with
+        // nothing behind it, nothing filed under it could say what it ran on, and
+        // resyncing the library did not repair it either - the resync matches on
+        // slug, saw the branch, and called the machine already built.
+        //
+        // Nothing is filed under it: the check above refuses to delete a machine
+        // any entry points at, so by here the tree is empty. Emptiness is checked
+        // again anyway, because that guard counts entries by platform and this
+        // one counts them by branch, and the two could drift.
+        $roots = all('SELECT id FROM categories WHERE platform_id = ? AND parent_id IS NULL',
+                     [$id]);
+        foreach ($roots as $root) {
+            $rootId = (int) $root['id'];
+            $held   = (int) scalar(
+                'SELECT COUNT(*) FROM items
+                  WHERE category_id IN (SELECT * FROM (
+                            SELECT id FROM categories
+                             WHERE id = ? OR parent_id = ?
+                                OR parent_id IN (SELECT * FROM (
+                                       SELECT id FROM categories WHERE parent_id = ?) AS d)
+                        ) AS t)',
+                [$rootId, $rootId, $rootId]);
+            if ($held === 0) {
+                q('DELETE FROM categories
+                    WHERE id = ? OR parent_id = ?
+                       OR parent_id IN (SELECT * FROM (
+                              SELECT id FROM categories WHERE parent_id = ?) AS d)',
+                  [$rootId, $rootId, $rootId]);
+            }
+        }
+
         delete_row('platforms', $id);
         log_server('platform.deleted', 'Platform "' . $row['name'] . '" removed', LOG_NOTICE);
         flash('ok', $row['name'] . ' removed.');

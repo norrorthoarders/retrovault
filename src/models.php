@@ -2927,8 +2927,30 @@ function seed_library_categories(int $libraryId): void
     $fresh   = [];
     foreach ($platforms as $pf) {
         $pSlug = (string) $pf['slug'];
-        if (one('SELECT id FROM categories WHERE library_id = ? AND slug = ?', [$libraryId, $pSlug]) !== null) {
-            continue;   // already built, so this is a re-run
+        $built = one('SELECT id, platform_id FROM categories
+                       WHERE library_id = ? AND slug = ? AND parent_id IS NULL',
+                     [$libraryId, $pSlug]);
+        if ($built !== null) {
+            // Already built - unless the machine it belonged to went away.
+            //
+            // categories.platform_id is ON DELETE SET NULL, so deleting a
+            // platform leaves its branch standing with the right name, the right
+            // slug and nothing behind it. This check used to match on the slug
+            // alone, so a resync saw the branch, called it built, and skipped the
+            // machine for ever: the branch said "Sharp X68000" on screen while
+            // nothing filed under it could say what it ran on, and running the
+            // resync again changed nothing. Relinking is the whole repair - the
+            // tree beneath it is still there.
+            if ($built['platform_id'] === null) {
+                q('UPDATE categories SET platform_id = ? WHERE id = ?',
+                  [(int) $pf['id'], (int) $built['id']]);
+                q('UPDATE categories SET platform_id = ? WHERE library_id = ? AND platform_id IS NULL
+                    AND id IN (SELECT * FROM (SELECT c.id FROM categories c
+                                               WHERE c.library_id = ?
+                                                 AND c.slug LIKE ?) AS t)',
+                  [(int) $pf['id'], $libraryId, $libraryId, $pSlug . '-%']);
+            }
+            continue;
         }
         $fresh[] = $pf;
 

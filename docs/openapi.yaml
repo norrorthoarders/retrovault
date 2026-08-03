@@ -286,6 +286,119 @@ paths:
         "403": { description: A read-only token }
         "422": { description: q was missing, or platform_id names no platform }
 
+  /admin/users:
+    get:
+      tags: [Admin]
+      summary: Every account
+      description: >
+        Administrator only. `meta.admin_count` rides along because the one rule
+        this screen must enforce — never remove the last administrator — cannot
+        be checked on the device without it. The directory each account signs in
+        through is named rather than given as an id.
+      responses:
+        "200": { description: OK }
+        "403": { description: Administrator access is required }
+
+  /admin/users/{id}:
+    patch:
+      tags: [Admin]
+      summary: Change one account
+      description: >
+        Absent fields are left alone. Two things are refused rather than warned
+        about: removing the last active administrator, and changing your own
+        role — undoing that would need the role just given up.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role: { type: string, enum: [admin, user] }
+                is_active: { type: boolean }
+                display_name: { type: string }
+                email: { type: string }
+      responses:
+        "200": { description: OK }
+        "403": { description: Administrator access is required }
+        "404": { description: No account with that id }
+        "422": { description: An unknown role, the last administrator, or your own role }
+
+  /admin/libraries:
+    get:
+      tags: [Admin]
+      summary: Every library, including ones the caller cannot read
+      description: >
+        Deliberately not `/libraries`, which answers with what the caller may
+        see — an administrator needs the list complete, since a library nobody
+        can see is one nobody can fix. `item_count` is every entry in it for the
+        same reason: it decides whether the library can be deleted, and a count
+        filtered by access would make a full one look empty.
+      responses:
+        "200": { description: OK }
+        "403": { description: Administrator access is required }
+    post:
+      tags: [Admin]
+      summary: Make one
+      description: The caller becomes the owner. The slug follows the name.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, maxLength: 160 }
+                description: { type: string, maxLength: 500 }
+                kind: { type: string, enum: [private, shared] }
+                color: { type: string, example: "#cba6f7" }
+      responses:
+        "201": { description: Created }
+        "403": { description: Administrator access is required }
+        "422": { description: A missing name, an unknown kind, or a colour that is not six hex digits }
+
+  /admin/libraries/{id}:
+    patch:
+      tags: [Admin]
+      summary: Change one
+      description: >
+        Absent fields are left alone. Renaming moves the slug with it — a library
+        renamed from Loft to Basement with /libraries/loft in the address bar is
+        a small lie that outlives everybody who remembers it. `is_active` closes
+        a library: everything in it stays, and it stops appearing.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200": { description: OK }
+        "403": { description: Administrator access is required }
+        "404": { description: No library with that id }
+        "422": { description: Nothing to change, or a field the server did not like }
+    delete:
+      tags: [Admin]
+      summary: Delete an empty one
+      description: >
+        Only empty, and never the last. A library holds entries, photographs, a
+        filing tree and its own copy of the vocabulary; removing all of that on
+        one request is not something this endpoint will do, and an instance with
+        no libraries has nowhere to put the next thing somebody adds.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204": { description: Gone }
+        "403": { description: Administrator access is required }
+        "404": { description: No library with that id }
+        "422": { description: It still holds entries, or it is the only one }
+
   /admin/logs:
     get:
       tags: [Admin]

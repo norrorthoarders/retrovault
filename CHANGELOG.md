@@ -78,6 +78,16 @@ First public release.
 
 **API**
 
+- **`/admin/libraries`** — list, create, change, delete. The list is every library, not the ones
+  the caller may read: an administrator needs it complete, since a library nobody can see is one
+  nobody can fix. Deleting is refused for a library that still holds anything, and for the last
+  one — an instance with none has nowhere to put the next thing somebody adds. Renaming moves
+  the slug with it.
+
+- `GET` **`/admin/users`** and `PATCH` **`/admin/users/{id}`**, so account management can leave
+  the browser. Two refusals rather than warnings: removing the last active administrator, and
+  changing your own role — undoing that would need the role just given up.
+
 - **A 401 says which of five things went wrong.** No header at all, a token nobody has heard of,
   a revoked one, an expired one, an account since disabled — all produced "Send a valid bearer
   token in the Authorization header", which is true of every one of them and useful for none. It
@@ -134,6 +144,13 @@ First public release.
   and then writes rather than testing what was stored last time somebody pressed Save.
 
 **Fixed**
+
+- **Deleting a machine left its branch behind.** `categories.platform_id` is `ON DELETE SET
+  NULL`, so removing a platform left its root standing: the filing tree went on showing the
+  machine's name with nothing behind it, nothing filed under it could say what it ran on, and
+  resyncing the library did not repair it — the resync matches on slug, saw the branch and
+  called the machine already built. The branch now goes with the machine, and a resync relinks
+  a root that lost its platform some other way.
 
 - A maintenance job reporting **what PHP will accept**: `post_max_size`, `upload_max_filesize`,
   `memory_limit`, which `php.ini` is actually loaded and under which SAPI. It flags an

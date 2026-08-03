@@ -463,3 +463,361 @@ function api_maintenance_run(string $key): void
         'count'   => (int) ($after['count'] ?? 0),
     ]);
 }
+
+// ---------------------------------------------------------------------------
+// Accounts
+// ---------------------------------------------------------------------------
+
+/** One account, as the API sends it. */
+function api_user_row(array $u): array
+{
+    return [
+        'id'           => (int) $u['id'],
+        'username'     => (string) $u['username'],
+        'display_name' => (string) ($u['display_name'] ?? ''),
+        'email'        => $u['email'] ?? null,
+        'role'         => (string) $u['role'],
+        'is_active'    => (bool) $u['is_active'],
+        // Named, not an id: "auth method 3" means nothing on a phone.
+        'signs_in_via' => $u['auth_name'] ?? null,
+        'last_login_at' => api_datetime($u['last_login_at'] ?? null),
+        'created_at'    => api_datetime($u['created_at'] ?? null),
+    ];
+}
+
+/**
+ * Every account.
+ *
+ * `meta.admin_count` rides along because the one rule this screen has to
+ * enforce - never remove the last administrator - cannot be checked on the
+ * device without it.
+ */
+function api_users_index(): void
+{
+    api_require_admin();
+
+    $rows = all(
+        "SELECT u.*, am.name AS auth_name
+           FROM users u
+      LEFT JOIN auth_methods am ON am.id = u.auth_method_id
+       ORDER BY u.username"
+    );
+
+    api_ok(array_map('api_user_row', $rows), [
+        'admin_count' => (int) scalar(
+            "SELECT COUNT(*) FROM users WHERE role = 'admin' AND is_active = 1"),
+        // What the column actually holds. There is no curator and no viewer -
+        // library access is a membership, not a role, and inventing extra words
+        // here would have written values the ENUM refuses.
+        'roles' => ['admin' => 'Administrator', 'user' => 'Member'],
+    ]);
+}
+
+/**
+ * Change one.
+ *
+ * Absent fields are left alone, so a client can change a role without resending
+ * an email address it may have truncated for display.
+ *
+ * Two things are refused outright rather than warned about: locking the last
+ * administrator out of the instance, and changing your own role. The second is
+ * not paternalism - an administrator who demotes themselves by mistake cannot
+ * undo it, because undoing it needs the role they just gave up.
+ */
+function api_users_update(int $id): void
+{
+    [$me] = api_require_admin();
+
+    $user = one('SELECT * FROM users WHERE id = ?', [$id]);
+    if ($user === null) {
+        api_error('not_found', 'No account with that id.', 404);
+    }
+
+    $in = api_body();
+    if ($in === []) {
+        api_error('validation_failed', 'Nothing to change.', 422);
+    }
+
+    $errors  = [];
+    $changes = [];
+
+    if (array_key_exists('role', $in)) {
+        $role = (string) $in['role'];
+        if (!in_array($role, ['admin', 'user'], true)) {
+            $errors['role'] = 'Must be admin or user.';
+        } elseif ((int) $user['id'] === (int) $me['id'] && $role !== (string) $user['role']) {
+            $errors['role'] = 'You cannot change your own role - you would need the role '
+                            . 'you just gave up to change it back.';
+        } else {
+            $changes['role'] = $role;
+        }
+    }
+
+    if (array_key_exists('is_active', $in)) {
+        $active = (bool) $in['is_active'];
+        if (!$active && (int) $user['id'] === (int) $me['id']) {
+            $errors['is_active'] = 'You cannot close your own account from here.';
+        } else {
+            $changes['is_active'] = $active ? 1 : 0;
+        }
+    }
+
+    if (array_key_exists('display_name', $in)) {
+        $name = trim((string) $in['display_name']);
+        if ($name === '') {
+            $errors['display_name'] = 'A display name cannot be empty.';
+        } else {
+            $changes['display_name'] = mb_substr($name, 0, 190);
+        }
+    }
+
+    if (array_key_exists('email', $in)) {
+        $email = trim((string) $in['email']);
+        if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'That does not look like an email address.';
+        } else {
+            $changes['email'] = $email === '' ? null : $email;
+        }
+    }
+
+    // The last administrator, checked against what the change would leave rather
+    // than what is there now - demoting and deactivating both get here.
+    $losingAdmin = ((($changes['role'] ?? $user['role']) !== 'admin')
+                    || (($changes['is_active'] ?? (int) $user['is_active']) === 0))
+                   && (string) $user['role'] === 'admin'
+                   && (int) $user['is_active'] === 1;
+    if ($losingAdmin) {
+        $others = (int) scalar(
+            "SELECT COUNT(*) FROM users WHERE role = 'admin' AND is_active = 1 AND id <> ?",
+            [$id]);
+        if ($others === 0) {
+            $errors['role'] = 'That is the only administrator left. Promote somebody else first.';
+        }
+    }
+
+    if ($errors !== []) {
+        api_error('validation_failed', 'Some fields need attention.', 422, $errors);
+    }
+    if ($changes === []) {
+        api_error('validation_failed', 'Nothing to change.', 422);
+    }
+
+    update_row('users', $id, $changes);
+
+    log_security('user.changed',
+                 sprintf('Changed %s: %s', $user['username'],
+                         implode(', ', array_keys($changes))),
+                 LOG_NOTICE, ['subject_type' => 'user', 'subject_id' => $id]);
+
+    $fresh = one("SELECT u.*, am.name AS auth_name FROM users u
+                    LEFT JOIN auth_methods am ON am.id = u.auth_method_id
+                   WHERE u.id = ?", [$id]);
+    api_ok(api_user_row($fresh));
+}
+
+// ---------------------------------------------------------------------------
+// Libraries
+// ---------------------------------------------------------------------------
+
+/** One library, for an administrator: everything, with who owns it and what is in it. */
+function api_admin_library_row(array $l): array
+{
+    return library_to_api($l) + [
+        'owner'      => $l['owner_name'] === null ? null : [
+            'id'   => (int) $l['owner_id'],
+            'name' => (string) $l['owner_name'],
+        ],
+        'is_active'  => (bool) (int) ($l['is_active'] ?? 1),
+        'is_default' => (bool) (int) ($l['is_default'] ?? 0),
+        'created_at' => api_datetime($l['created_at'] ?? null),
+    ];
+}
+
+/**
+ * Every library, including the ones this administrator cannot read.
+ *
+ * Deliberately not /libraries, which answers with what the caller may see - an
+ * administrator managing an instance needs the list to be complete, or a library
+ * they have no membership of is one they cannot fix either.
+ *
+ * The count is every entry in it, for the same reason: it decides whether the
+ * library can be deleted, and a count filtered by what the caller may read would
+ * make an emptiable library look empty.
+ */
+function api_admin_libraries_index(): void
+{
+    api_require_admin();
+
+    $rows = all(
+        "SELECT l.*, u.display_name AS owner_name,
+                (SELECT COUNT(*) FROM items i
+                  WHERE i.library_id = l.id AND i.deleted_at IS NULL) AS n
+           FROM libraries l
+      LEFT JOIN users u ON u.id = l.owner_id
+       ORDER BY l.sort_order, l.name"
+    );
+
+    api_ok(array_map('api_admin_library_row', $rows), [
+        'kinds' => ['private' => 'Private', 'shared' => 'Shared'],
+    ]);
+}
+
+/** Name, description, colour, kind and order - checked once, for create and change alike. */
+function api_library_input(array $in, bool $partial): array
+{
+    $errors = [];
+    $out    = [];
+
+    if (!$partial || array_key_exists('name', $in)) {
+        $name = trim((string) ($in['name'] ?? ''));
+        if ($name === '') {
+            $errors['name'] = 'A library needs a name.';
+        } elseif (mb_strlen($name) > 160) {
+            $errors['name'] = 'That name is too long; 160 characters at most.';
+        } else {
+            $out['name'] = $name;
+        }
+    }
+
+    if (array_key_exists('description', $in)) {
+        $out['description'] = mb_substr(trim((string) $in['description']), 0, 500) ?: null;
+    }
+
+    if (array_key_exists('kind', $in)) {
+        $kind = (string) $in['kind'];
+        if (!in_array($kind, ['private', 'shared'], true)) {
+            $errors['kind'] = 'Must be private or shared.';
+        } else {
+            $out['kind'] = $kind;
+        }
+    }
+
+    if (array_key_exists('color', $in)) {
+        $color = trim((string) $in['color']);
+        // Six hex digits behind a hash, which is what the column holds and what
+        // every screen expects to read back.
+        if (preg_match('/^#[0-9a-fA-F]{6}$/', $color) !== 1) {
+            $errors['color'] = 'A colour looks like #cba6f7.';
+        } else {
+            $out['accent_color'] = strtolower($color);
+        }
+    }
+
+    if (array_key_exists('sort_order', $in)) {
+        $out['sort_order'] = (int) $in['sort_order'];
+    }
+
+    if ($errors !== []) {
+        api_error('validation_failed', 'Some fields need attention.', 422, $errors);
+    }
+    return $out;
+}
+
+function api_admin_libraries_create(): void
+{
+    [$me] = api_require_admin();
+
+    $in     = api_body();
+    $fields = api_library_input($in, false);
+
+    $fields['slug']         = unique_slug('libraries', slugify((string) $fields['name']));
+    $fields['owner_id']     = (int) $me['id'];
+    $fields['kind']       ??= 'private';
+    $fields['accent_color'] ??= '#cba6f7';
+    $fields['is_active']    = 1;
+
+    $id = (int) insert_row('libraries', $fields);
+
+    log_security('library.created',
+                 sprintf('Created library "%s"', $fields['name']),
+                 LOG_NOTICE, ['subject_type' => 'library', 'subject_id' => $id]);
+
+    $row = one("SELECT l.*, u.display_name AS owner_name, 0 AS n
+                  FROM libraries l LEFT JOIN users u ON u.id = l.owner_id
+                 WHERE l.id = ?", [$id]);
+    api_ok(api_admin_library_row($row), null, 201);
+}
+
+function api_admin_libraries_update(int $id): void
+{
+    api_require_admin();
+
+    $library = one('SELECT * FROM libraries WHERE id = ?', [$id]);
+    if ($library === null) {
+        api_error('not_found', 'No library with that id.', 404);
+    }
+
+    $in     = api_body();
+    $fields = api_library_input($in, true);
+
+    if (array_key_exists('is_active', $in)) {
+        // A closed library keeps everything in it and stops appearing. Not a
+        // delete, and not offered as one.
+        $fields['is_active'] = (bool) $in['is_active'] ? 1 : 0;
+    }
+
+    if ($fields === []) {
+        api_error('validation_failed', 'Nothing to change.', 422);
+    }
+
+    // The slug follows the name, because a library renamed from "Loft" to
+    // "Basement" with /libraries/loft in the address bar is a small lie that
+    // outlives everybody who remembers it.
+    if (isset($fields['name']) && $fields['name'] !== $library['name']) {
+        $fields['slug'] = unique_slug('libraries', slugify((string) $fields['name']), $id);
+    }
+
+    update_row('libraries', $id, $fields);
+
+    log_security('library.changed',
+                 sprintf('Changed library "%s": %s', $library['name'],
+                         implode(', ', array_keys($fields))),
+                 LOG_NOTICE, ['subject_type' => 'library', 'subject_id' => $id]);
+
+    $row = one("SELECT l.*, u.display_name AS owner_name,
+                       (SELECT COUNT(*) FROM items i
+                         WHERE i.library_id = l.id AND i.deleted_at IS NULL) AS n
+                  FROM libraries l LEFT JOIN users u ON u.id = l.owner_id
+                 WHERE l.id = ?", [$id]);
+    api_ok(api_admin_library_row($row));
+}
+
+/**
+ * Delete an empty one.
+ *
+ * Only empty. A library holds entries, photographs, a filing tree and its own
+ * copy of the vocabulary, and removing all of that on one request from a phone
+ * is not a thing this endpoint will do - emptying it first is deliberate work
+ * that leaves a trail. The last library goes nowhere either: an instance with
+ * none has nowhere to put the next thing somebody adds.
+ */
+function api_admin_libraries_delete(int $id): void
+{
+    api_require_admin();
+
+    $library = one('SELECT * FROM libraries WHERE id = ?', [$id]);
+    if ($library === null) {
+        api_error('not_found', 'No library with that id.', 404);
+    }
+
+    $held = (int) scalar('SELECT COUNT(*) FROM items WHERE library_id = ? AND deleted_at IS NULL',
+                         [$id]);
+    if ($held > 0) {
+        api_error('validation_failed',
+                  sprintf('That library still holds %d %s. Empty it first.',
+                          $held, $held === 1 ? 'entry' : 'entries'), 422);
+    }
+
+    if ((int) scalar('SELECT COUNT(*) FROM libraries') <= 1) {
+        api_error('validation_failed',
+                  'That is the only library. An instance needs somewhere to put things.', 422);
+    }
+
+    q('DELETE FROM libraries WHERE id = ?', [$id]);
+
+    log_security('library.deleted',
+                 sprintf('Deleted the empty library "%s"', $library['name']),
+                 LOG_WARNING, ['subject_type' => 'library', 'subject_id' => $id]);
+
+    api_no_content();
+}
