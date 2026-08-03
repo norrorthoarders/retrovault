@@ -1272,7 +1272,14 @@ function api_metadata_search(): void
     api_ok($out['results'], [
         'query'    => $title,
         'count'    => count($out['results']),
-        'errors'   => $out['errors'],
+        // An object, always.
+        //
+        // PHP encodes an empty associative array as [] and a populated one as
+        // {...}, so this field changed shape depending on whether any source had
+        // failed - and a client that decoded one could not decode the other. It
+        // cost an evening: with every source working the answer was an array, and
+        // disabling a single provider turned it into an object.
+        'errors'   => (object) $out['errors'],
         'providers' => array_map(
             fn($p) => ['id' => (int) $p['id'], 'name' => $p['name'], 'type' => $p['type']],
             enabled_metadata_providers()

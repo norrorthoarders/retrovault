@@ -78,6 +78,11 @@ First public release.
 
 **API**
 
+- `meta.errors` on a metadata search is **always an object**. PHP encodes an empty associative
+  array as `[]` and a populated one as `{...}`, so the field changed shape depending on whether
+  any source had failed — disabling a single provider was enough to break a client that decoded
+  the other one.
+
 - `POST` **`/admin/users`**, so accounts can be made from a phone. Through the same
   `create_user()` the installer uses, which gives the account its personal library on the way
   past — the one shelf everybody is promised.
