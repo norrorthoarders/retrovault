@@ -78,6 +78,33 @@ First public release.
 
 **API**
 
+- `working_state` is writable and returned with the rest of the `hardware` object — the web calls
+  it **Does it work**, and it is the first thing anybody asks about a machine.
+
+- `POST` **`/libraries`** — make a library of your own, which any signed-in account may do. The
+  admin route needed an administrator, so the API was stricter than the web for the same action:
+  `library_create()` on the web checks only that somebody is signed in. `POST /admin/libraries`
+  stays for administering an instance.
+
+- `POST` **`/items/{id}/images/import`** — fetch a picture from a metadata source and attach it.
+  The web has had this since metadata lookup existed; the API never did, so a phone could find
+  the box art and not keep it. The server does the fetching, because it already knows how to
+  check what came back is an image, resize it, and notice the same picture twice. Artwork lands
+  as `official` provenance, never among somebody's own photographs.
+
+- **The fields a client could read and not write.** `condition_grade`, `has_box`,
+  `condition_box`, `condition_manual`, `condition_media` and `model_id` on the entry itself, and
+  `model`, `board_revision`, `firmware`, `serial_number` and `modifications` from `item_hardware`
+  — none of which the API accepted, so a phone could show a serial number and not correct one.
+  `modifications` is the one that mattered most: with only `notes` writable, a client had to put
+  modifications in the notes, which is the confusion migration 0014 exists to end.
+- The detailed view returns a **`hardware`** object, null on software and on entries nobody has
+  filled in. It is a query against `item_hardware` rather than a column read, so it happens on
+  the single-entry view only — a list of two hundred does not need two hundred round trips for
+  fields no list shows.
+- Clearing **`has_box`** clears the box grade with it, as the web form does. Grading a box that
+  is not there is meaningless.
+
 - `meta.errors` on a metadata search is **always an object**. PHP encodes an empty associative
   array as `[]` and a populated one as `{...}`, so the field changed shape depending on whether
   any source had failed — disabling a single provider was enough to break a client that decoded

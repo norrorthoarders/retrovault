@@ -313,6 +313,44 @@ function api_item_input(array $in, bool $partial): array
         }
     }
 
+    // Condition, and the box it did or did not come in.
+    //
+    // Three fields that only make sense together: a grade for the thing, whether
+    // there is a box, and a grade for the box. Grading a box that is not there is
+    // meaningless, so clearing has_box clears the box grade with it - the same
+    // rule the web form applies, in one place rather than two.
+    // Not condition_grade: `condition` already carries it, validated, a few
+    // lines below. Two names for one field is two things to keep in step.
+    foreach (['condition_box'   => 'component_condition_options',
+              'condition_manual' => 'component_condition_options',
+              'condition_media' => 'component_condition_options'] as $key => $options) {
+        if (!$has($key)) {
+            continue;
+        }
+        $value = (string) $in[$key];
+        if (!in_array($value, $options(), true)) {
+            $errors[$key] = 'Not a known grade.';
+            continue;
+        }
+        $data[$key] = $value;
+    }
+
+    if ($has('has_box')) {
+        $data['has_box'] = (bool) $in['has_box'] ? 1 : 0;
+        if ($data['has_box'] === 0) {
+            $data['condition_box'] = 'unknown';
+        }
+    }
+
+    // Which model this is one of. Nullable on purpose: an entry whose model was
+    // guessed wrongly needs a way back to none.
+    //
+    // Only model_id. software_model_id belongs to the canonical title, not to a
+    // copy of it - one person's cartridge does not decide what the release is.
+    if ($has('model_id')) {
+        $data['model_id'] = $in['model_id'] === null ? null : (int) $in['model_id'];
+    }
+
     // The library owns the entry and decides who may see it.
     if ($has('library_id')) {
         $data['library_id'] = (int) $in['library_id'];
@@ -458,6 +496,48 @@ function api_item_input(array $in, bool $partial): array
     return [$data, $errors];
 }
 
+/**
+ * The hardware half, which lives in its own table.
+ *
+ * item_hardware is a side table keyed by item_id, not columns on items - so
+ * these cannot go through api_item_input with the rest. Five strings and
+ * nothing clever: whatever a client sends is what the web form would have
+ * posted as hw_*.
+ *
+ * Sending an empty string clears a field, because "the serial number I typed
+ * was wrong" needs a way to say so.
+ */
+function api_apply_item_hardware(int $itemId, array $in): void
+{
+    $fields = [];
+
+    // Whether it works, which is the first thing anybody asks about a machine
+    // and the one field here that is not free text.
+    if (array_key_exists('working_state', $in)) {
+        $state = (string) $in['working_state'];
+        if (in_array($state, ['working', 'intermittent', 'not_working', 'untested', 'restored'], true)) {
+            $fields['working_state'] = $state;
+        }
+    }
+
+    foreach (['model' => 190, 'board_revision' => 120, 'firmware' => 120,
+              'serial_number' => 120, 'modifications' => 65535] as $key => $max) {
+        if (!array_key_exists($key, $in)) {
+            continue;
+        }
+        $value = $in[$key];
+        if ($value !== null && !is_scalar($value)) {
+            continue;
+        }
+        $value = $value === null ? null : mb_substr(trim((string) $value), 0, $max);
+        $fields[$key] = ($value === '') ? null : $value;
+    }
+
+    if ($fields !== []) {
+        save_item_hardware($itemId, $fields);
+    }
+}
+
 function api_items_create(): void
 {
     api_require_write();
@@ -492,6 +572,8 @@ function api_items_create(): void
     // The lists that live in their own tables. Reported rather than swallowed:
     // a client that sends a malformed media array should be told, not left
     // wondering why the entry came back without one.
+    api_apply_item_hardware($id, $in);
+
     $listErrors = api_apply_item_lists($id, $in);
     if ($listErrors !== []) {
         api_error('validation_failed', 'Some fields need attention.', 422, $listErrors);
@@ -532,6 +614,8 @@ function api_items_update(int $id): void
     // The lists that live in their own tables. Reported rather than swallowed:
     // a client that sends a malformed media array should be told, not left
     // wondering why the entry came back without one.
+    api_apply_item_hardware($id, $in);
+
     $listErrors = api_apply_item_lists($id, $in);
     if ($listErrors !== []) {
         api_error('validation_failed', 'Some fields need attention.', 422, $listErrors);
@@ -1367,3 +1451,102 @@ function api_notifications_read(): void
     ]);
 }
 
+
+/**
+ * Fetch a picture from a metadata source and attach it.
+ *
+ * The web has had this since metadata lookup existed; the API never did, so a
+ * phone could find the box art and not keep it. The server does the fetching,
+ * not the client: it already knows how to check what came back is an image, how
+ * to resize it, and how to notice the same picture arriving twice.
+ *
+ * `provenance` is official, always. This is the publisher's artwork by
+ * definition - a scraped picture is not somebody's photograph of their own copy,
+ * and the two answer different questions.
+ */
+function api_item_images_import(int $itemId): void
+{
+    api_require_write();
+    $item = find_item($itemId);
+    if ($item === null || !can_write_library((int) $item['library_id'])) {
+        api_error('not_found', 'No catalogue entry with that id.', 404);
+    }
+
+    $in  = api_body();
+    $url = trim((string) ($in['url'] ?? ''));
+    if ($url === '') {
+        api_error('validation_failed', 'Send the address of the picture.', 422,
+                  ['url' => 'Required.']);
+    }
+
+    $kind = (string) ($in['kind'] ?? 'box_front');
+    if (!in_array($kind, image_kind_options(), true)) {
+        api_error('validation_failed', 'Unknown photo kind.', 422,
+                  ['kind' => 'Not a known value.']);
+    }
+
+    $caption = isset($in['caption']) ? mb_substr(trim((string) $in['caption']), 0, 255) : null;
+
+    [$ok, $why, $dupe] = array_pad(metadata_import_image($itemId, $url, $kind, $caption), 3, null);
+
+    // Already here is not a failure. Somebody who taps the same artwork twice
+    // has not made a mistake worth an error, and the picture they wanted is on
+    // the entry either way.
+    if (!$ok && !$dupe) {
+        api_error('upload_failed', (string) $why, 422);
+    }
+
+    api_ok(['imported' => (bool) $ok, 'already_here' => (bool) $dupe]);
+}
+
+/**
+ * Make a library of your own.
+ *
+ * Not the admin route. `POST /admin/libraries` administers an instance and needs
+ * an administrator; this is the thing any signed-in person may do, and the web
+ * has always let them - `library_create()` checks only that somebody is signed
+ * in. The API being stricter than the web for the same action is a difference
+ * nobody could have predicted from either.
+ *
+ * The caller owns it, which is what makes it theirs to fill.
+ */
+function api_libraries_create(): void
+{
+    [$user] = api_require_write();
+
+    $in   = api_body();
+    $name = trim((string) ($in['name'] ?? ''));
+    if ($name === '') {
+        api_error('validation_failed', 'Give the library a name.', 422,
+                  ['name' => 'Required.']);
+    }
+    $name = mb_substr($name, 0, 120);
+
+    $kind = (string) ($in['kind'] ?? 'private');
+    if (!in_array($kind, ['private', 'shared'], true)) {
+        api_error('validation_failed', 'Must be private or shared.', 422,
+                  ['kind' => 'Not a known value.']);
+    }
+
+    $colour = trim((string) ($in['color'] ?? '#cba6f7'));
+    if (preg_match('/^#[0-9a-fA-F]{6}$/', $colour) !== 1) {
+        api_error('validation_failed', 'A colour looks like #cba6f7.', 422,
+                  ['color' => 'Six hex digits behind a hash.']);
+    }
+
+    $id = (int) insert_row('libraries', [
+        'name'         => $name,
+        'slug'         => unique_slug('libraries', slugify($name)),
+        'description'  => mb_substr(trim((string) ($in['description'] ?? '')), 0, 500) ?: null,
+        'owner_id'     => (int) $user['id'],
+        'kind'         => $kind,
+        'accent_color' => strtolower($colour),
+        'is_active'    => 1,
+    ]);
+
+    log_security('library.created', sprintf('Created library "%s"', $name), LOG_NOTICE,
+                 ['subject_type' => 'library', 'subject_id' => $id]);
+
+    $row = one('SELECT l.*, 0 AS n FROM libraries l WHERE l.id = ?', [$id]);
+    api_ok(library_to_api($row), null, 201);
+}

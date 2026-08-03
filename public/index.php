@@ -243,6 +243,7 @@ if (str_starts_with($path, '/api/')) {
         ['PATCH',  '#^/api/v1/profile/notifications$#',   fn() => api_notification_prefs_update()],
         ['GET',    '#^/api/v1/admin/settings$#',          fn() => api_settings_show()],
         ['PATCH',  '#^/api/v1/admin/settings$#',          fn() => api_settings_update()],
+        ['POST',   '#^/api/v1/items/(\d+)/images/import$#', fn($id) => api_item_images_import((int) $id)],
         ['POST',   '#^/api/v1/profile/avatar$#',          fn() => api_profile_avatar_upload()],
         ['DELETE', '#^/api/v1/profile/avatar$#',          fn() => api_profile_avatar_delete()],
         ['GET',    '#^/api/v1/admin/libraries$#',         fn() => api_admin_libraries_index()],
@@ -278,6 +279,7 @@ if (str_starts_with($path, '/api/')) {
         ['DELETE', '#^/api/v1/images/(\d+)$#',            fn($id) => api_images_delete((int) $id)],
 
         ['GET',    '#^/api/v1/libraries$#',               fn() => api_libraries_index()],
+        ['POST',   '#^/api/v1/libraries$#',               fn() => api_libraries_create()],
         ['GET',    '#^/api/v1/platforms$#',               fn() => api_platforms_index()],
         ['GET',    '#^/api/v1/titles$#',                  fn() => api_titles_index()],
         ['POST',   '#^/api/v1/titles$#',                  fn() => api_titles_create()],

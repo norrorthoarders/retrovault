@@ -700,6 +700,37 @@ paths:
         "204": { description: Deleted }
         "404": { $ref: "#/components/responses/NotFound" }
 
+  /items/{id}/images/import:
+    post:
+      tags: [Items]
+      summary: Fetch a picture from a metadata source and attach it
+      description: >
+        The server does the fetching, not the client: it already knows how to
+        check what came back is an image, how to resize it, and how to notice the
+        same picture arriving twice. `provenance` is always `official` — scraped
+        artwork is the publisher's, not a photograph of somebody's own copy, and
+        the two answer different questions. A picture already on the entry is
+        reported as `already_here` rather than refused.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url: { type: string }
+                kind: { type: string, default: box_front }
+                caption: { type: string, maxLength: 255 }
+      responses:
+        "200": { description: Imported, or already here }
+        "404": { description: No entry with that id }
+        "422": { description: Not a usable address, an unknown kind, or the fetch failed }
+
   /items/{id}/images:
     parameters: [{ $ref: "#/components/parameters/Id" }]
     get:
@@ -776,6 +807,28 @@ paths:
         "204": { description: Deleted }
 
   /libraries:
+    post:
+      tags: [Libraries]
+      summary: Make a library of your own
+      description: >
+        Not the admin route. `POST /admin/libraries` administers an instance and
+        needs an administrator; this is what any signed-in person may do, as the
+        web has always allowed. The caller owns it, which is what makes it theirs
+        to fill.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, maxLength: 120 }
+                description: { type: string, maxLength: 500 }
+                kind: { type: string, enum: [private, shared], default: private }
+                color: { type: string, example: "#cba6f7" }
+      responses:
+        "201": { description: Created }
+        "422": { description: A missing name, an unknown kind, or a colour that is not six hex digits }
     get:
       tags: [Taxonomy]
       summary: Libraries you can read

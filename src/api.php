@@ -440,6 +440,27 @@ function image_to_api(array $row): array
  */
 function item_to_api(array $r, bool $withImages = false): array
 {
+    // The hardware half, from its own table.
+    //
+    // item_hardware is keyed by item_id and v_items does not carry it, so this
+    // is a query rather than a column read - and only on the detailed view,
+    // because a list of two hundred entries does not need two hundred extra
+    // round trips for fields no list shows.
+    $hardware = null;
+    if ($withImages) {
+        $hw = one('SELECT model, board_revision, firmware, serial_number, modifications,
+                          working_state
+                     FROM item_hardware WHERE item_id = ?', [(int) $r['id']]);
+        $hardware = $hw === null ? null : [
+            'model'          => $hw['model'],
+            'board_revision' => $hw['board_revision'],
+            'firmware'       => $hw['firmware'],
+            'serial_number'  => $hw['serial_number'],
+            'modifications'  => $hw['modifications'],
+            'working_state'  => $hw['working_state'],
+        ];
+    }
+
     $out = [
         'id'       => (int) $r['id'],
         'title'    => $r['title'],
@@ -507,6 +528,15 @@ function item_to_api(array $r, bool $withImages = false): array
         ],
         'completeness'         => $r['completeness'],
         'completeness_label'   => completeness_label($r['completeness']),
+        // Whether there is a box at all, which is the question the box grade
+        // assumes an answer to. A client with only the grade cannot tell "no box"
+        // from "a box nobody has graded".
+        'has_box'              => (bool) (int) ($r['has_box'] ?? 0),
+        // Null on software, and on any entry nobody has filled these in for -
+        // which the client should read as "hide the section" rather than as five
+        // empty rows on a cartridge.
+        'hardware'             => $hardware,
+
 
         'media_type'     => $r['media_type'],
         'media_count'    => (int) $r['media_count'],
