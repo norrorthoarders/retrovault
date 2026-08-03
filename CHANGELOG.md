@@ -123,8 +123,9 @@ First public release.
 - **A command line install switched on no metadata sources.** The wizard has always enabled the
   ones needing no account; `bin/install.php` never did, so an instance built from a response
   file came up with nothing to look titles up with and no sign it was meant to have any. Both
-  now share `installer_enable_metadata_sources()`, and `metadata_sources` in the response file
-  says whether to.
+  now share `installer_enable_metadata_sources()`. `metadata_sources` in the response file says
+  whether to, and the wizard asks on its settings step — ticked, which is what it has always
+  done without asking.
 
 - A maintenance job for **specification names whose machine is gone**. Deleting a library takes
   its platforms and leaves the vocabulary behind pointing at rows that no longer exist —

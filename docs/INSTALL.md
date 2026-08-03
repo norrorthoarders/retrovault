@@ -178,7 +178,7 @@ What it holds:
 | `[admin]` | username, password, email, display name |
 | `[instance]` | name, tagline, public address, currency, timezone, trusted proxies |
 | `[server]` | `web_user`, `web_group` — who the web server runs as |
-| `[install]` | `metadata_sources` (switch on the lookup sources needing no key), `deploy` (`install` on an empty database, `erase` to drop what is there first, `keep` to write the configuration only), `erase_uploads`, `force_erase`, `templates` (`remote`, `shipped` or `none`), `examples`, `delete_installer`, `sign_in` |
+| `[install]` | `metadata_sources` (switch on the lookup sources needing no key; on by default, and a tickbox on the wizard's settings step), `deploy` (`install` on an empty database, `erase` to drop what is there first, `keep` to write the configuration only), `erase_uploads`, `force_erase`, `templates` (`remote`, `shipped` or `none`), `examples`, `delete_installer`, `sign_in` |
 
 ### Running it as root
 

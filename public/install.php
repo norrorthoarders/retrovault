@@ -1275,6 +1275,12 @@ if ($step === 4) {
         'examples'        => $_SERVER['REQUEST_METHOD'] === 'POST'
             ? (isset($_POST['examples']) ? '1' : '0')
             : (string) recall('examples', '0'),
+        // Ticked unless somebody says otherwise. The wizard has always switched
+        // these on and nothing asked; making it a question should not quietly
+        // change the answer for everybody who presses Continue.
+        'metadata_sources' => $_SERVER['REQUEST_METHOD'] === 'POST'
+            ? (isset($_POST['metadata_sources']) ? '1' : '0')
+            : (recall('metadata_sources', true) ? '1' : '0'),
     ];
     $error = null;
 
@@ -1368,6 +1374,19 @@ if ($step === 4) {
             <input type="checkbox" name="examples" value="1"
                    <?= ($v['examples'] ?? '0') === '1' ? 'checked' : '' ?>>
             Add a few example entries and a shared example library
+          </label>
+        </div>
+        <?php
+        // The lookup sources, which the installer used to switch on without
+        // asking. IGDB and TheGamesDB are not among them: they want credentials
+        // somebody has to go and fetch, and an installer cannot.
+        ?>
+        <div class="field" style="grid-column:1/-1">
+          <span class="label">Metadata sources</span>
+          <label class="checkline">
+            <input type="checkbox" name="metadata_sources" value="1"
+                   <?= ($v['metadata_sources'] ?? '1') === '1' ? 'checked' : '' ?>>
+            Switch on the lookup sources that need no account or key
           </label>
         </div>
       </div>
@@ -1732,7 +1751,7 @@ if ($running) {
                     // need credentials somebody has to go and get.
                     // Shared with bin/install.php, which used to skip this
                     // entirely - see installer_enable_metadata_sources().
-                    $sources = (bool) recall('metadata_sources', true)
+                    $sources = (string) recall('metadata_sources', '1') === '1'
                         ? installer_enable_metadata_sources() : 0;
                     if ($sources > 0) {
                         $log[] = sprintf('Metadata sources configured: %d, the ones needing no key',
