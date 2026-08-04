@@ -722,14 +722,43 @@ $val = function (string $key, $default = '') use ($item) {
     </div>
   </fieldset>
 
+  <?php
+  // Two sections, split on provenance.
+  //
+  // Artwork the publisher made and photographs somebody took answer different
+  // questions - "what does this release look like" against "what does my copy
+  // look like" - and they were listed together in one grid, in upload order, so
+  // a scan of the box sat between two photographs of a shelf. The metadata
+  // agents write the first kind and only the first kind; everything uploaded
+  // here is the second.
+  $artwork = array_values(array_filter($images ?? [],
+      fn(array $i): bool => ($i['provenance'] ?? 'personal') === 'official'));
+  $personal = array_values(array_filter($images ?? [],
+      fn(array $i): bool => ($i['provenance'] ?? 'personal') !== 'official'));
+  ?>
+
+  <?php if ($artwork !== []): ?>
+  <fieldset>
+    <legend>Stock images</legend>
+    <p class="hint" style="margin-top:-.4rem">
+      Downloaded from a metadata source. It describes the release, not your copy,
+      and is the same for everybody who has one.
+    </p>
+    <?php partial('image_rows', ['images' => $artwork, 'domain' => $domain ?? 'software']); ?>
+  </fieldset>
+  <?php endif; ?>
+
   <fieldset>
     <legend>Photographs</legend>
+    <p class="hint" style="margin-top:-.4rem">
+      Your own, of your own copy.
+    </p>
     <?php
     // What is already there, before the box for adding more. The form used
     // to offer only the dropzone, so a photograph could be added and never
     // removed from this screen.
     ?>
-    <?php partial('image_rows', ['images' => $images ?? [], 'domain' => $domain ?? 'software']); ?>
+    <?php partial('image_rows', ['images' => $personal, 'domain' => $domain ?? 'software']); ?>
     <div class="formgrid">
       <div class="field formgrid--wide">
         <div class="dropzone" data-dropzone data-max="4">

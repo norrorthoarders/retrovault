@@ -360,6 +360,16 @@ function items_payload(): array
                                      [derived_category_id()]) ?: 'software') === 'hardware'
         ? 'hardware' : 'software';
 
+    // Worked out once, above the array, because the two halves have to agree.
+    //
+    // `has_box_declared` is a hidden field the forms that carry a box checkbox
+    // post; its absence means "this form has no opinion", which is a different
+    // answer from "no box" and the reason rule_box_state() takes a nullable.
+    $boxState = rule_box_state(
+        isset($_POST['has_box_declared']) ? input_bool('has_box') === 1 : null,
+        input('condition_box')
+    );
+
     return [
         'library_id'       => (int) input_int('library_id', 0),
         'title_id'         => valid_title_id(),
@@ -388,8 +398,12 @@ function items_payload(): array
         'release_year'     => input_int('release_year'),
         'release_date'     => nullify(input('release_date')),
         'rating'           => input_int('rating'),
-        'condition_grade'  => in_array(input('condition_grade', 'unknown'), condition_options(), true) ? input('condition_grade', 'unknown') : 'unknown',
-        'completeness'     => in_array(input('completeness', 'unknown'), completeness_options(), true) ? input('completeness', 'unknown') : 'unknown',
+        // The rules from src/rules.php, with this form's own policy on a bad
+        // value: fall back to "unknown" rather than refuse. Somebody halfway
+        // through a page should not lose it to a select that cannot be wrong
+        // anyway; the API answers 422 for the same input, deliberately.
+        'condition_grade'  => rule_condition_grade(input('condition_grade')) ?? 'unknown',
+        'completeness'     => rule_completeness(input('completeness')) ?? 'unknown',
         // Only when the form still posts them as single values - the API and the
         // importer do. The entry form posts media_type[] instead, and
         // set_item_media() owns both columns then, writing them from the first
@@ -458,18 +472,16 @@ function items_payload(): array
         // checkbox unconditionally would clear the box grade off every boxed game
         // the moment somebody saved it from that form. Where the controls are
         // absent, has_box is inferred from the grade instead.
-        'has_box'          => isset($_POST['has_box_declared'])
-            ? input_bool('has_box')
-            : (in_array((string) input('condition_box', 'unknown'), ['unknown', 'missing'], true) ? 0 : 1),
-        // Grading a box that is not there is meaningless, so the grade is only
-        // kept while there is a box to grade. Without this, unticking "there is a
-        // box" would leave "Mint" behind on a box nobody has.
-        'condition_box'    => (isset($_POST['has_box_declared']) && input_bool('has_box') !== 1)
-            ? 'unknown'
-            : (in_array(input('condition_box', 'unknown'), component_condition_options(), true)
-                ? input('condition_box', 'unknown') : 'unknown'),
-        'condition_manual' => in_array(input('condition_manual', 'unknown'), component_condition_options(), true) ? input('condition_manual', 'unknown') : 'unknown',
-        'condition_media'  => in_array(input('condition_media', 'unknown'), component_condition_options(), true) ? input('condition_media', 'unknown') : 'unknown',
+        // The box, and the grade that only means something while there is one.
+        //
+        // rule_box_state() holds both halves - including the inference for a
+        // form that posts a grade and no checkbox, which is what the software
+        // form does. Reading the checkbox unconditionally would clear the box
+        // grade off every boxed game the moment somebody saved it from there.
+        'has_box'          => $boxState['has_box'],
+        'condition_box'    => $boxState['condition_box'],
+        'condition_manual' => rule_component_grade(input('condition_manual')) ?? 'unknown',
+        'condition_media'  => rule_component_grade(input('condition_media')) ?? 'unknown',
         'current_value'    => nullify(input('current_value')),
         'valued_on'        => nullify(input('valued_on')),
         'copies'           => max(1, (int) (input_int('copies') ?? 1)),

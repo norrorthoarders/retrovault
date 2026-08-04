@@ -288,7 +288,7 @@ function api_items_show(int $id): void
  * Map an incoming JSON object onto item columns.
  * In partial mode only the supplied keys are touched, which is what PATCH needs.
  */
-function api_item_input(array $in, bool $partial): array
+function api_item_input(array $in, bool $partial, ?array $existing = null): array
 {
     $data   = [];
     $errors = [];
@@ -302,6 +302,12 @@ function api_item_input(array $in, bool $partial): array
         // notes and not this one would have to put a description in the notes -
         // which is the confusion migration 0014 exists to end.
         'description' => 65535,
+        // Provenance. The web has written these since it existed and the API
+        // never accepted one of them, so an entry created from a phone could
+        // record what it cost and not who it came from.
+        'acquired_from' => 140, 'acquired_note' => 255,
+        'sold_to' => 140, 'sold_note' => 255,
+        'location_position' => 40,
     ];
     foreach ($strings as $key => $max) {
         if ($has($key)) {
@@ -323,25 +329,44 @@ function api_item_input(array $in, bool $partial): array
     // rule the web form applies, in one place rather than two.
     // Not condition_grade: `condition` already carries it, validated, a few
     // lines below. Two names for one field is two things to keep in step.
-    foreach (['condition_box'   => 'component_condition_options',
-              'condition_manual' => 'component_condition_options',
-              'condition_media' => 'component_condition_options'] as $key => $options) {
+    foreach (['condition_box', 'condition_manual', 'condition_media'] as $key) {
         if (!$has($key)) {
             continue;
         }
-        $value = (string) $in[$key];
-        if (!in_array($value, $options(), true)) {
+        $grade = rule_component_grade($in[$key]);
+        if ($grade === null) {
             $errors[$key] = 'Not a known grade.';
             continue;
         }
-        $data[$key] = $value;
+        $data[$key] = $grade;
     }
 
+    // The box rule from src/rules.php, not a second copy of it. The form applies
+    // the same one; a client and a person filling in the web form should not be
+    // able to leave the catalogue in two different states from the same answer.
     if ($has('has_box')) {
-        $data['has_box'] = (bool) $in['has_box'] ? 1 : 0;
-        if ($data['has_box'] === 0) {
-            $data['condition_box'] = 'unknown';
+        $box = rule_box_state((bool) $in['has_box'],
+                              $data['condition_box'] ?? ($in['condition_box'] ?? 'unknown'));
+        $data['has_box']       = $box['has_box'];
+        $data['condition_box'] = $box['condition_box'];
+    }
+
+    // A maker or publisher by name, made if this library has not got one.
+    //
+    // `developer_id` remains the way to point at a company that exists; these
+    // are for a client holding a name from a metadata source and no id.
+    foreach (['developer' => 'developer_id', 'publisher' => 'publisher_id'] as $key => $col) {
+        if (!$has($key) || $has($col)) {
+            continue;
         }
+        $libraryForCompany = (int) ($data['library_id'] ?? ($existing['library_id'] ?? 0));
+        if ($libraryForCompany <= 0) {
+            $errors[$key] = 'Send library_id too, or a developer_id.';
+            continue;
+        }
+        $data[$col] = $in[$key] === null
+            ? null
+            : api_company_for_name($libraryForCompany, (string) $in[$key]);
     }
 
     // Which model this is one of. Nullable on purpose: an entry whose model was
@@ -351,6 +376,54 @@ function api_item_input(array $in, bool $partial): array
     // copy of it - one person's cartridge does not decide what the release is.
     if ($has('model_id')) {
         $data['model_id'] = $in['model_id'] === null ? null : (int) $in['model_id'];
+    }
+
+    // A currency of its own for the sale, because bought in SEK and sold in EUR
+    // is ordinary.
+    if ($has('sold_currency')) {
+        $code = strtoupper(trim((string) $in['sold_currency']));
+        $data['sold_currency'] = $code === '' ? null : mb_substr($code, 0, 3);
+    }
+
+    // Where it is kept, by path.
+    //
+    // The API has never handled a location at all - not by id, not by path - so
+    // "Where it is kept" on the phone was typed, sent, and silently dropped.
+    // The path is the right shape for a client: "Retroway 22 › Basement › Book
+    // Shelf 1" is what somebody knows, and an id is what the server knows.
+    if ($has('location_path')) {
+        $path = trim((string) ($in['location_path'] ?? ''));
+        if ($path === '') {
+            $data['location_id'] = null;
+        } else {
+            // Matched on the breadcrumb, not on `locations.path`.
+            //
+            // That column looks like the answer and is not: it holds an id path
+            // - `/1/7/` - for subtree queries, while a client sends what a
+            // person reads, "Retroway 22 › Basement › Book Shelf 1". Comparing
+            // against it would have matched nothing a phone ever sends, and the
+            // field would have gone on being silently dropped with a test
+            // saying it was handled.
+            //
+            // Scoped to the entry's library, because two libraries may both
+            // have a Basement. Case-insensitive and separator-tolerant, since
+            // the breadcrumb is typed by hand as often as it is copied.
+            $libraryForPath = (int) ($data['library_id'] ?? ($existing['library_id'] ?? 0));
+            $wanted = preg_replace('/\s*[›>\/]\s*/u', ' › ', $path);
+            $id = null;
+            foreach (all('SELECT id FROM locations WHERE library_id = ?',
+                         [$libraryForPath]) as $candidate) {
+                if (strcasecmp(location_breadcrumb((int) $candidate['id']), (string) $wanted) === 0) {
+                    $id = (int) $candidate['id'];
+                    break;
+                }
+            }
+            if ($id === null) {
+                $errors['location_path'] = 'No location with that path.';
+            } else {
+                $data['location_id'] = $id;
+            }
+        }
     }
 
     // The library owns the entry and decides who may see it.
@@ -423,15 +496,19 @@ function api_item_input(array $in, bool $partial): array
         }
     }
     if ($has('condition')) {
-        $data['condition_grade'] = (string) $in['condition'];
-        if (!in_array($data['condition_grade'], condition_options(), true)) {
+        $grade = rule_condition_grade($in['condition']);
+        if ($grade === null) {
             $errors['condition'] = 'Not a known condition grade.';
+        } else {
+            $data['condition_grade'] = $grade;
         }
     }
     if ($has('completeness')) {
-        $data['completeness'] = (string) $in['completeness'];
-        if (!in_array($data['completeness'], completeness_options(), true)) {
+        $value = rule_completeness($in['completeness']);
+        if ($value === null) {
             $errors['completeness'] = 'Not a known completeness value.';
+        } else {
+            $data['completeness'] = $value;
         }
     }
     if ($has('status')) {
@@ -641,7 +718,7 @@ function api_items_update(int $id): void
         api_error('forbidden', 'That library is read-only for your account.', 403);
     }
     $in = api_body();
-    [$data, $errors] = api_item_input($in, true);
+    [$data, $errors] = api_item_input($in, true, $existing);
 
     if ($errors !== []) {
         api_error('validation_failed', 'Some fields need attention.', 422, $errors);
@@ -1826,11 +1903,31 @@ function api_link_refusal(array $machine, array $part): ?string
                        (string) $part['title']);
     }
 
-    // What the peripheral says it fits, by model. Empty means it has not said,
-    // and a peripheral that has not said is allowed anywhere - refusing on
-    // silence would make the catalogue harder to fill in than to leave wrong.
-    $fits = model_fits_ids((int) ($part['model_id'] ?? 0));
-    if ($fits !== [] && !in_array((int) ($machine['model_id'] ?? 0), $fits, true)) {
+    // What the peripheral says it fits, by model.
+    //
+    // Two silences, and both mean "cannot tell", not "no".
+    //
+    // A peripheral that names nothing goes anywhere - refusing on silence would
+    // make the catalogue harder to fill in than to leave wrong. And a machine
+    // with no model cannot be checked against a list of models at all: this
+    // compared the machine's model_id to the list and, finding NULL, read it as
+    // 0 and refused. Every machine in a fresh catalogue has no model, so every
+    // peripheral that had been filed properly was refused by every machine -
+    // the better the data, the worse the answer.
+    // effective_fits(), not model_fits_ids().
+    //
+    // Compatibility is declared in two places and this only read one. A model
+    // may name the machines it fits, and a single card may name them itself
+    // through item_fits - the "Compatible hardware" checkboxes on the web form.
+    // effective_fits() is the function that already knows the precedence: the
+    // model's list when it has one, the card's own otherwise. Reading only the
+    // model meant a peripheral whose compatibility had been recorded by hand
+    // looked like one that had said nothing, and the answer came out right for
+    // the wrong reason - until somebody set a model, at which point it came out
+    // wrong.
+    $machineModel = (int) ($machine['model_id'] ?? 0);
+    $fits = effective_fits((int) $part['id'], (int) ($part['model_id'] ?? 0))['ids'];
+    if ($fits !== [] && $machineModel > 0 && !in_array($machineModel, $fits, true)) {
         return sprintf('%s does not list %s among the machines it fits.',
                        (string) $part['title'], (string) $machine['title']);
     }
@@ -1874,4 +1971,70 @@ function api_item_links_candidates(int $itemId): void
     }
 
     api_ok($out);
+}
+
+/**
+ * The company with that name in that library, made if it is not there.
+ *
+ * A metadata source knows a developer's name and this catalogue knows companies
+ * by id, so a lookup that found "Team17 Software Limited" against a library that
+ * has "Team17" could do nothing with it: the app said "no company here is called
+ * that, add it on the web", which is a phone telling somebody to go and find a
+ * computer.
+ *
+ * Matched case-insensitively by name first, then by slug, before anything is
+ * created - a library with "team17" should not gain "Team17" beside it. The
+ * decision to create is the caller's; this only carries it out.
+ */
+function api_company_for_name(int $libraryId, string $name, string $makes = 'software'): ?int
+{
+    $name = trim($name);
+    if ($name === '') {
+        return null;
+    }
+
+    $existing = one('SELECT id FROM companies
+                      WHERE library_id = ? AND LOWER(name) = LOWER(?) LIMIT 1',
+                    [$libraryId, $name]);
+    if ($existing !== null) {
+        return (int) $existing['id'];
+    }
+
+    $slug = slugify($name);
+    $bySlug = one('SELECT id FROM companies WHERE library_id = ? AND slug = ? LIMIT 1',
+                  [$libraryId, $slug]);
+    if ($bySlug !== null) {
+        return (int) $bySlug['id'];
+    }
+
+    $id = (int) insert_row('companies', [
+        'library_id' => $libraryId,
+        'makes'      => in_array($makes, ['hardware', 'software', 'both'], true) ? $makes : 'software',
+        'name'       => mb_substr($name, 0, 160),
+        'slug'       => unique_slug('companies', $slug),
+    ]);
+
+    // Logged, and louder when something like it is already here.
+    //
+    // A source that answers "Team17 Software Limited" to a library holding
+    // "Team17" is describing the same firm, and no rule this end can be sure of
+    // that: matching on one name containing the other would merge Sega and Sega
+    // Europe, which are not the same company at all. So it is created as asked
+    // and the near-match is named in the log, where somebody can merge the two
+    // deliberately. Silent duplication is how a catalogue ends up with four
+    // Team17s and no way to know which is right.
+    $similar = all('SELECT name FROM companies
+                     WHERE library_id = ? AND id <> ?
+                       AND (LOWER(name) LIKE LOWER(?) OR LOWER(?) LIKE CONCAT(LOWER(name), \'%\'))
+                     LIMIT 3',
+                   [$libraryId, $id, $name . '%', $name]);
+
+    log_security('company.created',
+        $similar === []
+            ? sprintf('Created company "%s" from a name sent by a client', $name)
+            : sprintf('Created company "%s" - this library already has %s, which may be the same firm',
+                      $name, implode(', ', array_map(fn($r) => '"' . $r['name'] . '"', $similar))),
+        LOG_NOTICE, ['subject_type' => 'company', 'subject_id' => $id]);
+
+    return $id;
 }

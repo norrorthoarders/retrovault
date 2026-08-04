@@ -287,7 +287,7 @@
       <?php endif; ?>
 
       <?php if (!empty($r['images'])): ?>
-        <p class="label" style="margin-top:.8rem">Artwork</p>
+        <p class="label" style="margin-top:.8rem">Stock images</p>
         <?php
         // Which of these the entry already has, worked out before anything is
         // ticked. Matched on the address each was fetched from - the content hash

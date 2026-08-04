@@ -555,6 +555,10 @@ function item_to_api(array $r, bool $withImages = false): array
         'region'         => $r['region'],
 
         'acquired_on'      => $r['acquired_on'],
+        // Who it came from, and what was noted at the time. Both writable and
+        // neither returned, so a client could set them and never read them back.
+        'acquired_from'    => $r['acquired_from'],
+        'acquired_note'    => $r['acquired_note'],
         'acquired_price'   => $r['acquired_price'] === null ? null : (float) $r['acquired_price'],
         'currency'         => $r['currency'],
         'location'         => $r['location_id'] === null ? null : [
@@ -571,6 +575,9 @@ function item_to_api(array $r, bool $withImages = false): array
         'is_wishlist'  => $r['status'] === 'wishlist',
         'copies'       => (int) $r['copies'],
         'sold_on'      => $r['sold_on'],
+        'sold_to'      => $r['sold_to'],
+        'sold_note'    => $r['sold_note'],
+        'sold_currency' => $r['sold_currency'],
         'sold_price'   => $r['sold_price'] === null ? null : (float) $r['sold_price'],
         'current_value' => $r['current_value'] === null ? null : (float) $r['current_value'],
         'valued_on'     => $r['valued_on'],

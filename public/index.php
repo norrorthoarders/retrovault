@@ -40,7 +40,7 @@ require APP_ROOT . '/src/metadata.php';
 require APP_ROOT . '/src/version.php';
 require APP_ROOT . '/src/migrate.php';
 require APP_ROOT . '/src/images.php';
-require APP_ROOT . '/src/models.php';
+require APP_ROOT . '/src/models.php';   // which pulls in src/rules.php
 require APP_ROOT . '/src/maintenance.php';
 require APP_ROOT . '/src/settings_schema.php';
 require APP_ROOT . '/src/api.php';

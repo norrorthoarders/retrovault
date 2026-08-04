@@ -1,5 +1,13 @@
 # Changelog
 
+**Web**
+
+- **Artwork and photographs are two sections**, on the form as well as the entry. They answer
+  different questions — what the release looks like, and what your copy looks like — and listing
+  them together in upload order put a scan of the box between two photographs of a shelf. The
+  split is on `provenance`, which the metadata agents already set.
+- **"Artwork"**, one word, replacing *Official box art* and *Stock photos*.
+
 **Installer**
 
 - **Metadata sources are tested before they are switched on**, by both installers. They used to
@@ -86,7 +94,56 @@ First public release.
   passwords so the answer file can be templated and hold no secret, and `--answers -` reads it
   from standard input so it need not exist on disk.
 
+**Web**
+
+- The image set a lookup fills is **Stock images** on both domains, in the form, the entry and
+  the lookup review — it was Artwork in one place and Stock photos in another. `image_sections()`
+  feeds the selects, so the name is now decided once.
+
 **API**
+
+- **`src/rules.php`** — the rules an entry obeys, in one place, called by both the web form and
+  the API. The same question had two answers before: `condition` was a validated enum on one side
+  and free text on the other, and the rule that clearing "there is a box" also clears the box
+  grade existed twice, in different words, with no reason to think they agreed.
+- What is shared is the **rule**; what is not is the **policy on a bad value**. Each function
+  returns null for "that is not one of these", and the form falls back to `unknown` while the API
+  answers 422 — a person mid-page should not lose it to a select that cannot be wrong anyway, and
+  a client that sent nonsense wants to know. Making those identical would have been a change to
+  the web, dressed up as a refactor.
+
+- The entry payload returns **`acquired_from`, `acquired_note`, `sold_to`, `sold_note` and
+  `sold_currency`**. All five became writable last round and none was returned, so a client could
+  set who a thing came from and never read it back.
+
+- **Fixed: compatibility was read from one of the two places it is declared.** A model may name
+  the machines it fits, and a single card may name them itself through `item_fits` — the
+  *Compatible hardware* checkboxes on the web form. The check read only the model's list, so a
+  peripheral whose compatibility had been recorded by hand looked like one that had said nothing:
+  the answer came out right for the wrong reason, until somebody set a model, at which point it
+  came out wrong. It calls `effective_fits()` now, which already knows the precedence.
+- **Fixed: a machine with no model was refused by every peripheral that declared what it fits.**
+  The check compared the machine's `model_id` to the peripheral's list and, finding NULL, read it
+  as 0 and refused. Every machine in a fresh catalogue has no model — so the better a peripheral
+  was catalogued, the more certainly it was rejected. Two silences, both meaning "cannot tell":
+  a peripheral naming nothing goes anywhere, and a machine with no model cannot be checked
+  against a list of models at all.
+- **A maker or publisher can be sent by name.** `developer` and `publisher` accept a string and
+  match it case-insensitively, by name then by slug, creating the company only when nothing
+  matches. The app used to refuse — "add it under Companies on the web" — which is a phone
+  telling somebody to go and find a computer. A near-match is **named in the log**: a source
+  answering "Team17 Software Limited" to a library holding "Team17" is describing one firm, and
+  no rule here can be sure of that, since the same rule would merge Sega and Sega Europe.
+
+- **Fixed: the API has never handled a location.** Not by id, not by path — so "Where it is kept"
+  on the phone was typed, sent and silently dropped. `location_path` is accepted now, matched on
+  the breadcrumb somebody reads rather than on `locations.path`, which looks like the answer and
+  is not: that column holds an id path (`/1/7/`) for subtree queries. Matching against it would
+  have found nothing a client ever sends, with a test cheerfully saying the field was handled.
+- **Provenance is writable**: `acquired_from`, `acquired_note`, `sold_to`, `sold_note`,
+  `sold_currency` and `location_position`. The web has written these since it existed and the API
+  accepted none of them, so an entry created from a phone could record what it cost and not who
+  it came from.
 
 - **Lending is gone from the platform.** It was half-removed already — `status_options()` had
   dropped `lent` but the columns, the enum value, the dashboard panels, the CSV columns and the

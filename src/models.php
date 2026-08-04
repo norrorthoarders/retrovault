@@ -1,6 +1,14 @@
 <?php
 declare(strict_types=1);
 
+// The rules an entry obeys, shared by the web form and the API.
+//
+// Required here rather than only in public/index.php: every test suite, the
+// installer and bin/*.php require the modules by hand, and a shared file that
+// only one entry point loads is not shared - it is a fatal error waiting for the
+// second caller.
+require_once __DIR__ . '/rules.php';
+
 /** Every platform, regardless of access. Use readable_libraries() for pickers. */
 /**
  * Platforms this account can use.
@@ -4459,7 +4467,17 @@ function image_sections(string $domain): array
     if ($domain === 'hardware') {
         return [
             'stock' => [
-                'title' => 'Stock photos',
+                // "Stock images", on both domains and in both clients.
+                //
+                // One name for the thing a metadata source downloads. It has
+                // been called Artwork here, Stock photos in one select, Official
+                // box art in another and "official" in the API - four names for
+                // one idea, and the field a person sees should not change its
+                // name depending on which screen they are looking at.
+                //
+                // "Artwork" was also wrong for hardware: a photograph of an
+                // Amiga 2000 from a database is not artwork, it is stock.
+                'title' => 'Stock images',
                 'blurb' => 'The machine or card as the maker showed it, or the best picture '
                          . 'anybody has. A lookup adds pictures here.',
                 'provenance' => 'official',
@@ -4467,7 +4485,7 @@ function image_sections(string $domain): array
                 'scrapable' => true,
             ],
             'box' => [
-                'title' => 'Your photos of the box',
+                'title' => 'Photographs of the box',
                 'blurb' => 'The packaging this one came in, as it is now.',
                 'provenance' => 'personal',
                 'kinds' => $boxKinds,
@@ -4478,7 +4496,7 @@ function image_sections(string $domain): array
                 'needs_box' => true,
             ],
             'unit' => [
-                'title' => 'Your photos of the hardware',
+                'title' => 'Photographs of the hardware',
                 'blurb' => 'This one, inside and out — wear, repairs, board revision, '
                          . 'whatever is worth seeing.',
                 'provenance' => 'personal',
@@ -4490,14 +4508,17 @@ function image_sections(string $domain): array
 
     return [
         'art' => [
-            'title' => 'Official box art',
-            'blurb' => 'The published artwork. A lookup adds pictures here.',
+            // "Artwork" here and "Stock images" on hardware: box art is
+            // artwork, a manufacturer's photograph of a machine is not.
+            'title' => 'Artwork',
+            'blurb' => 'The published artwork, or the best picture anybody has. '
+                     . 'A lookup adds pictures here.',
             'provenance' => 'official',
             'kinds' => array_merge($boxKinds, ['screenshot', 'other']),
             'scrapable' => true,
         ],
         'box' => [
-            'title' => 'Your photos of the box',
+            'title' => 'Photographs of the box',
             'blurb' => 'Your copy, as it is — so the condition can be seen rather than graded.',
             'provenance' => 'personal',
             'kinds' => $boxKinds,
@@ -4505,7 +4526,7 @@ function image_sections(string $domain): array
             'needs_box' => true,
         ],
         'contents' => [
-            'title' => 'Your photos of what is inside',
+            'title' => 'Photographs of what is inside',
             'blurb' => 'Disks, manual, registration card, poster, the t-shirt — whatever '
                      . 'came in it.',
             'provenance' => 'personal',
