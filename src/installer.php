@@ -462,14 +462,6 @@ function structure_present(PDO $pdo): bool
  * Deliberately not DROP DATABASE: the account may not have that right, and the
  * database may be shared with something else.
  */
-/** How many of our tables are already in this database. */
-function existing_object_count(PDO $pdo): array
-{
-    $objects = schema_objects();
-    $left    = leftover_retrovault_objects($pdo, $objects);
-    return ['tables' => count($left), 'names' => $left];
-}
-
 function drop_retrovault_tables(PDO $pdo): array
 {
     $errors  = [];
@@ -653,49 +645,6 @@ function installer_baseline(PDO $pdo): int
         $n++;
     }
     return $n;
-}
-
-/** Apply what is outstanding. Returns [appliedNames, errors]. */
-function installer_apply_migrations(PDO $pdo): array
-{
-    installer_ensure_migration_table($pdo);
-    $done = [];
-    $errors = [];
-    foreach (installer_pending_migrations($pdo) as $name) {
-        [$errs, $msgs] = run_sql_file($pdo, APP_DIR . '/db/migrations/' . $name);
-        if ($errs > 0) {
-            $errors[] = $name . ': ' . implode(' | ', $msgs);
-            break;                       // stop at the first failure
-        }
-        $st = $pdo->prepare('INSERT INTO schema_migrations (migration, checksum, duration_ms) VALUES (?, ?, 0)
-                             ON DUPLICATE KEY UPDATE applied_at = NOW()');
-        $st->execute([$name, hash('sha256', (string) @file_get_contents(APP_DIR . '/db/migrations/' . $name))]);
-        $done[] = $name;
-    }
-    return [$done, $errors];
-}
-
-/**
- * What is in this database, and therefore what should be offered.
- *
- * 'empty'   nothing of ours is there
- * 'behind'  installed, but migrations are outstanding
- * 'ready'   installed and current
- */
-function installer_database_state(PDO $pdo): array
-{
-    $hasCore = table_exists($pdo, 'items') && table_exists($pdo, 'users');
-    if (!$hasCore) {
-        return ['state' => 'empty', 'counts' => [], 'pending' => [], 'version' => null];
-    }
-
-    $pending = installer_pending_migrations($pdo);
-    return [
-        'state'   => $pending === [] ? 'ready' : 'behind',
-        'counts'  => existing_data_counts($pdo),
-        'pending' => $pending,
-        'version' => count(installer_applied_migrations($pdo)) . ' of ' . count(installer_migration_files()),
-    ];
 }
 
 /**

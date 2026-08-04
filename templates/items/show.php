@@ -175,8 +175,17 @@ if ($runsOn !== null): ?>
             'recapped_on'       => 'Recapped',
             'modifications'     => 'Notes',
           ];
+          // model, interface and fits check hardware_detail()'s resolved_*
+          // form first: the entry's own value if it typed one, the model's
+          // otherwise. Reading $hardware[$col] alone showed a blank row on
+          // every entry whose model carried the value and whose own record did
+          // not - which was every entry with a model set and nothing retyped.
+          $resolved = ['model' => 'resolved_model', 'interface' => 'resolved_interface',
+                       'fits' => 'resolved_fits'];
           foreach ($spec as $col => $label):
-              $v = $hardware[$col] ?? null;
+              $v = isset($resolved[$col])
+                  ? ($hardware[$resolved[$col]] ?? null)
+                  : ($hardware[$col] ?? null);
               if ($v === null || $v === '' || $v === 'unknown') continue;
               if ($col === 'interface') {
                   $v = hardware_vocab_label('interface', (string) $v, (int) $item['platform_id']);

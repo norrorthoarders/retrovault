@@ -100,6 +100,59 @@ First public release.
   the lookup review — it was Artwork in one place and Stock photos in another. `image_sections()`
   feeds the selects, so the name is now decided once.
 
+**Audit, continued**
+
+- **A pending registration now tells every admin**, in-app and by mail. `notify_admins()` was
+  written and had no caller; a signup needing approval reached the security log and nothing else,
+  so an admin who was not reading it that day found out when somebody asked why they still could
+  not sign in. The link goes straight to `/manage/users`.
+- **`item.lent_overdue` was a registered notification kind for a feature that no longer exists.**
+  Lending was removed earlier tonight; this one entry was missed because nothing triggered it, so
+  it never surfaced as broken — only as unused. Removed, and its slot in `notification_kinds()`
+  taken by the new registration kind rather than left as a gap.
+- **A test in `retrovault-tools` still referenced the removed kind** and only failed once the
+  full suite ran after this change — a reminder that a single file's suite passing is not the
+  same question as the whole tree agreeing with itself. Updated to exercise the same preference
+  logic against `registration.pending` instead.
+
+- **`rule_status()` was written and never called.** Both the form and the API still had their own
+  inline `in_array(...) ? ... : 'owned'` for the status field it was built for. Both now call it,
+  and `tests/fields.php` asserts they do — the same gap `rule_box_state()` had until this pass.
+- **Fixed: `hardware_detail()` was written, documented, and never called.** It resolves "the
+  entry's own value, or the model's if the entry has none" — its own doc comment says this exists
+  to stop two pages disagreeing about which one wins. Nothing called it, so the entry page read
+  `item_hardware` raw: any machine with a model set but nothing retyped onto the entry itself
+  showed a **blank** model, interface, and fits field, when the model had the answer all along.
+  Wired into the entry view's data and the Specification table. The edit form's pre-fill
+  deliberately still reads the raw row — resolving there would silently write the model's value
+  onto the entry as if someone had typed it.
+- **Three functions in `installer.php` were dead**, superseded by a separately-evolved, actually
+  wired implementation in `src/migrate.php` + `update.php`. Removed.
+- **Four more removed**: `shared_library_ids` (a duplicate of a call made directly elsewhere),
+  `log_count` (the one caller that would want it computes its own count instead),
+  `metadata_debug_clear` (redundant with the reset `metadata_debug_on()` already does),
+  `parts_fitting_model` (written for a model detail page that was never built — no route reaches
+  one). `docs/TAXONOMY.md` referenced the last of these; corrected.
+- **`notify_admins()` was found complete and unwired**; documented rather than deleted or
+  silently wired in, then given its own pass: a `registration.pending` notification kind and a
+  call beside the security-log line that already existed. An admin who signs up needing approval
+  is told now, in-app and by mail, rather than only whoever next reads the log.
+- **`store_logo()` was wrongly flagged as an unwired feature, and it was not one.** I checked
+  whether that exact name was called, found it was not, and concluded company logos had no way in
+  — without checking whether a *differently named* function already did the job. It does:
+  `store_company_logo()` and `delete_company_logo()` are a complete, separately-written pair,
+  fully wired through `taxonomy_save()` and a file input already sitting in the generic taxonomy
+  edit form. Uploading a company logo has worked the whole time. `store_logo()` and its sibling
+  `delete_logo()` — a generic pair for "companies or vendors", from before vendors merged into
+  companies — were the genuinely dead ones, and are removed now that the working replacement is
+  confirmed rather than assumed.
+- **A first automated pass over-reported**: it flagged `metadata_search_amigahw`,
+  `metadata_platforms_thegamesdb` and four others as dead. All are reached through
+  `'metadata_search_' . $type` / `'metadata_platforms_' . $type` dispatch, not a literal call —
+  checked individually against `metadata_provider_types()` before anything was touched. Two of
+  the flagged names, `mobygames` and `csdb`, turned out to be **deliberately withdrawn features**
+  with a test asserting they stay unused while their parsers remain reachable by name.
+
 **API**
 
 - **`src/rules.php`** — the rules an entry obeys, in one place, called by both the web form and

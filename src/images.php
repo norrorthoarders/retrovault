@@ -118,64 +118,6 @@ function validate_uploaded_image(array $file): array
 }
 
 /**
- * Store a logo for a company or a vendor, replacing any previous one.
- *
- * One function for both, because a software studio and a hardware manufacturer are
- * the same kind of thing wearing different table names, and a second copy of this
- * would be a second place to fix the next bug in it.
- *
- * Returns [filename, error].
- */
-function store_logo(string $table, int $rowId, string $field): array
-{
-    if (!in_array($table, ['companies', 'vendors'], true)) {
-        return [null, 'Logos are only stored for companies and manufacturers.'];
-    }
-    if (!isset($_FILES[$field]) || (int) ($_FILES[$field]['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
-        return [null, null];
-    }
-
-    [$info, $ext, $error] = validate_uploaded_image($_FILES[$field]);
-    if ($error !== null) {
-        return [null, $error];
-    }
-
-    $basename = unique_upload_name('logo_' . $table . '_' . $rowId, $ext);
-    $target   = uploads_dir() . '/' . $basename;
-
-    if (!move_uploaded_file($_FILES[$field]['tmp_name'], $target)) {
-        return [null, 'The logo could not be written to the uploads directory. Check permissions.'];
-    }
-    @chmod($target, 0644);
-
-    // Logos are shown small, so only the thumbnail variant is worth generating.
-    resize_image($target, uploads_dir() . '/thumb_' . $basename, (string) $info['mime'], (int) config('uploads.thumb_px'));
-
-    delete_logo($table, $rowId);
-    update_row($table, $rowId, ['logo_filename' => $basename]);
-    return [$basename, null];
-}
-
-/** Remove a company's or vendor's logo and its thumbnail. */
-function delete_logo(string $table, int $rowId): void
-{
-    if (!in_array($table, ['companies', 'vendors'], true)) {
-        return;
-    }
-    $row = one("SELECT logo_filename FROM `$table` WHERE id = ?", [$rowId]);
-    if ($row === null || empty($row['logo_filename'])) {
-        return;
-    }
-    foreach (['', 'thumb_'] as $prefix) {
-        $path = uploads_dir() . '/' . $prefix . $row['logo_filename'];
-        if (is_file($path)) {
-            @unlink($path);
-        }
-    }
-    update_row($table, $rowId, ['logo_filename' => null]);
-}
-
-/**
  * Store a company logo, replacing any previous one.
  * Returns [filename, error].
  */

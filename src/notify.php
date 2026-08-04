@@ -71,11 +71,17 @@ function notification_kinds(): array
             'in_app'      => true,
             'by_mail'     => false,
         ],
-        'item.lent_overdue' => [
-            'label'       => 'Long loans',
-            'description' => 'Something you lent out has been gone more than ninety days.',
+        // A registration waiting on a decision.
+        //
+        // registration.php has always written this to the security log; nobody
+        // was actually told. An admin who does not happen to be reading the log
+        // that day would not find out until somebody asked why they still could
+        // not sign in.
+        'registration.pending' => [
+            'label'       => 'Registrations waiting for approval',
+            'description' => 'Somebody signs up and needs an administrator to let them in.',
             'in_app'      => true,
-            'by_mail'     => false,
+            'by_mail'     => true,
         ],
         'system.backup_failed' => [
             'label'       => 'System problems',
@@ -241,6 +247,13 @@ function notify(int $userId, string $kind, array $data = []): ?int
 }
 
 /** Everyone who administers the instance, for system notices. */
+/**
+ * Tell every active admin at once.
+ *
+ * Used by registration.php when a signup needs approval - the log entry
+ * existed already; this is what tells somebody without them having to be
+ * reading it.
+ */
 function notify_admins(string $kind, array $data = []): void
 {
     foreach (all("SELECT id FROM users WHERE role = 'admin' AND is_active = 1") as $row) {

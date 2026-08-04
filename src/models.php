@@ -3697,27 +3697,6 @@ function hardware_detail(array $item): array
     ];
 }
 
-/**
- * What do I own that fits this machine?
- *
- * The question a spreadsheet cannot answer. It works because model_slots says
- * what a model accepts in vocabulary terms and item_hardware.interface_vocab_id
- * says what a part presents - so this is an exact match rather than a string
- * comparison against free text.
- */
-function parts_fitting_model(int $modelId): array
-{
-    [$acl, $aclP] = library_filter_sql('i.library_id', ACCESS_VIEWER);
-    return all(
-        "SELECT i.* FROM v_items i
-           JOIN item_hardware ih ON ih.item_id = i.id
-          WHERE ih.interface_vocab_id IN (SELECT vocab_id FROM model_slots WHERE model_id = ?)
-            AND $acl
-          ORDER BY i.title",
-        array_merge([$modelId], $aclP)
-    );
-}
-
 // ---------------------------------------------------------------------------
 // Where things physically are
 //

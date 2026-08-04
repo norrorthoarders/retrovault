@@ -512,9 +512,11 @@ function api_item_input(array $in, bool $partial, ?array $existing = null): arra
         }
     }
     if ($has('status')) {
-        $data['status'] = (string) $in['status'];
-        if (!in_array($data['status'], status_options(), true)) {
+        $status = rule_status($in['status']);
+        if ($status === null) {
             $errors['status'] = 'Not a known status.';
+        } else {
+            $data['status'] = $status;
         }
     }
     // Component grades arrive either nested under "components" or flattened.

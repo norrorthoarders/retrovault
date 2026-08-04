@@ -194,12 +194,6 @@ function public_library_ids(string $level = ACCESS_VIEWER): array
         : $GLOBALS['__public_libraries']['read'];
 }
 
-/** Kept for callers that only care about reading. */
-function shared_library_ids(): array
-{
-    return public_library_ids(ACCESS_VIEWER);
-}
-
 /**
  * What this account may do in one library.
  *

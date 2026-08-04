@@ -127,7 +127,18 @@ function items_show(int $id): void
         'chain'     => item_ancestry_chain($id),
         'goesWith'  => item_goes_with($id),
         'linkable'  => linkable_items($id, (int) $item['library_id']),
-        'hardware'  => one('SELECT * FROM item_hardware WHERE item_id = ?', [$id]),
+        // hardware_detail(), not the raw row.
+        //
+        // It resolves "the entry's own value, or the model's if the entry has
+        // none" - the rule its own doc comment says exists to stop two pages
+        // disagreeing about which one wins. Nothing called it, so this page
+        // showed a blank field wherever the value lived on the model rather
+        // than the entry: an Amiga 2000 with a model set but no interface typed
+        // onto the entry itself showed no interface at all, when the model had
+        // one all along.
+        'hardware'  => $item['model_id'] === null
+            && one('SELECT 1 FROM item_hardware WHERE item_id = ?', [$id]) === null
+                ? null : hardware_detail($item + ['id' => $id]),
         'pageTitle' => $item['title'],
         'item'      => $item,
         'images'    => item_images($id),
@@ -450,8 +461,7 @@ function items_payload(): array
             // settles it, because those have no such block and an entry with a sale
             // date and a status of "owned" is a contradiction the dashboard would
             // report as truth.
-            $want = (string) input('status', 'owned');
-            $want = in_array($want, status_options(), true) ? $want : 'owned';
+            $want = rule_status(input('status', 'owned')) ?? 'owned';
             if (isset($_POST['provenance_declared'])) {
                 return $want;
             }

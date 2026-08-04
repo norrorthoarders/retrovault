@@ -160,13 +160,6 @@ function log_entries(string $channel, array $filters = [], int $limit = 100, int
     );
 }
 
-function log_count(string $channel, array $filters = []): int
-{
-    // Cheap enough at this scale, and an honest total beats a paginator that
-    // says "more" and cannot say how much more.
-    return count(log_entries($channel, $filters, 500));
-}
-
 /**
  * The streams this instance writes.
  *

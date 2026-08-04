@@ -124,6 +124,18 @@ function registration_submit(string $route, string $token = ''): void
         log_security('register.pending',
             sprintf('%s signed up and is waiting (%s)', $username, registration_approval()),
             LOG_NOTICE, ['user' => $id]);
+
+        // Told, not only logged. The log entry above has existed the whole
+        // time; every admin who was not reading it that day found out when
+        // somebody asked why they still could not sign in.
+        notify_admins('registration.pending', [
+            'subject'      => sprintf('%s is waiting for approval', $username),
+            'body'         => sprintf('Signed up %s. %s', date('j M Y, H:i'), registration_approval()),
+            'link_path'    => '/manage/users',
+            'subject_type' => 'user',
+            'subject_id'   => $id,
+        ]);
+
         flash('ok', $waitFor);
         redirect('/login');
     }

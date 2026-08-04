@@ -201,9 +201,13 @@ reason.
 `model_slots` says what a model accepts in these terms, and
 `item_hardware.interface_vocab_id` says what a part presents. That pairing is
 what makes *"what do I own that fits this A1200?"* an exact query rather than a
-string comparison against free text — see `parts_fitting_model()` in
-`src/models.php`. The free-text `interface` column stays alongside it so nothing
-is ever unrecordable; the vocabulary id is used when one was chosen.
+string comparison against free text. `model_slots` and `interface_vocab_id`
+exist for this reason, but nothing queries them yet — there is no page a model
+can be viewed on, only lists. `parts_fitting_model()` was written for that page
+and removed when an audit found no caller; the query it would run is worth
+keeping in mind if a model detail page is ever built. The free-text `interface`
+column stays alongside the vocabulary either way, so nothing is ever
+unrecordable.
 
 
 ## Machine specifications

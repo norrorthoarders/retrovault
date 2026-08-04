@@ -532,11 +532,6 @@ function metadata_debug_notes(): array
     return $GLOBALS['__metadata_debug_notes'] ?? [];
 }
 
-function metadata_debug_clear(): void
-{
-    $GLOBALS['__metadata_debug_notes'] = [];
-}
-
 // --- HTTP -------------------------------------------------------------------
 
 // --- Where we are willing to send a request ---------------------------------
