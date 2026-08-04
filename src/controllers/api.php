@@ -1732,3 +1732,54 @@ function api_item_links_delete(int $itemId, int $linkId): void
     q('DELETE FROM item_links WHERE id = ?', [$linkId]);
     api_no_content();
 }
+
+/**
+ * The canonical models a client can file an entry under.
+ *
+ * `items.model_id` has been writable through the API for a while and there was
+ * no way to discover an id to put in it - which makes a writable field a field
+ * nobody can use.
+ *
+ * Narrowed by `category_id` when one is given, because that is what the web's
+ * picker does: a model belongs to a branch of the tree, and a list of every
+ * model on the instance is not a picker, it is a haystack. `platform_id`
+ * narrows it the coarser way for a client that has a machine but not yet a
+ * branch.
+ */
+function api_models_index(): void
+{
+    api_require_auth();
+
+    $libraryId  = api_query_int('library_id');
+    $categoryId = api_query_int('category_id');
+    $platformId = api_query_int('platform_id');
+
+    // A library the caller cannot read is not one to list models from.
+    if ($libraryId !== null && !can_read_library($libraryId)) {
+        api_error('not_found', 'No library with that id.', 404);
+    }
+
+    $models = $categoryId !== null
+        ? models_for_category($categoryId, $libraryId)
+        : hardware_models($platformId, null, $libraryId);
+
+    $q = isset($_GET['q']) && is_string($_GET['q']) ? mb_strtolower(trim($_GET['q'])) : '';
+    if ($q !== '') {
+        $models = array_values(array_filter(
+            $models,
+            fn(array $m) => str_contains(mb_strtolower((string) $m['name']), $q)
+        ));
+    }
+
+    api_ok(array_map(static fn(array $m): array => [
+        'id'        => (int) $m['id'],
+        'name'      => $m['name'],
+        'slug'      => $m['slug'] ?? null,
+        'year_from' => isset($m['year_from']) && $m['year_from'] !== null
+            ? (int) $m['year_from'] : null,
+        // Named, not an id: "category 41" means nothing in a picker.
+        'platform'  => $m['platform_name'] ?? null,
+        'category'  => $m['category_name'] ?? null,
+        'vendor'    => $m['vendor_name'] ?? null,
+    ], array_slice($models, 0, 200)));
+}

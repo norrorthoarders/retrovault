@@ -78,6 +78,11 @@ First public release.
 
 **API**
 
+- **`GET /models`** — the canonical models an entry can be filed under. `items.model_id` has been
+  writable for a while with no way to discover an id to put in it, which makes a writable field a
+  field nobody can use. Narrowed by `category_id` the way the web's picker narrows it: a model
+  belongs to a branch, and a list of every model on an instance is not a picker but a haystack.
+
 - **The rest of `item_hardware`**: `interface`, `provides`, `fits`, `recapped_on`, `serviced_on`,
   `manufactured_year`, and the **specification rows**. Those are a JSON column of
   `{label, value}` rather than columns, because an Amiga has a chipset and a PC has a bus and

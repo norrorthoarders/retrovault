@@ -872,6 +872,34 @@ paths:
       responses:
         "204": { description: Deleted }
 
+  /models:
+    get:
+      tags: [Items]
+      summary: The canonical models an entry can be filed under
+      description: >
+        `items.model_id` has been writable for a while with no way to discover an
+        id to put in it, which makes a writable field a field nobody can use.
+        Narrowed by `category_id` the way the web's picker narrows it — a model
+        belongs to a branch, and a list of every model on an instance is not a
+        picker but a haystack. `platform_id` narrows it the coarser way for a
+        client that has a machine but not yet a branch.
+      parameters:
+        - name: category_id
+          in: query
+          schema: { type: integer }
+        - name: platform_id
+          in: query
+          schema: { type: integer }
+        - name: library_id
+          in: query
+          schema: { type: integer }
+        - name: q
+          in: query
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+        "404": { description: No library with that id, or not yours to see }
+
   /libraries:
     post:
       tags: [Libraries]

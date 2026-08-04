@@ -281,6 +281,7 @@ if (str_starts_with($path, '/api/')) {
         ['PATCH',  '#^/api/v1/images/(\d+)$#',            fn($id) => api_images_update((int) $id)],
         ['DELETE', '#^/api/v1/images/(\d+)$#',            fn($id) => api_images_delete((int) $id)],
 
+        ['GET',    '#^/api/v1/models$#',                  fn() => api_models_index()],
         ['GET',    '#^/api/v1/libraries$#',               fn() => api_libraries_index()],
         ['POST',   '#^/api/v1/libraries$#',               fn() => api_libraries_create()],
         ['GET',    '#^/api/v1/platforms$#',               fn() => api_platforms_index()],
