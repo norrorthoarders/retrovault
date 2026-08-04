@@ -25,9 +25,6 @@ $spine = $item['platform_color'] ?: '#cba6f7';
   <?php if ($item['status'] !== 'owned'): ?>
     <p>
       <span class="chip chip--on"><?= e(status_label($item['status'])) ?></span>
-      <?php if ($item['status'] === 'lent' && $item['lent_to']): ?>
-        <span class="chip">to <?= e($item['lent_to']) ?><?= $item['lent_on'] ? ' since ' . e($item['lent_on']) : '' ?></span>
-      <?php endif; ?>
       <?php if ($item['status'] === 'sold' && $item['sold_on']): ?>
         <span class="chip"><?= e($item['sold_on']) ?><?= $item['sold_price'] !== null ? ' for ' . e(money((float) $item['sold_price'], $item['sold_currency'] ?: $item['currency'])) : '' ?></span>
       <?php endif; ?>

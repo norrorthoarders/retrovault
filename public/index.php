@@ -243,6 +243,7 @@ if (str_starts_with($path, '/api/')) {
         ['PATCH',  '#^/api/v1/profile/notifications$#',   fn() => api_notification_prefs_update()],
         ['GET',    '#^/api/v1/admin/settings$#',          fn() => api_settings_show()],
         ['PATCH',  '#^/api/v1/admin/settings$#',          fn() => api_settings_update()],
+        ['GET',    '#^/api/v1/items/(\d+)/links/candidates$#', fn($id) => api_item_links_candidates((int) $id)],
         ['GET',    '#^/api/v1/items/(\d+)/links$#',        fn($id) => api_item_links_index((int) $id)],
         ['POST',   '#^/api/v1/items/(\d+)/links$#',        fn($id) => api_item_links_create((int) $id)],
         ['DELETE', '#^/api/v1/items/(\d+)/links/(\d+)$#',   fn($id, $l) => api_item_links_delete((int) $id, (int) $l)],

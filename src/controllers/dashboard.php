@@ -45,7 +45,6 @@ function dashboard_index(): void
             COUNT(*)                                   AS items,
             SUM(status = \'owned\')                     AS owned,
             SUM(status = \'wishlist\')                  AS wanted,
-            SUM(status = \'lent\')                      AS lent,
             SUM(acquired_price)                        AS spend,
             AVG(NULLIF(rating, 0))                     AS avg_rating,
             MIN(NULLIF(release_year, 0))               AS earliest,
@@ -79,14 +78,7 @@ function dashboard_index(): void
 
     $recent   = all('SELECT * FROM v_items WHERE status = \'owned\' AND ' . $acl . ' ORDER BY created_at DESC, id DESC LIMIT 8', $aclP);
     $topRated = all('SELECT * FROM v_items WHERE rating IS NOT NULL AND status = \'owned\' AND ' . $acl . ' ORDER BY rating DESC, COALESCE(sort_title, title) LIMIT 8', $aclP);
-    $lent     = all('SELECT * FROM v_items WHERE status = \'lent\' AND ' . $acl . ' ORDER BY lent_on', $aclP);
 
-    // Out on loan and quietly forgotten. lent_to and lent_on were recorded and
-    // then never mentioned again, which is how a lent machine becomes a gift.
-    $lentLong = all('SELECT * FROM v_items
-        WHERE status = \'lent\' AND lent_on IS NOT NULL
-          AND lent_on < DATE_SUB(CURDATE(), INTERVAL 90 DAY) AND ' . $acl . '
-        ORDER BY lent_on', $aclP);
 
     $noPhotos = (int) scalar('SELECT COUNT(*) FROM v_items WHERE image_count = 0 AND status = \'owned\' AND ' . $acl, $aclP);
     $noYear   = (int) scalar('SELECT COUNT(*) FROM v_items WHERE release_year IS NULL AND status = \'owned\' AND ' . $acl, $aclP);
@@ -108,8 +100,6 @@ function dashboard_index(): void
         'noPhotos'   => $noPhotos,
         'noYear'     => $noYear,
         'noDev'      => $noDev,
-        'lent'       => $lent,
-        'lentLong'   => $lentLong,
         'imageTot'   => $imageTot,
     ]);
 }

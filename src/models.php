@@ -754,7 +754,7 @@ function build_item_filters(array $qs): array
             $active['list'] = 'wishlist';
         }
     } else {
-        $where[] = "status IN ('owned','lent','ordered')";
+        $where[] = "status IN ('owned','ordered')";
     }
 
     $sql = implode(' AND ', $where);
@@ -3630,14 +3630,11 @@ function record_value_change(int $itemId, array $before, array $after): void
     $statusAfter  = (string) ($after['status'] ?? $statusBefore);
 
     if ($statusAfter !== $statusBefore) {
-        if ($statusAfter === 'lent') {
-            record_item_event($itemId, 'lent', [
-                'happened_on' => $after['lent_on'] ?? date('Y-m-d'),
-                'party'       => $after['lent_to'] ?? $before['lent_to'] ?? null,
-            ]);
-        } elseif ($statusBefore === 'lent' && $statusAfter === 'owned') {
-            record_item_event($itemId, 'returned', ['party' => $before['lent_to'] ?? null]);
-        } elseif ($statusAfter === 'sold') {
+        // No lent or returned branches: 'lent' is not a status any more, so
+        // neither can be reached. The event kinds stay in the enum for rows
+        // written before migration 0026 - deleting somebody's record of who had
+        // a thing in 2024 is not what removing a feature means.
+        if ($statusAfter === 'sold') {
             record_item_event($itemId, 'sold', [
                 'happened_on' => $after['sold_on'] ?? date('Y-m-d'),
                 'amount'      => $after['sold_price'] ?? null,

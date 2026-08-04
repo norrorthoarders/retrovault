@@ -251,8 +251,6 @@ An item looks like this:
   "status_label": "Owned",
   "is_wishlist": false,
   "copies": 1,
-  "lent_to": null,
-  "lent_on": null,
   "sold_on": null,
   "sold_price": null,
   "current_value": 450,

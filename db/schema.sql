@@ -872,9 +872,7 @@ CREATE TABLE IF NOT EXISTS items (
   -- Status is the only truth about where an entry stands. The old is_wishlist
   -- flag duplicated part of it and was maintained by hand in four places, so
   -- browse and the dashboard could disagree about the same row.
-  status           ENUM('owned','wishlist','ordered','lent','sold') NOT NULL DEFAULT 'owned',
-  lent_to          VARCHAR(140) DEFAULT NULL,
-  lent_on          DATE         DEFAULT NULL,
+  status           ENUM('owned','wishlist','ordered','sold') NOT NULL DEFAULT 'owned',
   sold_on          DATE         DEFAULT NULL,
   sold_to          VARCHAR(140) DEFAULT NULL,
   sold_price       DECIMAL(10,2) DEFAULT NULL,

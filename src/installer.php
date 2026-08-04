@@ -1085,13 +1085,15 @@ function web_server_account(string $wantUser = '', string $wantGroup = ''): arra
  *
  * @return int  how many were added
  */
-function installer_enable_metadata_sources(): int
+function installer_enable_metadata_sources(): array
 {
     if (!function_exists('metadata_provider_types')) {
-        return 0;
+        return ['added' => 0, 'skipped' => []];
     }
 
-    $added = 0;
+    $added   = 0;
+    $skipped = [];
+
     foreach (metadata_provider_types() as $type => $def) {
         if (!empty($def['needs_key'])) {
             continue;
@@ -1099,6 +1101,40 @@ function installer_enable_metadata_sources(): int
         if ((int) scalar('SELECT COUNT(*) FROM metadata_providers WHERE type = ?', [$type]) > 0) {
             continue;
         }
+
+        // Asked before it is added, not after.
+        //
+        // These used to be switched on unconditionally, so an instance came up
+        // with a source that had moved, gone, or was refusing this network - and
+        // the first anybody knew was a lookup that half worked, months later,
+        // with no way to tell which source was at fault. The same probe the
+        // Test button uses, against the term the source itself declares.
+        // params as JSON, which is how the column stores it and how
+        // metadata_search() reads it. Handing it the array raised "Array to
+        // string conversion" and then quietly probed with no parameters at all -
+        // so a source needing one would have failed the test for the wrong
+        // reason and been skipped on a lie.
+        $probe = metadata_search(
+            ['id' => 0, 'type' => (string) $type,
+             'params' => json_encode($def['params'] ?? [])],
+            metadata_provider_probe((string) $type)
+        );
+
+        if ($probe['error'] !== null) {
+            $skipped[(string) ($def['label'] ?? $type)] = (string) $probe['error'];
+            // Written to the instance's own log, because this happens during an
+            // install that may be unattended and the terminal output will be
+            // gone. A source somebody expected and did not get is worth finding
+            // later without re-running anything.
+            if (function_exists('log_event')) {
+                log_event('metadata', 'provider.skipped', sprintf(
+                    'Not switched on during installation: %s did not answer its own probe - %s',
+                    (string) ($def['label'] ?? $type), (string) $probe['error']
+                ), LOG_WARNING, ['source' => (string) $type]);
+            }
+            continue;
+        }
+
         insert_row('metadata_providers', [
             'name'       => (string) ($def['label'] ?? $type),
             'type'       => (string) $type,
@@ -1108,5 +1144,7 @@ function installer_enable_metadata_sources(): int
         ]);
         $added++;
     }
-    return $added;
+
+    return ['added' => $added, 'skipped' => $skipped];
 }
+

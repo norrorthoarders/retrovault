@@ -570,8 +570,6 @@ function item_to_api(array $r, bool $withImages = false): array
         // maintained by hand in four places and drifted from status.
         'is_wishlist'  => $r['status'] === 'wishlist',
         'copies'       => (int) $r['copies'],
-        'lent_to'      => $r['lent_to'],
-        'lent_on'      => $r['lent_on'],
         'sold_on'      => $r['sold_on'],
         'sold_price'   => $r['sold_price'] === null ? null : (float) $r['sold_price'],
         'current_value' => $r['current_value'] === null ? null : (float) $r['current_value'],

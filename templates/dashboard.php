@@ -1,6 +1,6 @@
 <?php
 /** @var array $totals @var array $byLibrary @var array $byPlatform @var array $byCategory @var array $byDecade */
-/** @var array $recent @var array $topRated @var array $lent @var array $lentLong */
+/** @var array $recent @var array $topRated */
 /** @var int $noPhotos @var int $noYear @var int $noDev @var int $imageTot */
 $owned = (int) ($totals['owned'] ?? 0);
 $maxLibrary  = max(1, (int) max(array_column($byLibrary, 'n') ?: [1]));
@@ -118,20 +118,6 @@ $shelfEmpty = $owned === 0 && (int) ($totals['items'] ?? 0) === 0;
       </section>
     <?php endif; ?>
 
-    <?php if (!empty($lent)): ?>
-      <section class="panel">
-        <h2 class="panel__title">Out on loan</h2>
-        <div class="shelf">
-          <?php foreach ($lent as $it) partial('shelf_row', ['it' => $it]); ?>
-        </div>
-        <p class="mono" style="font-size:.78rem;color:var(--faint);margin-bottom:0">
-          <?php foreach ($lent as $it): ?>
-            <?= e($it['title']) ?> → <?= e($it['lent_to'] ?: 'someone') ?><?= $it['lent_on'] ? ', ' . e($it['lent_on']) : '' ?><br>
-          <?php endforeach; ?>
-        </p>
-      </section>
-    <?php endif; ?>
-
     <?php if ($topRated): ?>
       <section class="panel">
         <h2 class="panel__title">Rated highest</h2>
@@ -173,23 +159,6 @@ $shelfEmpty = $owned === 0 && (int) ($totals['items'] ?? 0) === 0;
     </section>
     <?php endif; ?>
 
-    <?php if (!empty($lentLong)): ?>
-    <section class="panel" style="border-left:3px solid var(--warn)">
-      <h2 class="panel__title">Out on loan a long time</h2>
-      <p class="hint" style="margin-top:-.4rem">Lent more than 90 days ago and not marked returned.</p>
-      <div class="shelfbar">
-        <?php foreach ($lentLong as $it): ?>
-          <div class="shelfbar__row" style="--spine: <?= e($it['library_color']) ?>">
-            <a class="shelfbar__name" href="<?= e(url('/items/' . (int) $it['id'])) ?>"><?= e($it['title']) ?></a>
-            <span class="shelfbar__n" style="font-size:.8rem">
-              <?= e($it['lent_to'] ?: 'someone') ?>,
-              <?= (int) floor((time() - strtotime((string) $it['lent_on'])) / 86400) ?> days
-            </span>
-          </div>
-        <?php endforeach; ?>
-      </div>
-    </section>
-    <?php endif; ?>
 
     <?php if ($byCategory): ?>
     <section class="panel">

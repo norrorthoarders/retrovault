@@ -340,10 +340,11 @@ function component_condition_options(): array
 
 function status_options(): array
 {
-    // No 'lent'. The lending fields went with it: three date columns for something
-    // that goes stale the moment an item comes back, and a status that told you an
-    // entry was elsewhere without saying when it was due. If lending is worth tracking
-    // it wants a log of loans, not a flag on the object.
+    // No lending, and now nothing left of it. The columns and the enum value
+    // outlived the feature for a while, which meant the API still accepted
+    // lent_to and a client could set a status this list would not offer -
+    // half-removed being worse than either, since it is a feature nobody can
+    // reach and everybody has to keep working around. Migration 0026 finished it.
     return ['owned', 'wishlist', 'ordered', 'sold'];
 }
 
@@ -353,7 +354,6 @@ function status_label(?string $key): string
         'owned'    => 'Owned',
         'wishlist' => 'Wanted',
         'ordered'  => 'On order',
-        'lent'     => 'Lent out',
         'sold'     => 'Sold',
     ][$key ?? 'owned'] ?? 'Owned';
 }

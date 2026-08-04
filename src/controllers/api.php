@@ -17,6 +17,9 @@ function api_meta(): void
 {
     api_ok([
         'name'            => config('app_name'),
+        // The server's own version, which is not the API's and not any client's.
+        // A bug report that says "0.5" without saying which 0.5 is half a report.
+        'app_version'     => APP_VERSION,
         'api_version'     => API_VERSION,
         'currency'        => config('currency'),
         'timezone'        => config('timezone'),
@@ -299,7 +302,6 @@ function api_item_input(array $in, bool $partial): array
         // notes and not this one would have to put a description in the notes -
         // which is the confusion migration 0014 exists to end.
         'description' => 65535,
-        'lent_to' => 140,
     ];
     foreach ($strings as $key => $max) {
         if ($has($key)) {
@@ -405,7 +407,7 @@ function api_item_input(array $in, bool $partial): array
             $errors['release_year'] = 'Between 1950 and next year.';
         }
     }
-    foreach (['release_date', 'acquired_on', 'lent_on', 'sold_on', 'valued_on'] as $dateKey) {
+    foreach (['release_date', 'acquired_on', 'sold_on', 'valued_on'] as $dateKey) {
         if ($has($dateKey)) {
             $v = $in[$dateKey];
             $data[$dateKey] = ($v === null || $v === '') ? null : (string) $v;
@@ -1165,7 +1167,6 @@ function api_stats(): void
     $totals = one('SELECT COUNT(*) AS items,
                           SUM(status = \'owned\') AS owned,
                           SUM(status = \'wishlist\') AS wanted,
-                          SUM(status = \'lent\') AS lent,
                           SUM(status = \'sold\') AS sold,
                           SUM(acquired_price) AS spend,
                           SUM(current_value) AS value,
@@ -1178,7 +1179,6 @@ function api_stats(): void
         'items'          => (int) ($totals['items'] ?? 0),
         'owned'          => (int) ($totals['owned'] ?? 0),
         'wishlist'       => (int) ($totals['wanted'] ?? 0),
-        'lent'           => (int) ($totals['lent'] ?? 0),
         'sold'           => (int) ($totals['sold'] ?? 0),
         'photos'         => (int) scalar('SELECT COUNT(*) FROM item_images img JOIN items i ON i.id = img.item_id
                                           WHERE i.deleted_at IS NULL AND ' . $aclI, $iP),
@@ -1512,7 +1512,7 @@ function api_item_images_import(int $itemId): void
 {
     api_require_write();
     $item = find_item($itemId);
-    if ($item === null || !can_write_library((int) $item['library_id'])) {
+    if ($item === null || !can_write_item($item)) {
         api_error('not_found', 'No catalogue entry with that id.', 404);
     }
 
@@ -1669,7 +1669,7 @@ function api_item_links_create(int $itemId): void
 {
     api_require_write();
     $item = find_item($itemId);
-    if ($item === null || !can_write_library((int) $item['library_id'])) {
+    if ($item === null || !can_write_item($item)) {
         api_error('not_found', 'No catalogue entry with that id.', 404);
     }
 
@@ -1694,6 +1694,16 @@ function api_item_links_create(int $itemId): void
     if ($parent === $child) {
         api_error('validation_failed', 'An entry cannot be fitted to itself.', 422);
     }
+
+    // The rules, checked here rather than trusted to the client.
+    $machineRow = $parent === $itemId ? $item : $other;
+    $partRow    = $parent === $itemId ? $other : $item;
+    if ($relation === 'installed_in') {
+        $why = api_link_refusal($machineRow, $partRow);
+        if ($why !== null) {
+            api_error('validation_failed', $why, 422);
+        }
+    }
     if (item_link_would_loop($parent, $child)) {
         api_error('validation_failed',
                   sprintf('That would make a loop: %s already sits inside this one, '
@@ -1716,7 +1726,7 @@ function api_item_links_delete(int $itemId, int $linkId): void
 {
     api_require_write();
     $item = find_item($itemId);
-    if ($item === null || !can_write_library((int) $item['library_id'])) {
+    if ($item === null || !can_write_item($item)) {
         api_error('not_found', 'No catalogue entry with that id.', 404);
     }
 
@@ -1782,4 +1792,86 @@ function api_models_index(): void
         'category'  => $m['category_name'] ?? null,
         'vendor'    => $m['vendor_name'] ?? null,
     ], array_slice($models, 0, 200)));
+}
+
+/**
+ * Whether one entry may be fitted inside another, and why not.
+ *
+ * Three rules, all of them the web's:
+ *
+ *  1. Only a peripheral goes into a machine. A machine does not go inside a
+ *     cartridge and a game does not go inside anything - the app offered both
+ *     directions to everything, which let somebody record an Amiga 2000
+ *     installed in a copy of Superfrog.
+ *  2. Software is not fitted at all. It has no physical inside.
+ *  3. A peripheral that declares what it fits must fit *this* machine: the
+ *     machine's model has to be in the peripheral's list, and the platforms have
+ *     to agree. A Zorro card does not go in a C64, and a catalogue that says it
+ *     does is worth less than no catalogue.
+ *
+ * Returns null when it may, or the sentence to refuse with.
+ */
+function api_link_refusal(array $machine, array $part): ?string
+{
+    if (($machine['domain'] ?? '') !== 'hardware' || ($part['domain'] ?? '') !== 'hardware') {
+        return 'Only hardware can be fitted together. Software has no inside.';
+    }
+
+    if (($machine['category_role'] ?? '') !== 'machine') {
+        return sprintf('%s is not a machine, so nothing can be fitted into it.',
+                       (string) $machine['title']);
+    }
+    if (($part['category_role'] ?? '') !== 'peripheral') {
+        return sprintf('%s is not a peripheral. Only peripherals are fitted into machines.',
+                       (string) $part['title']);
+    }
+
+    // What the peripheral says it fits, by model. Empty means it has not said,
+    // and a peripheral that has not said is allowed anywhere - refusing on
+    // silence would make the catalogue harder to fill in than to leave wrong.
+    $fits = model_fits_ids((int) ($part['model_id'] ?? 0));
+    if ($fits !== [] && !in_array((int) ($machine['model_id'] ?? 0), $fits, true)) {
+        return sprintf('%s does not list %s among the machines it fits.',
+                       (string) $part['title'], (string) $machine['title']);
+    }
+
+    // And the platform, which catches the case where neither has a model: an
+    // Amiga card in a PC is wrong even when nobody has filed either one.
+    $machinePlatform = (int) ($machine['platform_id'] ?? 0);
+    $partPlatform    = (int) ($part['platform_id'] ?? 0);
+    if ($machinePlatform > 0 && $partPlatform > 0 && $machinePlatform !== $partPlatform) {
+        return sprintf('%s is for a different machine family.', (string) $part['title']);
+    }
+
+    return null;
+}
+
+/**
+ * What may be fitted into this entry.
+ *
+ * The picker used to list the whole collection, so somebody could choose a game
+ * and be refused afterwards - which is a worse way to learn a rule than not
+ * being offered it.
+ */
+function api_item_links_candidates(int $itemId): void
+{
+    api_require_auth();
+    $machine = find_item($itemId);
+    if ($machine === null || !can_read_library((int) $machine['library_id'])) {
+        api_error('not_found', 'No catalogue entry with that id.', 404);
+    }
+
+    [$acl, $aclP] = library_filter_sql('library_id', ACCESS_VIEWER);
+    $rows = all("SELECT * FROM v_items
+                  WHERE id <> ? AND deleted_at IS NULL AND $acl
+               ORDER BY title", array_merge([$itemId], $aclP));
+
+    $out = [];
+    foreach ($rows as $row) {
+        if (api_link_refusal($machine, $row) === null) {
+            $out[] = item_to_api($row);
+        }
+    }
+
+    api_ok($out);
 }

@@ -1,5 +1,15 @@
 # Changelog
 
+**Installer**
+
+- **Metadata sources are tested before they are switched on**, by both installers. They used to
+  be added unconditionally, so an instance could come up with a source that had moved, gone, or
+  was refusing this network — and the first anybody knew was a lookup that half worked, months
+  later, with no way to tell which source was at fault. Each one is probed with the same check
+  the Test button uses, against the term the source itself declares. One that does not answer is
+  **not added**, is named on the summary, and is written to the instance's metadata log — an
+  unattended install has nobody reading the terminal.
+
 All notable changes to RetroVault are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [semantic versioning](https://semver.org/).
@@ -77,6 +87,24 @@ First public release.
   from standard input so it need not exist on disk.
 
 **API**
+
+- **Lending is gone from the platform.** It was half-removed already — `status_options()` had
+  dropped `lent` but the columns, the enum value, the dashboard panels, the CSV columns and the
+  API fields all stayed, so a client could set a status the web would not offer. Migration 0026
+  finishes it: entries marked lent become owned, and **what was recorded is appended to the
+  notes** rather than dropped, because somebody who wrote down who had a thing deserves to still
+  be able to read it. The `lent`/`returned` event kinds stay in `item_events` for rows already
+  written — deleting somebody's history is not what removing a feature means.
+
+- **Fixed: `can_write_library()` never existed.** I invented the name; artwork import, fitting
+  and unfitting all returned 500 with *Call to undefined function*. They use `can_write_item()`,
+  which is also the stricter and more correct check.
+- **The rules for what may be installed in what**, enforced on the server and offered through
+  `/items/{id}/links/candidates`: only hardware, only peripherals, only into machines, and only
+  where the peripheral either names this machine among those it fits or names none, with
+  platforms agreeing.
+- `/meta` reports **`app_version`**, the server's own — distinct from the API version and from
+  any client's.
 
 - **`GET /models`** — the canonical models an entry can be filed under. `items.model_id` has been
   writable for a while with no way to discover an id to put in it, which makes a writable field a

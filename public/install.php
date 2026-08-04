@@ -1752,10 +1752,20 @@ if ($running) {
                     // Shared with bin/install.php, which used to skip this
                     // entirely - see installer_enable_metadata_sources().
                     $sources = (string) recall('metadata_sources', '1') === '1'
-                        ? installer_enable_metadata_sources() : 0;
-                    if ($sources > 0) {
-                        $log[] = sprintf('Metadata sources configured: %d, the ones needing no key',
-                                         $sources);
+                        ? installer_enable_metadata_sources()
+                        : ['added' => 0, 'skipped' => []];
+                    if ($sources['added'] > 0) {
+                        $log[] = sprintf(
+                            'Metadata sources configured: %d, the ones needing no key that answered',
+                            $sources['added']);
+                    }
+                    // A source that did not answer is named on the summary as
+                    // well as in the log. Somebody finishing an install should
+                    // not discover months later that a lookup has been quietly
+                    // asking four sources instead of six.
+                    foreach ($sources['skipped'] as $label => $why) {
+                        $log[] = sprintf('Skipped %s: it did not answer its own probe - %s',
+                                         $label, $why);
                     }
 
                     $copied = seed_library_hardware($libId);

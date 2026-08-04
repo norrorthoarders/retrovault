@@ -617,9 +617,17 @@ if ($a['install']['templates'] !== 'none') {
 // with, and no sign that it was meant to have any.
 if ($a['install']['metadata_sources']) {
     $sources = installer_enable_metadata_sources();
-    say($sources > 0
-        ? sprintf('Metadata sources switched on: %d, the ones needing no key', $sources)
-        : 'Metadata sources already configured');
+    say($sources['added'] > 0
+        ? sprintf('Metadata sources switched on: %d, the ones needing no key that answered',
+                  $sources['added'])
+        : 'Metadata sources already configured, or none answered');
+
+    // Named here as well as logged. An unattended install will not have anybody
+    // reading this, which is why it goes to the log too - but somebody watching
+    // should not have to go and look.
+    foreach ($sources['skipped'] as $label => $why) {
+        say(sprintf('  skipped %s - it did not answer its own probe: %s', $label, $why));
+    }
 }
 
 if ($a['install']['deploy'] !== 'keep') {

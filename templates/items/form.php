@@ -653,7 +653,7 @@ $val = function (string $key, $default = '') use ($item) {
     // No lending block.
     //
     // Hardware has never had one, and three date boxes for something the status field
-    // already says - "Lent out" - was the only place the two forms disagreed on what an
+    // already says was the only place the two forms disagreed on what an
     // entry is. If lending needs recording properly it wants a proper log, not three
     // columns that go stale the moment something comes back.
     ?>

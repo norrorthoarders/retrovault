@@ -296,7 +296,7 @@ function import_row(callable $get, int $line, array $cache, int $defaultLibraryI
 
     foreach (['subtitle' => 220, 'sort_title' => 220, 'media_type' => 60, 'catalog_number' => 80,
               'barcode' => 40, 'language' => 80, 'region' => 80,
-              'lent_to' => 140, 'external_url' => 500] as $field => $max) {
+              'external_url' => 500] as $field => $max) {
         $v = $get($field);
         if ($v !== null) {
             $data[$field] = mb_substr($v, 0, $max);
@@ -351,7 +351,7 @@ function import_row(callable $get, int $line, array $cache, int $defaultLibraryI
     }
 
     // Dates
-    foreach (['release_date', 'acquired_on', 'lent_on', 'sold_on'] as $field) {
+    foreach (['release_date', 'acquired_on', 'sold_on'] as $field) {
         $v = $get($field);
         if ($v !== null) {
             $iso = import_date($v);

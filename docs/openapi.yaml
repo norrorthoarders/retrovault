@@ -567,7 +567,7 @@ paths:
         - { name: min_rating, in: query, schema: { type: integer, minimum: 1, maximum: 10 } }
         - { name: condition, in: query, schema: { $ref: "#/components/schemas/Condition" } }
         - { name: photos, in: query, schema: { type: string, enum: [none, some] } }
-        - { name: status, in: query, schema: { type: string, enum: [owned, wishlist, ordered, lent, sold, all] } }
+        - { name: status, in: query, schema: { type: string, enum: [owned, wishlist, ordered, sold, all] } }
         - { name: tag, in: query, schema: { type: string }, description: Comma-separated tag slugs; all must match }
         - { name: barcode, in: query, schema: { type: string } }
         - { name: list, in: query, schema: { type: string, enum: [wishlist] }, deprecated: true }
@@ -748,6 +748,26 @@ paths:
       responses:
         "201": { description: Linked, with both directions returned }
         "422": { description: No such entry, an unknown relation, itself, or a loop }
+
+  /items/{id}/links/candidates:
+    get:
+      tags: [Items]
+      summary: What may be installed in this machine
+      description: >
+        Already filtered by the rules, so a client is not offering choices the
+        server will refuse: only hardware, only peripherals, only into a machine,
+        and only where the peripheral either names this machine among the ones it
+        fits or names nothing at all. Platforms have to agree — a Zorro card does
+        not go in a C64, and a catalogue that says it does is worth less than no
+        catalogue.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200": { description: OK }
+        "404": { description: No entry with that id }
 
   /items/{id}/links/{linkId}:
     delete:
@@ -1388,8 +1408,6 @@ components:
         status_label: { type: string }
         is_wishlist: { type: boolean, description: Derived from status }
         copies: { type: integer }
-        lent_to: { type: [string, "null"] }
-        lent_on: { type: [string, "null"], format: date }
         sold_on: { type: [string, "null"], format: date }
         sold_price: { type: [number, "null"] }
         current_value: { type: [number, "null"] }
@@ -1443,8 +1461,6 @@ components:
         status: { $ref: "#/components/schemas/Status" }
         is_wishlist: { type: boolean, description: Legacy; mapped onto status }
         copies: { type: integer, minimum: 1 }
-        lent_to: { type: [string, "null"] }
-        lent_on: { type: [string, "null"], format: date }
         sold_on: { type: [string, "null"], format: date }
         sold_price: { type: [number, "null"] }
         current_value: { type: [number, "null"] }

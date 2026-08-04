@@ -443,8 +443,6 @@ function items_payload(): array
             }
             return trim((string) input('sold_on', '')) !== '' ? 'sold' : $want;
         })(),
-        'lent_to'          => nullify(input('lent_to')),
-        'lent_on'          => nullify(input('lent_on')),
         'sold_on'          => provenance_kept('sale') ? nullify(input('sold_on'))    : null,
         'sold_to'          => provenance_kept('sale') ? nullify(input('sold_to'))    : null,
         'sold_price'       => provenance_kept('sale') ? nullify(input('sold_price')) : null,
@@ -524,7 +522,7 @@ function items_validate(array $data): array
             $errors[] = "$label must be a number.";
         }
     }
-    foreach (['lent_on' => 'Lent on', 'sold_on' => 'Sold on', 'valued_on' => 'Valued on'] as $key => $label) {
+    foreach (['sold_on' => 'Sold on', 'valued_on' => 'Valued on'] as $key => $label) {
         if ($data[$key] !== null && !preg_match('/^\d{4}-\d{2}-\d{2}$/', (string) $data[$key])) {
             $errors[] = "$label must be YYYY-MM-DD.";
         }
@@ -1007,8 +1005,6 @@ function csv_columns(): array
         'Current value'  => 'current_value',
         'Copies'         => 'copies',
         'Status'         => 'status',
-        'Lent to'        => 'lent_to',
-        'Lent on'        => 'lent_on',
         'Sold on'        => 'sold_on',
         'Sold for'       => 'sold_price',
         'Sold currency'  => 'sold_currency',
